@@ -186,7 +186,7 @@ en la *Universidad Mayor, Real y Pontificia de San Francisco Xavier de Chuquisac
 | Nombre | GitHub | Rol |
 |--------|--------|-----|
 | Elvis | [@elvisC19](https://github.com/elvisC19) | ------ |
-| Marvin | @___________ | ------ |
+| Marvin | [@Marvin-Gus](https://github.com/Marvin-Gustavo) | ------ |
 | Job | @___________ | --------- |
 
 ---
