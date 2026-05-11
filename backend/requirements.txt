@@ -1,0 +1,15 @@
+fastapi
+httpx
+uvicorn[standard]
+sqlalchemy
+alembic
+python-dotenv
+passlib[bcrypt]
+bcrypt==4.0.1
+
+python-jose[cryptography]
+pydantic[email]
+pydantic-settings
+psycopg2-binary
+aiosmtplib
+pillow

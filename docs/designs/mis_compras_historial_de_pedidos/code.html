@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>My Orders - Importadora Market</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error": "#ba1a1a",
+                    "on-background": "#0b1c30",
+                    "on-tertiary-fixed-variant": "#005049",
+                    "surface-tint": "#565e74",
+                    "surface-container-low": "#eff4ff",
+                    "on-secondary-fixed": "#341100",
+                    "primary": "#000000",
+                    "on-primary-fixed": "#131b2e",
+                    "inverse-surface": "#213145",
+                    "surface-bright": "#f8f9ff",
+                    "primary-fixed-dim": "#bec6e0",
+                    "on-primary-container": "#7c839b",
+                    "on-tertiary": "#ffffff",
+                    "inverse-primary": "#bec6e0",
+                    "on-tertiary-fixed": "#00201d",
+                    "on-tertiary-container": "#0c9488",
+                    "on-secondary-container": "#5c2400",
+                    "surface": "#f8f9ff",
+                    "secondary-fixed-dim": "#ffb690",
+                    "tertiary-fixed": "#89f5e7",
+                    "surface-variant": "#d3e4fe",
+                    "primary-container": "#131b2e",
+                    "on-error": "#ffffff",
+                    "surface-container-highest": "#d3e4fe",
+                    "on-surface": "#0b1c30",
+                    "on-secondary": "#ffffff",
+                    "tertiary-container": "#00201d",
+                    "on-secondary-fixed-variant": "#783200",
+                    "background": "#f8f9ff",
+                    "outline-variant": "#c6c6cd",
+                    "on-primary-fixed-variant": "#3f465c",
+                    "surface-container-high": "#dce9ff",
+                    "tertiary": "#000000",
+                    "surface-container-lowest": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "tertiary-fixed-dim": "#6bd8cb",
+                    "surface-container": "#e5eeff",
+                    "secondary-container": "#fd761a",
+                    "outline": "#76777d",
+                    "secondary-fixed": "#ffdbca",
+                    "inverse-on-surface": "#eaf1ff",
+                    "on-surface-variant": "#45464d",
+                    "secondary": "#9d4300",
+                    "primary-fixed": "#dae2fd",
+                    "on-primary": "#ffffff",
+                    "surface-dim": "#cbdbf5",
+                    "on-error-container": "#93000a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-xl": "40px",
+                    "stack-sm": "8px",
+                    "margin-mobile": "16px",
+                    "gutter": "24px",
+                    "container-max": "1280px",
+                    "stack-xs": "4px",
+                    "stack-md": "16px",
+                    "stack-lg": "24px",
+                    "margin-desktop": "32px",
+                    "base": "8px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "data-mono": ["Inter"],
+                    "label-md": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "body-sm": ["Inter"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "data-mono": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9ff;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center px-margin-desktop w-full h-16 z-50 bg-surface dark:bg-on-background border-b border-outline-variant dark:border-outline fixed top-0 docked full-width">
+<div class="text-headline-md font-headline-md font-bold text-primary dark:text-primary-fixed">Importadora Market</div>
+<div class="hidden md:flex items-center gap-stack-lg">
+<nav class="flex gap-stack-md">
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-on-primary-container transition-colors px-2 py-1" href="#">Home</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-on-primary-container transition-colors px-2 py-1" href="#">Catalog</a>
+<a class="font-body-md text-body-md text-primary dark:text-primary-fixed border-b-2 border-primary pb-1" href="#">Profile</a>
+</nav>
+<div class="flex items-center gap-stack-sm">
+<button class="material-symbols-outlined text-on-surface-variant p-2 hover:bg-surface-container-high rounded-full">shopping_cart</button>
+<button class="material-symbols-outlined text-on-surface-variant p-2 hover:bg-surface-container-high rounded-full">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant p-2 hover:bg-surface-container-high rounded-full">account_circle</button>
+</div>
+</div>
+<div class="md:hidden">
+<span class="material-symbols-outlined">menu</span>
+</div>
+</header>
+<main class="pt-24 pb-stack-xl px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto min-h-screen">
+<!-- Page Header -->
+<div class="mb-stack-xl">
+<h1 class="font-headline-lg text-headline-lg text-on-background mb-stack-xs">My Orders</h1>
+<p class="font-body-md text-body-md text-on-surface-variant">Manage and track your recent purchase history.</p>
+</div>
+<!-- Orders Grid / Asymmetric Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Filter Sidebar (Dashboard style) -->
+<aside class="lg:col-span-3 space-y-stack-md">
+<div class="bg-surface-container-lowest p-stack-lg rounded-xl border border-outline-variant">
+<h3 class="font-label-md text-label-md uppercase tracking-wider text-on-surface-variant mb-stack-md">Filter Status</h3>
+<div class="space-y-stack-sm">
+<label class="flex items-center gap-stack-sm font-body-sm text-body-sm cursor-pointer hover:text-primary transition-colors">
+<input checked="" class="rounded border-outline text-secondary focus:ring-secondary-container" type="checkbox"/>
+                            All Orders
+                        </label>
+<label class="flex items-center gap-stack-sm font-body-sm text-body-sm cursor-pointer hover:text-primary transition-colors">
+<input class="rounded border-outline text-secondary focus:ring-secondary-container" type="checkbox"/>
+                            Processing
+                        </label>
+<label class="flex items-center gap-stack-sm font-body-sm text-body-sm cursor-pointer hover:text-primary transition-colors">
+<input class="rounded border-outline text-secondary focus:ring-secondary-container" type="checkbox"/>
+                            In Transit
+                        </label>
+<label class="flex items-center gap-stack-sm font-body-sm text-body-sm cursor-pointer hover:text-primary transition-colors">
+<input class="rounded border-outline text-secondary focus:ring-secondary-container" type="checkbox"/>
+                            Delivered
+                        </label>
+</div>
+</div>
+<div class="relative rounded-xl overflow-hidden group h-48 bg-primary-container">
+<img alt="Support" class="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700" data-alt="A sophisticated warehouse environment featuring high-tech logistics automation and organized shelving systems. The scene is illuminated by cool, professional blue-toned industrial lighting, conveying a sense of institutional reliability and high-performance efficiency. Clean, sharp lines and a minimalist aesthetic define the visual space." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYsrqgruPwMnz0z5pqlIkA8FzHCl7zdmTtGX-7ofUIq8GNK2IDdvD5RnaTtzstr0773zHY0iYfBEVml-mvqT0rRPitLeCSD9DOa8ENbaUNTS3-KYkO-J48zbwMwnCBHA6ipvgEgOstZakXxPavAGGrbsiypDrzKz8k2WU5bPYD8dl8veiAPN5zC2fNqueqwzMpbOuUNGfDZVE7IivMxkeIvsIzBPQoCEUpsRR14h1hACNPuLwwJSernwUmi8i6OQ1yGePkaaMWnE4"/>
+<div class="absolute inset-0 p-stack-md flex flex-col justify-end bg-gradient-to-t from-primary-container to-transparent">
+<p class="font-label-md text-label-md text-primary-fixed">Need help?</p>
+<h4 class="font-headline-md text-headline-md text-on-tertiary mb-stack-sm">Order Support</h4>
+<button class="bg-secondary-container text-on-secondary-container font-label-md text-label-md py-2 px-4 rounded-full w-max hover:opacity-90 transition-all active:scale-95">Contact Agent</button>
+</div>
+</div>
+</aside>
+<!-- Orders List -->
+<div class="lg:col-span-9 space-y-stack-md">
+<!-- Order Card 1: Delivered -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden hover:shadow-lg transition-shadow">
+<div class="flex flex-col md:flex-row md:items-center justify-between p-stack-md border-b border-outline-variant bg-surface-container-low">
+<div class="flex flex-wrap gap-stack-md items-center">
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase">Order ID</p>
+<p class="font-data-mono text-data-mono text-on-surface">#IM-99283-XP</p>
+</div>
+<div class="h-8 w-px bg-outline-variant hidden md:block"></div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase">Date Placed</p>
+<p class="font-body-sm text-body-sm text-on-surface">Oct 24, 2024</p>
+</div>
+<div class="h-8 w-px bg-outline-variant hidden md:block"></div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase">Status</p>
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-tertiary-fixed text-on-tertiary-fixed-variant">
+                                    Delivered
+                                </span>
+</div>
+</div>
+<div class="mt-stack-md md:mt-0 text-right">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase">Total Amount</p>
+<p class="font-headline-md text-headline-md text-primary">$1,240.00</p>
+</div>
+</div>
+<div class="p-stack-md flex flex-col md:flex-row gap-stack-lg items-start md:items-center">
+<div class="flex -space-x-4">
+<div class="w-16 h-16 rounded-lg border-2 border-surface-container-lowest overflow-hidden bg-surface-variant">
+<img alt="Product" class="w-full h-full object-cover" data-alt="A pair of high-performance technical running shoes presented in a clean, studio environment. The lighting is crisp and bright, highlighting the intricate mesh textures and sleek design. The color palette is professional and modern, focusing on deep blacks and subtle gray tones against a neutral background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDT9-HJ_3z_tutZ5uiy1Z9LAO4QN3s2BKjYNgz4S7Iv25hUTlZxAPMVLYVI4IG99CsR9MCxDkxLn4axvApXZi6mqr3ZI-Eb5CIUFwEEuuqxaWWQCLE0KvCMbRNiEuXxutdukt9T4Yq8URRnKEe9nFXo-M-a3HSljd2REG3INacUXviBFmyGTQPLBQo3xJWUSIYm2nQRO4ZhYb0cKwEndTEYybSgO8BPzSD7rsw4mDMl1mMT8R_1n_P4773fc4hQULC5tpuu0h28rLs"/>
+</div>
+<div class="w-16 h-16 rounded-lg border-2 border-surface-container-lowest overflow-hidden bg-surface-variant">
+<img alt="Product" class="w-full h-full object-cover" data-alt="A minimalist designer wristwatch with a clean white face and a sophisticated silver metal band. The watch is shot in a high-key, modern light-mode setting with soft shadows, emphasizing its precision engineering and high-end aesthetic. The mood is one of corporate elegance and reliability." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJ00OE3ll2F72NLGDcoBg-mhhaELkH-LH4SxmcqzkYW4_aTgpHshtStXRRWEPcS4Ed69ztBnTYxOf46DL-vfuvrzwJQ4koqufHXW-aKp4yuIWg9fUnFTvusupQgjDHKO28O8WAKXvbzLeVxorigPnS6IHmfzcS0fCRB8a1-9C-kUhwuJUuXDL92lezcmvFRa4MQ3vVluOpg9jkc9h9YG5OZ2B4arjWRnB7Ym8FFlbryngyiLR6J70usQG8-7-CXQMfJpune7Jjbto"/>
+</div>
+<div class="w-16 h-16 rounded-lg border-2 border-surface-container-lowest flex items-center justify-center bg-surface-container-high font-label-md text-label-md text-on-surface">
+                                +2
+                            </div>
+</div>
+<div class="flex-1">
+<p class="font-body-sm text-body-sm text-on-surface mb-stack-xs">Items: 4 total (Technical Runners, Minimalist Watch, +2 others)</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Shipped to: 124 Business Parkway, Suite 500, North Dakota</p>
+</div>
+<div class="flex gap-stack-sm w-full md:w-auto">
+<button class="flex-1 md:flex-none border border-outline-variant text-on-surface-variant font-label-md text-label-md py-2 px-4 rounded hover:bg-surface-container-high transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">download</span> Receipt
+                            </button>
+<button class="flex-1 md:flex-none bg-primary text-on-primary font-label-md text-label-md py-2 px-4 rounded hover:opacity-90 transition-all active:scale-95 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">local_shipping</span> Track
+                            </button>
+</div>
+</div>
+</div>
+<!-- Order Card 2: In Transit -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden hover:shadow-lg transition-shadow">
+<div class="flex flex-col md:flex-row md:items-center justify-between p-stack-md border-b border-outline-variant bg-surface-container-low">
+<div class="flex flex-wrap gap-stack-md items-center">
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase">Order ID</p>
+<p class="font-data-mono text-data-mono text-on-surface">#IM-88102-LA</p>
+</div>
+<div class="h-8 w-px bg-outline-variant hidden md:block"></div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase">Date Placed</p>
+<p class="font-body-sm text-body-sm text-on-surface">Oct 28, 2024</p>
+</div>
+<div class="h-8 w-px bg-outline-variant hidden md:block"></div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase">Status</p>
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-surface-container-highest text-on-surface">
+                                    In Transit
+                                </span>
+</div>
+</div>
+<div class="mt-stack-md md:mt-0 text-right">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase">Total Amount</p>
+<p class="font-headline-md text-headline-md text-primary">$450.25</p>
+</div>
+</div>
+<div class="p-stack-md flex flex-col md:flex-row gap-stack-lg items-start md:items-center">
+<div class="w-16 h-16 rounded-lg border-2 border-surface-container-lowest overflow-hidden bg-surface-variant">
+<img alt="Product" class="w-full h-full object-cover" data-alt="A pair of premium noise-canceling headphones placed on a dark, textured surface. The lighting is dramatic and focused, emphasizing the professional build quality and sleek matte finish. The image conveys high-performance audio engineering and modern corporate luxury with a palette of deep blacks and subtle highlights." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfIfjGtbn1YK5LIuC3KFSz0vT7UWjk3A6cfPtWuUa0TY-5E4IOWfGvSP1Ek9YOMd-HwQ1m34t4Sf_0n0Ouu0L1ogoG9Nmx7vZu8zpr3wYYCJTMbxxLxNrqPyt3NT5yCEQl0olVuiloq7HhSp-dwi57bSeHmTyJxg6RWykvv9cAxhww6ODESI6sGa19gYdjlGbMeNmEnUTbq67HvAfIbxTfq0y23H8hE3LP87Xe864w0iWv3fMQ6f4kuOuOxZLwdQcQM8bZFAL6wts"/>
+</div>
+<div class="flex-1">
+<p class="font-body-sm text-body-sm text-on-surface mb-stack-xs">Items: 1 total (Studio Pro Headphones)</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Estimated Delivery: Nov 02, 2024</p>
+</div>
+<div class="flex gap-stack-sm w-full md:w-auto">
+<button class="flex-1 md:flex-none border border-outline-variant text-on-surface-variant font-label-md text-label-md py-2 px-4 rounded hover:bg-surface-container-high transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">download</span> Receipt
+                            </button>
+<button class="flex-1 md:flex-none bg-primary text-on-primary font-label-md text-label-md py-2 px-4 rounded hover:opacity-90 transition-all active:scale-95 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">local_shipping</span> Track
+                            </button>
+</div>
+</div>
+<!-- Delivery Progress (Asymmetric UI Detail) -->
+<div class="px-stack-md pb-stack-md">
+<div class="w-full bg-surface-container rounded-full h-1.5 mb-2">
+<div class="bg-secondary-container h-1.5 rounded-full w-2/3"></div>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Arrived at local distribution center (Chicago, IL)</p>
+</div>
+</div>
+<!-- Order Card 3: Processing -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden hover:shadow-lg transition-shadow opacity-90">
+<div class="flex flex-col md:flex-row md:items-center justify-between p-stack-md border-b border-outline-variant bg-surface-container-low">
+<div class="flex flex-wrap gap-stack-md items-center">
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase">Order ID</p>
+<p class="font-data-mono text-data-mono text-on-surface">#IM-77001-BZ</p>
+</div>
+<div class="h-8 w-px bg-outline-variant hidden md:block"></div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase">Date Placed</p>
+<p class="font-body-sm text-body-sm text-on-surface">Today, 09:14 AM</p>
+</div>
+<div class="h-8 w-px bg-outline-variant hidden md:block"></div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase">Status</p>
+<span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-error-container text-on-error-container">
+                                    Processing
+                                </span>
+</div>
+</div>
+<div class="mt-stack-md md:mt-0 text-right">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase">Total Amount</p>
+<p class="font-headline-md text-headline-md text-primary">$89.90</p>
+</div>
+</div>
+<div class="p-stack-md flex flex-col md:flex-row gap-stack-lg items-start md:items-center">
+<div class="w-16 h-16 rounded-lg border-2 border-surface-container-lowest overflow-hidden bg-surface-variant">
+<img alt="Product" class="w-full h-full object-cover" data-alt="A collection of minimalist office accessories, including a sleek aluminum pen and a structured leather notebook, arranged on a clean white surface. The lighting is diffused and professional, creating a bright and efficient workspace atmosphere. The color scheme is neutral with metallic accents, reflecting corporate reliability and functional design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzJVrGV7FE8-X8tS-QaSzXSPmrvBtauIG3kBhCM-FccYqj6LV3WU6CM89jByuw15XtLwyoKBMZpAKpxkq3R2dU2P8FTy9IuasBVXQ1TtbfCM_60RRi8rbDIMJTIX4yJih0j186GGWhrdwpblhyEfhrY4IYkMY04o5aeimXtzH65PLVrixbP0VZdyZYz0S_pDul7b4X0NB05UTFkA5hYhld3nNCUmzCTYCh4mH5BZ2UmJ7PCOuqr3JuDaMElj2t2pCS0g9fHVit5kI"/>
+</div>
+<div class="flex-1">
+<p class="font-body-sm text-body-sm text-on-surface mb-stack-xs">Items: 2 total (Corporate Desk Kit)</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Preparing for dispatch</p>
+</div>
+<div class="flex gap-stack-sm w-full md:w-auto">
+<button class="flex-1 md:flex-none border border-outline-variant text-on-surface-variant font-label-md text-label-md py-2 px-4 rounded hover:bg-surface-container-high transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">download</span> Receipt
+                            </button>
+<button class="flex-1 md:flex-none bg-surface-container-high text-on-surface-variant opacity-50 font-label-md text-label-md py-2 px-4 rounded cursor-not-allowed flex items-center justify-center gap-2" disabled="">
+<span class="material-symbols-outlined text-sm">local_shipping</span> Track
+                            </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-stack-xl px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-stack-md bg-surface-container-lowest dark:bg-on-background border-t border-outline-variant dark:border-outline">
+<div class="flex flex-col items-center md:items-start gap-stack-xs">
+<div class="text-headline-sm font-headline-sm font-bold text-primary">Importadora Market</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant">© 2024 Importadora Market. Institutional Reliability &amp; Performance.</p>
+</div>
+<div class="flex gap-stack-lg">
+<a class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors" href="#">Shipping Info</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant hover:text-primary transition-colors" href="#">Contact Support</a>
+</div>
+</footer>
+<!-- BottomNavBar (Mobile only) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 px-margin-mobile bg-surface dark:bg-on-background border-t border-outline-variant dark:border-outline shadow-lg md:hidden">
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">search</span>
+<span class="font-label-sm text-label-sm">Catalog</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="font-label-sm text-label-sm">Cart</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</div>
+</nav>
+</body></html>

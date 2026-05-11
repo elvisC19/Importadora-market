@@ -1,0 +1,30 @@
+﻿# Python
+backend/venv/
+backend/__pycache__/
+backend/app/__pycache__/
+**/__pycache__/
+*.pyc
+*.pyo
+
+# Base de datos
+backend/*.db
+backend/*.sqlite
+
+# Variables de entorno (SENSIBLE)
+backend/.env
+frontend/.env
+
+# Node
+frontend/node_modules/
+frontend/dist/
+
+# Alembic
+backend/migrations/versions/*.pyc
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/

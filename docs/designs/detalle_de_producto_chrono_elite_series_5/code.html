@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error": "#ba1a1a",
+                    "on-background": "#0b1c30",
+                    "on-tertiary-fixed-variant": "#005049",
+                    "surface-tint": "#565e74",
+                    "surface-container-low": "#eff4ff",
+                    "on-secondary-fixed": "#341100",
+                    "primary": "#000000",
+                    "on-primary-fixed": "#131b2e",
+                    "inverse-surface": "#213145",
+                    "surface-bright": "#f8f9ff",
+                    "primary-fixed-dim": "#bec6e0",
+                    "on-primary-container": "#7c839b",
+                    "on-tertiary": "#ffffff",
+                    "inverse-primary": "#bec6e0",
+                    "on-tertiary-fixed": "#00201d",
+                    "on-tertiary-container": "#0c9488",
+                    "on-secondary-container": "#5c2400",
+                    "surface": "#f8f9ff",
+                    "secondary-fixed-dim": "#ffb690",
+                    "tertiary-fixed": "#89f5e7",
+                    "surface-variant": "#d3e4fe",
+                    "primary-container": "#131b2e",
+                    "on-error": "#ffffff",
+                    "surface-container-highest": "#d3e4fe",
+                    "on-surface": "#0b1c30",
+                    "on-secondary": "#ffffff",
+                    "tertiary-container": "#00201d",
+                    "on-secondary-fixed-variant": "#783200",
+                    "background": "#f8f9ff",
+                    "outline-variant": "#c6c6cd",
+                    "on-primary-fixed-variant": "#3f465c",
+                    "surface-container-high": "#dce9ff",
+                    "tertiary": "#000000",
+                    "surface-container-lowest": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "tertiary-fixed-dim": "#6bd8cb",
+                    "surface-container": "#e5eeff",
+                    "secondary-container": "#fd761a",
+                    "outline": "#76777d",
+                    "secondary-fixed": "#ffdbca",
+                    "inverse-on-surface": "#eaf1ff",
+                    "on-surface-variant": "#45464d",
+                    "secondary": "#9d4300",
+                    "primary-fixed": "#dae2fd",
+                    "on-primary": "#ffffff",
+                    "surface-dim": "#cbdbf5",
+                    "on-error-container": "#93000a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-xl": "40px",
+                    "stack-sm": "8px",
+                    "margin-mobile": "16px",
+                    "gutter": "24px",
+                    "container-max": "1280px",
+                    "stack-xs": "4px",
+                    "stack-md": "16px",
+                    "stack-lg": "24px",
+                    "margin-desktop": "32px",
+                    "base": "8px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "data-mono": ["Inter"],
+                    "label-md": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "body-sm": ["Inter"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "data-mono": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center px-margin-desktop w-full h-16 z-50 bg-surface dark:bg-on-background border-b border-outline-variant dark:border-outline docked full-width top-0">
+<div class="text-headline-md font-headline-md font-bold text-primary dark:text-primary-fixed">Importadora Market</div>
+<nav class="hidden md:flex gap-stack-lg items-center">
+<a class="text-primary dark:text-primary-fixed border-b-2 border-primary pb-1 font-body-md text-body-md" href="#">Catalog</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-on-primary-container transition-colors font-body-md text-body-md px-2 py-1 rounded" href="#">New Arrivals</a>
+<a class="text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-on-primary-container transition-colors font-body-md text-body-md px-2 py-1 rounded" href="#">Offers</a>
+</nav>
+<div class="flex items-center gap-stack-md">
+<div class="hidden lg:flex items-center bg-surface-container-high rounded-full px-4 py-2 w-64 border border-outline-variant">
+<span class="material-symbols-outlined text-outline">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-sm w-full ml-2" placeholder="Search products..." type="text"/>
+</div>
+<div class="flex gap-stack-sm">
+<button class="p-2 hover:bg-surface-container transition-colors rounded-full active:opacity-80 active:scale-95">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+</button>
+<button class="p-2 hover:bg-surface-container transition-colors rounded-full active:opacity-80 active:scale-95">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 hover:bg-surface-container transition-colors rounded-full active:opacity-80 active:scale-95">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-stack-xl">
+<!-- Product Detail Section: Asymmetric Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Left Side: Image Gallery & Video (Bento Style) -->
+<div class="lg:col-span-7 flex flex-col gap-stack-lg">
+<div class="grid grid-cols-4 grid-rows-4 gap-stack-md h-[600px]">
+<div class="col-span-4 row-span-3 rounded-xl overflow-hidden border border-outline-variant bg-surface-container-lowest">
+<img class="w-full h-full object-cover" data-alt="Close up product shot of the Chrono Elite Series 5 luxury titanium watch sitting on a sleek glass surface with dramatic, professional studio lighting. The aesthetic is ultra-modern and corporate, featuring a monochromatic color palette with high-contrast shadows. The lighting highlights the fine textures of the brushed metal and the crystal clear sapphire glass face." src="https://lh3.googleusercontent.com/aida-public/AB6AXuALARIfEufWa7QvDJIkcCIsJ1ggAte_IclnU0g8rw-MszrQZg63-ufccdPKoqFweTI-5dDWlTpTycYCQEwriOpIMdtV8b32acBmU8cLOJRrewOP7R2UC5qpiGPD0I4alp72NNMfssCnVdfVE1zzGXoHEY6IfbLqo_Mi4rjifS4A7vRT_nV5rRz1jbNdHb-267M_mZTL5bfkMqT505fQpSaz1ojXt7vtgP41SeqldMk_2Ky4rb3qVAdMmQuRDyKkXkXSZpuEjPl56zU"/>
+</div>
+<div class="col-span-1 row-span-1 rounded-xl overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="Detailed macro photography of the watch crown and side buttons of the Chrono Elite Series 5. The image features soft, diffused white lighting in a clean office setting, emphasizing the precision engineering and high-performance durability of the design. The background is a soft blue-tinted gray, maintaining the institutional reliability theme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDq6-UpDb8ayqbxxwkQG2IxJbESgqTufSWKguWCTjNd_Y8rqZ5HIgc3Avx3Z4QhL0AGV7orgdtfqwYzxAbpbq4Xr7Ey65e_uf10jW2pT2Rq70L-VPhs40sVwPQLpo-pQP2NjftUFHn1R_09vt967rPAAp5rasczlny2H8HR00YnYN8H4ZnMMGtCTt6gdRfuB3BA7QE2z7SZaPCTuZ203l5WDrtJDpecq59Hv5s3_kIWuZ4HMLIHDsTgNhV6n13Uk7aKrM3kDYpAsSU"/>
+</div>
+<div class="col-span-1 row-span-1 rounded-xl overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="Side profile view of the luxury timepiece resting on a piece of dark executive desk stationary. The lighting is low-key and moody, focusing on the slim profile of the series 5. The color palette consists of deep charcoal and silver, conveying stability and professional precision." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDA5Bn8qAX-QY053I18yzGmF2ePvkt4WWLsWNA_LUmqXOZ4ufNsunWenmLKBxAuLVWP_Rjk9IQFdKnehaLLOqE5cw5t_-IatmIg5b7xeB3mkQN0kMsE2Vy6npiJ_2GzwU-doiHcURj8yOP_lxdoFnzHwHRfWFs3qq4Q5r0-GaCJta0YU5RvCa97XaqUeO6tgmYTsWzWNSfzlpoXbsRy6_C4kOZTkRzQWKH_kjZ0B80RcIQctsnuTHXVuBDSQAiHlrwyzmptik3MmMU"/>
+</div>
+<div class="col-span-2 row-span-1 relative rounded-xl overflow-hidden border border-outline-variant bg-on-background group cursor-pointer">
+<img class="w-full h-full object-cover opacity-60" data-alt="A lifestyle shot of a professional wearing the Chrono Elite Series 5 while working at a high-end workstation. The atmosphere is productive and efficient, with soft morning light coming from a nearby window. The watch is the focal point, reflecting the corporate modern visual tokens of the brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcRiHJVSiJFCJFy-TWKpyc9tCjLyQiTIHRqbsCYtXoRqoX5qih5kkCPb9eDg1SyaIgGGgvG5koMwIzQPmr9CNwGMCCX7AnC0BEgdDNtd0FJPIYc1MCFKwH279uh5jYtIq5YH-wtIt_ihriAeogmvBjrwTYtDQ0xcraAWq-MN6-H_F_FO7QTlO6LE-NufcbNcNnLjwTQnc12Ko0wV0BOta0b6In33CcY4l6Q5UY_eKzQJXZGbBec-0AzACKjMmrdupzQ2mokpjDiNU"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-5xl" style="font-variation-settings: 'FILL' 1;">play_circle</span>
+</div>
+<div class="absolute bottom-2 right-2 bg-black/50 text-white text-[10px] px-2 py-1 rounded">0:45</div>
+</div>
+</div>
+<!-- Video Demo Player Area -->
+<div class="rounded-xl bg-surface-container-highest p-stack-lg border border-outline-variant">
+<div class="flex items-center gap-stack-sm mb-stack-md">
+<span class="material-symbols-outlined text-primary">videocam</span>
+<h3 class="font-headline-md text-headline-md">Performance Showcase</h3>
+</div>
+<div class="aspect-video bg-on-background rounded-lg flex items-center justify-center relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-stack-md">
+<div class="text-white">
+<p class="font-label-md text-label-md uppercase tracking-widest text-secondary-fixed">Live Demonstration</p>
+<p class="font-body-md text-body-md">Water resistance &amp; Shock test results</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-white text-6xl opacity-80 group-hover:scale-110 transition-transform" style="font-variation-settings: 'FILL' 1;">play_circle</span>
+</div>
+</div>
+</div>
+<!-- Right Side: Product Info & Actions -->
+<div class="lg:col-span-5 flex flex-col gap-stack-lg">
+<div class="bg-surface-container-lowest border border-outline-variant p-stack-lg rounded-xl shadow-sm">
+<div class="flex justify-between items-start mb-stack-sm">
+<span class="px-3 py-1 bg-tertiary-container text-on-tertiary-container text-label-sm font-label-sm rounded-full">PREMIUM SERIES</span>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary-container text-sm" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-label-md text-label-md">4.9 (1,240 reviews)</span>
+</div>
+</div>
+<h1 class="font-headline-lg text-headline-lg mb-stack-xs">Chrono Elite Series 5</h1>
+<p class="font-body-md text-body-md text-on-surface-variant mb-stack-md leading-relaxed">
+                        Precision-engineered for the modern executive. Crafted with grade-5 aerospace titanium and scratch-resistant sapphire. High-density performance meets institutional reliability.
+                    </p>
+<div class="flex items-baseline gap-stack-md mb-stack-lg">
+<span class="font-display-lg text-display-lg text-primary">$1,299.00</span>
+<span class="font-body-md text-body-md text-outline line-through">$1,550.00</span>
+</div>
+<!-- Stock Indicator -->
+<div class="flex items-center gap-stack-sm p-stack-sm bg-error-container/20 rounded-lg border border-error-container mb-stack-lg">
+<span class="material-symbols-outlined text-error animate-pulse" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+<span class="text-on-error-container font-label-md text-label-md">HIGH DEMAND: Only 12 units left in stock</span>
+</div>
+<!-- Actions -->
+<div class="flex flex-col gap-stack-sm">
+<button class="w-full h-14 bg-secondary-container text-on-secondary-fixed font-bold rounded-lg flex items-center justify-center gap-stack-sm hover:opacity-90 active:scale-95 transition-all">
+<span class="material-symbols-outlined">shopping_cart</span>
+                            ADD TO CART
+                        </button>
+<button class="w-full h-14 bg-primary text-on-primary font-bold rounded-lg hover:opacity-90 active:scale-95 transition-all">
+                            BUY NOW
+                        </button>
+</div>
+<div class="mt-stack-lg pt-stack-lg border-t border-outline-variant flex flex-col gap-stack-md">
+<div class="flex items-center gap-stack-sm">
+<span class="material-symbols-outlined text-on-tertiary-container">verified</span>
+<span class="font-body-sm text-body-sm">2-Year International Warranty</span>
+</div>
+<div class="flex items-center gap-stack-sm">
+<span class="material-symbols-outlined text-on-tertiary-container">local_shipping</span>
+<span class="font-body-sm text-body-sm">Free Express Shipping &amp; Security-Insured Delivery</span>
+</div>
+</div>
+</div>
+<!-- Technical Specs (Bento Card) -->
+<div class="bg-surface-container p-stack-lg rounded-xl border border-outline-variant">
+<h3 class="font-headline-md text-headline-md mb-stack-md border-b border-outline-variant pb-2">Technical Specifications</h3>
+<div class="grid grid-cols-2 gap-stack-md">
+<div class="p-stack-sm border-l-4 border-on-tertiary-container bg-surface-container-lowest">
+<p class="font-label-sm text-label-sm text-outline uppercase">Movement</p>
+<p class="font-data-mono text-data-mono">Caliber 5X Precision</p>
+</div>
+<div class="p-stack-sm border-l-4 border-on-tertiary-container bg-surface-container-lowest">
+<p class="font-label-sm text-label-sm text-outline uppercase">Water Resist</p>
+<p class="font-data-mono text-data-mono">200m / 20ATM</p>
+</div>
+<div class="p-stack-sm border-l-4 border-on-tertiary-container bg-surface-container-lowest">
+<p class="font-label-sm text-label-sm text-outline uppercase">Material</p>
+<p class="font-data-mono text-data-mono">Grade 5 Titanium</p>
+</div>
+<div class="p-stack-sm border-l-4 border-on-tertiary-container bg-surface-container-lowest">
+<p class="font-label-sm text-label-sm text-outline uppercase">Power Reserve</p>
+<p class="font-data-mono text-data-mono">72 Hours</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Details & Features Grid -->
+<section class="mt-stack-xl py-stack-xl border-t border-outline-variant">
+<h2 class="font-headline-lg text-headline-lg text-center mb-stack-xl">Uncompromising Engineering</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="group p-stack-lg bg-surface-container-low border border-outline-variant rounded-xl hover:bg-surface-container-high transition-all">
+<span class="material-symbols-outlined text-primary text-4xl mb-stack-md" style="font-variation-settings: 'FILL' 0;">diamond</span>
+<h4 class="font-headline-md text-headline-md mb-stack-sm">Sapphire Crystal</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Diamond-hard clarity with dual-sided anti-reflective coating for maximum legibility in any condition.</p>
+</div>
+<div class="group p-stack-lg bg-surface-container-low border border-outline-variant rounded-xl hover:bg-surface-container-high transition-all">
+<span class="material-symbols-outlined text-primary text-4xl mb-stack-md" style="font-variation-settings: 'FILL' 0;">precision_manufacturing</span>
+<h4 class="font-headline-md text-headline-md mb-stack-sm">Precision Movement</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Hand-assembled internal mechanism with a monthly variance of less than 0.5 seconds.</p>
+</div>
+<div class="group p-stack-lg bg-surface-container-low border border-outline-variant rounded-xl hover:bg-surface-container-high transition-all">
+<span class="material-symbols-outlined text-primary text-4xl mb-stack-md" style="font-variation-settings: 'FILL' 0;">security</span>
+<h4 class="font-headline-md text-headline-md mb-stack-sm">Security Lock</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Patented triple-lock crown system ensuring hermetic seal and shock protection during high-performance use.</p>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-stack-xl px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-stack-md bg-surface-container-lowest dark:bg-on-background border-t border-outline-variant dark:border-outline">
+<div class="text-headline-sm font-headline-sm font-bold text-primary">Importadora Market</div>
+<div class="flex gap-stack-lg font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant">
+<a class="hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="hover:text-primary transition-colors" href="#">Shipping Info</a>
+<a class="hover:text-primary transition-colors" href="#">Contact Support</a>
+</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant text-center md:text-right">
+            © 2024 Importadora Market. Institutional Reliability &amp; Performance.
+        </div>
+</footer>
+<!-- Mobile Bottom Navigation Shell -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 px-margin-mobile bg-surface dark:bg-on-background border-t border-outline-variant dark:border-outline shadow-lg rounded-t-xl">
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+<span class="font-label-sm text-label-sm">Catalog</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+<span class="font-label-sm text-label-sm">Cart</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</button>
+</nav>
+<!-- Floating Live Chat Button -->
+<button class="fixed bottom-24 md:bottom-10 right-6 z-50 w-14 h-14 bg-primary text-white rounded-full flex items-center justify-center shadow-xl hover:scale-110 active:scale-95 transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">chat_bubble</span>
+</button>
+</body></html>

@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Importadora Market | Modern Retail Excellence</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-container": "#5c2400",
+                    "on-secondary": "#ffffff",
+                    "tertiary-container": "#00201d",
+                    "on-primary-fixed-variant": "#3f465c",
+                    "on-secondary-fixed": "#341100",
+                    "inverse-surface": "#213145",
+                    "on-primary-container": "#7c839b",
+                    "secondary-fixed-dim": "#ffb690",
+                    "surface-container-low": "#eff4ff",
+                    "surface-dim": "#cbdbf5",
+                    "on-secondary-fixed-variant": "#783200",
+                    "surface": "#f8f9ff",
+                    "outline": "#76777d",
+                    "surface-bright": "#f8f9ff",
+                    "on-error-container": "#93000a",
+                    "primary": "#000000",
+                    "on-surface-variant": "#45464d",
+                    "surface-tint": "#565e74",
+                    "surface-container-highest": "#d3e4fe",
+                    "on-tertiary-fixed-variant": "#005049",
+                    "error": "#ba1a1a",
+                    "inverse-primary": "#bec6e0",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary": "#9d4300",
+                    "tertiary-fixed-dim": "#6bd8cb",
+                    "surface-container": "#e5eeff",
+                    "secondary-fixed": "#ffdbca",
+                    "background": "#f8f9ff",
+                    "on-tertiary-fixed": "#00201d",
+                    "on-error": "#ffffff",
+                    "on-background": "#0b1c30",
+                    "on-primary-fixed": "#131b2e",
+                    "tertiary-fixed": "#89f5e7",
+                    "surface-container-high": "#dce9ff",
+                    "inverse-on-surface": "#eaf1ff",
+                    "primary-fixed": "#dae2fd",
+                    "primary-container": "#131b2e",
+                    "on-primary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "primary-fixed-dim": "#bec6e0",
+                    "outline-variant": "#c6c6cd",
+                    "secondary-container": "#fd761a",
+                    "on-tertiary": "#ffffff",
+                    "surface-variant": "#d3e4fe",
+                    "on-tertiary-container": "#0c9488",
+                    "tertiary": "#000000",
+                    "on-surface": "#0b1c30"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-desktop": "32px",
+                    "base": "8px",
+                    "gutter": "24px",
+                    "stack-md": "16px",
+                    "margin-mobile": "16px",
+                    "stack-xl": "40px",
+                    "stack-lg": "24px",
+                    "stack-xs": "4px",
+                    "stack-sm": "8px",
+                    "container-max": "1280px"
+            },
+            "fontFamily": {
+                    "body-sm": ["Inter"],
+                    "data-mono": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "label-md": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "display-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "data-mono": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "500"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center px-margin-desktop w-full h-16 z-50 bg-surface dark:bg-on-background border-b border-outline-variant dark:border-outline fixed top-0">
+<div class="flex items-center gap-stack-md">
+<span class="text-headline-md font-headline-md font-bold text-primary dark:text-primary-fixed">Importadora Market</span>
+<nav class="hidden md:flex items-center gap-stack-lg ml-stack-xl">
+<a class="font-body-md text-body-md text-primary dark:text-primary-fixed border-b-2 border-primary pb-1" href="#">Home</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-on-primary-container transition-colors" href="#">Catalog</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-outline-variant hover:bg-surface-container dark:hover:bg-on-primary-container transition-colors" href="#">Deals</a>
+</nav>
+</div>
+<div class="flex items-center gap-stack-md flex-1 max-w-md mx-stack-xl">
+<div class="relative w-full">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-lg focus:outline-none focus:border-primary font-body-sm text-body-sm" placeholder="Search premium imports..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="p-2 hover:bg-surface-container-high rounded-full transition-all active:scale-95">
+<span class="material-symbols-outlined text-on-surface-variant">shopping_cart</span>
+</button>
+<button class="p-2 hover:bg-surface-container-high rounded-full transition-all active:scale-95">
+<span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+</button>
+<button class="p-2 hover:bg-surface-container-high rounded-full transition-all active:scale-95">
+<span class="material-symbols-outlined text-on-surface-variant">account_circle</span>
+</button>
+</div>
+</header>
+<main class="pt-16 pb-20 md:pb-0">
+<!-- Hero Carousel Section -->
+<section class="relative w-full h-[500px] overflow-hidden">
+<div class="absolute inset-0 flex transition-transform duration-700">
+<div class="min-w-full h-full relative">
+<img class="w-full h-full object-cover brightness-75" data-alt="High-end professional product photography of a sleek athletic shoe in a minimalist industrial loft setting. The lighting is dramatic and focused, highlighting the premium textures and engineering details. The color palette features deep blacks and neutral greys with a single vibrant orange accent. The overall mood is sophisticated, reflecting high-performance efficiency and corporate reliability." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-MbPDOHjsj_itSBooyYrHc0VgvEVPAcqggjJnezdL7NYK1x6xBMKzuFe0TTXMUUDTPq-WBkNHhna01rl8KngYDTlALX3k4DJ5XcZCZWWyoPSySDy73enwrzGfB9NZdbctcZjgiTC-EYvZu-EApa9R9LYIDOdYPHKghTYbgrnC13zJRwksINCE6e6EsLIF5vhZ2WHW_0jE9qzl5kWoG_WMA6WUdn2tHalrxt3rJ6oFwka1Dse0kWRJmwJFxDHs2i8aUs3eePc8vk4"/>
+<div class="absolute inset-0 flex flex-col justify-center px-margin-desktop bg-gradient-to-r from-on-background/80 to-transparent">
+<span class="inline-block px-3 py-1 bg-secondary-container text-on-secondary-container font-label-md text-label-md rounded-full mb-stack-md w-max">NEW ARRIVAL</span>
+<h1 class="font-display-lg text-display-lg text-white max-w-2xl mb-stack-md">Precision Engineered Performance</h1>
+<p class="font-body-lg text-body-lg text-surface-container-highest max-w-xl mb-stack-xl">Discover the new collection of imported elite footwear designed for peak operational reliability.</p>
+<button class="px-stack-xl py-stack-md bg-secondary text-on-secondary font-label-md text-label-md rounded-lg w-max hover:opacity-90 active:scale-95 transition-all">Shop Collection</button>
+</div>
+</div>
+</div>
+<!-- Carousel Controls -->
+<div class="absolute bottom-stack-xl right-margin-desktop flex gap-stack-sm">
+<div class="w-12 h-1 bg-white opacity-100 rounded-full"></div>
+<div class="w-12 h-1 bg-white opacity-40 rounded-full"></div>
+<div class="w-12 h-1 bg-white opacity-40 rounded-full"></div>
+</div>
+</section>
+<!-- Categories Grid -->
+<section class="px-margin-desktop py-stack-xl max-w-container-max mx-auto">
+<div class="flex justify-between items-end mb-stack-lg">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">Premium Categories</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Curated imports for every department</p>
+</div>
+<button class="text-primary font-label-md text-label-md flex items-center gap-stack-xs hover:underline">
+                    View All <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-stack-md">
+<!-- Category Card -->
+<div class="group cursor-pointer">
+<div class="aspect-square rounded-xl bg-surface-container-high flex items-center justify-center mb-stack-sm group-hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined text-[40px] text-primary group-hover:text-on-primary-container transition-colors">devices</span>
+</div>
+<p class="text-center font-label-md text-label-md text-on-surface">Electronics</p>
+</div>
+<div class="group cursor-pointer">
+<div class="aspect-square rounded-xl bg-surface-container-high flex items-center justify-center mb-stack-sm group-hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined text-[40px] text-primary group-hover:text-on-primary-container transition-colors">apparel</span>
+</div>
+<p class="text-center font-label-md text-label-md text-on-surface">Fashion</p>
+</div>
+<div class="group cursor-pointer">
+<div class="aspect-square rounded-xl bg-surface-container-high flex items-center justify-center mb-stack-sm group-hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined text-[40px] text-primary group-hover:text-on-primary-container transition-colors">home</span>
+</div>
+<p class="text-center font-label-md text-label-md text-on-surface">Home Decor</p>
+</div>
+<div class="group cursor-pointer">
+<div class="aspect-square rounded-xl bg-surface-container-high flex items-center justify-center mb-stack-sm group-hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined text-[40px] text-primary group-hover:text-on-primary-container transition-colors">fitness_center</span>
+</div>
+<p class="text-center font-label-md text-label-md text-on-surface">Sports</p>
+</div>
+<div class="group cursor-pointer">
+<div class="aspect-square rounded-xl bg-surface-container-high flex items-center justify-center mb-stack-sm group-hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined text-[40px] text-primary group-hover:text-on-primary-container transition-colors">dermatology</span>
+</div>
+<p class="text-center font-label-md text-label-md text-on-surface">Beauty</p>
+</div>
+<div class="group cursor-pointer">
+<div class="aspect-square rounded-xl bg-surface-container-high flex items-center justify-center mb-stack-sm group-hover:bg-primary-container transition-colors">
+<span class="material-symbols-outlined text-[40px] text-primary group-hover:text-on-primary-container transition-colors">auto_stories</span>
+</div>
+<p class="text-center font-label-md text-label-md text-on-surface">Books</p>
+</div>
+</div>
+</section>
+<!-- Featured Products Grid -->
+<section class="px-margin-desktop py-stack-xl bg-surface-container-lowest">
+<div class="max-w-container-max mx-auto">
+<div class="flex items-center gap-stack-md mb-stack-xl">
+<h2 class="font-headline-md text-headline-md text-on-surface">Destacados de Importación</h2>
+<div class="h-px bg-outline-variant flex-1"></div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-stack-lg">
+<!-- Product Card 1 -->
+<div class="group bg-surface rounded-xl overflow-hidden border border-outline-variant hover:shadow-lg transition-shadow">
+<div class="relative aspect-square overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A high-quality studio photograph of a minimalist luxury watch resting on a clean marble surface. The lighting is soft and diffused with subtle shadows, creating a premium institutional feel. The watch features metallic silver details and a dark leather strap. The image uses a clean, white-light aesthetic consistent with a modern corporate product catalog." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBI9tv1ok_sejqOQJK8sguoCtazMitHipC9FPdCzqvzZd3VKlS8GL5yonI7sBscyF2dWhdpBzGrPB7gCHPeSvvlP045MhtS8W827oJNi3B-ejiPEmu841tXkF8pdxyx2Pf0s8f-2dOGXwABiwIYbDFkm24l1kQN0PjcEX0q-rXyMZLt9sGRaFs9bKH-ClRAksbGo6ngr8EanlmwrqHgtu5c_GDVrIEh6OibYSAe6st_tqJM3gS2N3u7Kxi_Om2JuVHvRnDDEU50CAU"/>
+<span class="absolute top-stack-md left-stack-md px-3 py-1 bg-secondary text-on-secondary font-label-sm text-label-sm rounded">NUEVO</span>
+<button class="absolute bottom-stack-md right-stack-md p-2 bg-white rounded-full shadow-lg opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all">
+<span class="material-symbols-outlined text-primary">add_shopping_cart</span>
+</button>
+</div>
+<div class="p-stack-md">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-stack-xs">Accessories</p>
+<h3 class="font-body-md text-body-md text-on-surface font-semibold mb-stack-sm">Chrono Elite Series 5</h3>
+<div class="flex items-center gap-stack-md">
+<span class="font-data-mono text-data-mono text-primary">$189.00</span>
+<span class="font-data-mono text-data-mono text-outline line-through">$245.00</span>
+</div>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="group bg-surface rounded-xl overflow-hidden border border-outline-variant hover:shadow-lg transition-shadow">
+<div class="relative aspect-square overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Modern high-fidelity over-ear headphones displayed in a professional studio setting. The headphones are sleek and black with metallic finishings, illuminated by a crisp side-light that emphasizes their ergonomic design. The background is a neutral, high-density corporate grey. The image conveys reliability and high-performance audio engineering." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpGKjBIeGQqv0dws9nUZLSvxsPXSFjN8649ecuoV9rh9d83EskITeDSw7q8GFLnWz8N0oegZUOu3uQRicaGu81RFLt1B98SAsM2al52sBoNGW9fjYK9kLCyUg8NxvAS0j9MpbiplC45HIqBwy5ZbX8gDPyZCYZnWxYJsjZ_kctWdUCpfLvTOV_Eynk0xhjs2w9ZbB7si3eJGp1Y4KnB65_5RVQrBG2A3qGKHeNM-MdGVkzwepsVZQvTDbZzYEaQzY2Akzvu8JZeno"/>
+<span class="absolute top-stack-md left-stack-md px-3 py-1 bg-secondary text-on-secondary font-label-sm text-label-sm rounded">NUEVO</span>
+<button class="absolute bottom-stack-md right-stack-md p-2 bg-white rounded-full shadow-lg opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all">
+<span class="material-symbols-outlined text-primary">add_shopping_cart</span>
+</button>
+</div>
+<div class="p-stack-md">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-stack-xs">Audio</p>
+<h3 class="font-body-md text-body-md text-on-surface font-semibold mb-stack-sm">Acoustics Pro Wireless</h3>
+<div class="flex items-center gap-stack-md">
+<span class="font-data-mono text-data-mono text-primary">$299.00</span>
+<span class="font-data-mono text-data-mono text-outline line-through">$350.00</span>
+</div>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="group bg-surface rounded-xl overflow-hidden border border-outline-variant hover:shadow-lg transition-shadow">
+<div class="relative aspect-square overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A vintage-style modern polaroid camera captured in a minimalist product setting. The camera is centered, featuring a clean white body with a pop of primary colors on its badge. The lighting is bright and even, casting soft shadows on a clean desk environment. The style is professional and inviting, balancing heritage with modern technology." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCV0MvGefSEmO6KuQ3fGyu9V7fg1PfxW4ajAi4izN4laAULbgQfivVVaeOKBE0rWZ0uoIulVKHijt929GiZMB57XOau-m9lq-q8zHraoBNDnXL1zv1xS7X7iVK_3cmM-F9X-6YC4LI81jDrLiqfDSyOwP_2nb7N-M0NCD3Bg9CE77buVsuA6EUGXjTua8jsQzunuj6bFy54U3sqfubMqUxEXfWbvcmoUz4uq99BR_Y2GG-6lUeA0-X2bNJP5vnAyEQK2Xusn5kUkFU"/>
+<span class="absolute top-stack-md left-stack-md px-3 py-1 bg-secondary text-on-secondary font-label-sm text-label-sm rounded">NUEVO</span>
+<button class="absolute bottom-stack-md right-stack-md p-2 bg-white rounded-full shadow-lg opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all">
+<span class="material-symbols-outlined text-primary">add_shopping_cart</span>
+</button>
+</div>
+<div class="p-stack-md">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-stack-xs">Photography</p>
+<h3 class="font-body-md text-body-md text-on-surface font-semibold mb-stack-sm">Instant Optics Gen-2</h3>
+<div class="flex items-center gap-stack-md">
+<span class="font-data-mono text-data-mono text-primary">$120.00</span>
+<span class="font-data-mono text-data-mono text-outline line-through">$160.00</span>
+</div>
+</div>
+</div>
+<!-- Product Card 4 -->
+<div class="group bg-surface rounded-xl overflow-hidden border border-outline-variant hover:shadow-lg transition-shadow">
+<div class="relative aspect-square overflow-hidden bg-surface-container">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="High-end designer desk lamp with a sleek architectural form factor. The lamp is made of matte black metal and is shown in a structured corporate office environment with a focus on its precise engineering and lighting quality. The aesthetic is clean and functional, emphasizing the high-performance utility of the imported product." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcwXqTrZFzHX3vybFUfCuNa76gQ6z3bQS9Qmjti8zCpE8k3QQl8dpmDzJt2BZWxgJmAKYmv0iQOjzMKWnn3lkrcJKoSv8ZbzaiJu6F1ZFmLSwiJA1IfkhEtD_wL1iVxmvjcONFkcQ0-3frUPwbQB3hAD9n69VuNa7a7zU5N0spxW1E4I-LckkG7FG1JxUm84eMUlvqDIzZKeY3Pe6z40gkBLQ1QRRtCKWCUFRPhWWod_8kZEQxG8PvpZCQUPgZOpDHti2XYfvLrKk"/>
+<span class="absolute top-stack-md left-stack-md px-3 py-1 bg-secondary text-on-secondary font-label-sm text-label-sm rounded">NUEVO</span>
+<button class="absolute bottom-stack-md right-stack-md p-2 bg-white rounded-full shadow-lg opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all">
+<span class="material-symbols-outlined text-primary">add_shopping_cart</span>
+</button>
+</div>
+<div class="p-stack-md">
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-stack-xs">Home Office</p>
+<h3 class="font-body-md text-body-md text-on-surface font-semibold mb-stack-sm">Lumina Precision Lamp</h3>
+<div class="flex items-center gap-stack-md">
+<span class="font-data-mono text-data-mono text-primary">$75.00</span>
+<span class="font-data-mono text-data-mono text-outline line-through">$99.00</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Newsletter / CTA -->
+<section class="px-margin-desktop py-stack-xl">
+<div class="max-w-container-max mx-auto bg-primary text-on-primary rounded-2xl p-stack-xl flex flex-col md:flex-row items-center justify-between gap-stack-xl overflow-hidden relative">
+<div class="z-10 relative">
+<h2 class="font-headline-lg text-headline-lg mb-stack-sm">Reliability delivered to your door.</h2>
+<p class="font-body-lg text-body-lg text-primary-container">Subscribe for exclusive insights on new high-performance stock arrivals.</p>
+</div>
+<div class="flex w-full md:w-auto gap-stack-md z-10 relative">
+<input class="flex-1 md:w-80 px-4 py-3 rounded-lg bg-white/10 border border-white/20 text-white placeholder:text-white/60 focus:outline-none focus:border-white font-body-sm text-body-sm" placeholder="Enter your business email" type="email"/>
+<button class="px-stack-xl py-stack-md bg-secondary text-on-secondary font-label-md text-label-md rounded-lg whitespace-nowrap hover:opacity-90">Join Now</button>
+</div>
+<!-- Decorative element -->
+<div class="absolute -right-20 -bottom-20 w-80 h-80 bg-secondary-container rounded-full opacity-10"></div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-stack-xl px-margin-desktop flex flex-col md:flex-row justify-between items-start gap-stack-md bg-surface-container-lowest dark:bg-on-background border-t border-outline-variant dark:border-outline">
+<div class="max-w-xs">
+<span class="text-headline-sm font-headline-sm font-bold text-primary mb-stack-md block">Importadora Market</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-stack-lg">
+                Institutional reliability in global trade. Sourcing only the highest precision products for the modern enterprise and consumer.
+            </p>
+<div class="flex gap-stack-md">
+<a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all" href="#"><span class="material-symbols-outlined text-[20px]">public</span></a>
+<a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all" href="#"><span class="material-symbols-outlined text-[20px]">share</span></a>
+<a class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary hover:bg-primary hover:text-white transition-all" href="#"><span class="material-symbols-outlined text-[20px]">alternate_email</span></a>
+</div>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-3 gap-stack-xl">
+<div class="flex flex-col gap-stack-sm">
+<h4 class="font-label-md text-label-md text-on-surface mb-stack-xs">Company</h4>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Corporate Info</a>
+</div>
+<div class="flex flex-col gap-stack-sm">
+<h4 class="font-label-md text-label-md text-on-surface mb-stack-xs">Support</h4>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Shipping Info</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Contact Support</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Track Order</a>
+</div>
+<div class="flex flex-col gap-stack-sm col-span-2 md:col-span-1">
+<h4 class="font-label-md text-label-md text-on-surface mb-stack-xs">Store Location</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant">123 Logistics Plaza, Industrial District<br/>San Salvador, ES</p>
+<div class="mt-stack-sm w-full h-24 rounded-lg bg-surface-container-high relative overflow-hidden">
+<img alt="Map Location" class="w-full h-full object-cover grayscale opacity-50" data-location="San Salvador" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMojixGVdV3xRWETIgr-bB8D0_HAdkP5mX_cGb6HHxrSlL_vzwNUUXfG49MPimcNJrcvjECyaQOd-ZXbaQMawnLgekbY24S4tSZNmVpHMRXRxZJojxalQcRwOMdfmwa88Kd1hV7M5_f__1qdRVuGe3Pk1yH7S5T0nyPYjolxFrERvFRcXBx2jDO1yCYK723QAlzfuPu0LV6Gq5DczbIcrg4I271GqiNCIFcEOKStmJYkGUetIk4U2m6DJhdQrW7Gzwx1lRiGp3thk"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">location_on</span>
+</div>
+</div>
+</div>
+</div>
+<div class="w-full border-t border-outline-variant mt-stack-xl pt-stack-md flex flex-col md:flex-row justify-between items-center gap-stack-md">
+<p class="font-body-sm text-body-sm text-on-surface-variant">© 2024 Importadora Market. Institutional Reliability &amp; Performance.</p>
+<div class="flex gap-stack-lg">
+<span class="material-symbols-outlined text-on-surface-variant">payments</span>
+<span class="material-symbols-outlined text-on-surface-variant">credit_card</span>
+<span class="material-symbols-outlined text-on-surface-variant">account_balance</span>
+</div>
+</div>
+</footer>
+<!-- BottomNavBar (Mobile only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 px-margin-mobile bg-surface dark:bg-on-background border-t border-outline-variant shadow-lg">
+<button class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1 active:scale-90 transition-all">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm">Home</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90">
+<span class="material-symbols-outlined">search</span>
+<span class="font-label-sm text-label-sm">Catalog</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span class="font-label-sm text-label-sm">Cart</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-sm text-label-sm">Profile</span>
+</button>
+</nav>
+<!-- Floating Live Chat Button -->
+<button class="fixed bottom-20 md:bottom-stack-xl right-stack-xl w-14 h-14 bg-primary text-on-primary rounded-full shadow-lg flex items-center justify-center hover:opacity-90 active:scale-95 transition-all z-50">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">chat</span>
+</button>
+</body></html>

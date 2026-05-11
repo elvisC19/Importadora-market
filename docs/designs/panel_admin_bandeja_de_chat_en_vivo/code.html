@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error": "#ba1a1a",
+                    "on-background": "#0b1c30",
+                    "on-tertiary-fixed-variant": "#005049",
+                    "surface-tint": "#565e74",
+                    "surface-container-low": "#eff4ff",
+                    "on-secondary-fixed": "#341100",
+                    "primary": "#000000",
+                    "on-primary-fixed": "#131b2e",
+                    "inverse-surface": "#213145",
+                    "surface-bright": "#f8f9ff",
+                    "primary-fixed-dim": "#bec6e0",
+                    "on-primary-container": "#7c839b",
+                    "on-tertiary": "#ffffff",
+                    "inverse-primary": "#bec6e0",
+                    "on-tertiary-fixed": "#00201d",
+                    "on-tertiary-container": "#0c9488",
+                    "on-secondary-container": "#5c2400",
+                    "surface": "#f8f9ff",
+                    "secondary-fixed-dim": "#ffb690",
+                    "tertiary-fixed": "#89f5e7",
+                    "surface-variant": "#d3e4fe",
+                    "primary-container": "#131b2e",
+                    "on-error": "#ffffff",
+                    "surface-container-highest": "#d3e4fe",
+                    "on-surface": "#0b1c30",
+                    "on-secondary": "#ffffff",
+                    "tertiary-container": "#00201d",
+                    "on-secondary-fixed-variant": "#783200",
+                    "background": "#f8f9ff",
+                    "outline-variant": "#c6c6cd",
+                    "on-primary-fixed-variant": "#3f465c",
+                    "surface-container-high": "#dce9ff",
+                    "tertiary": "#000000",
+                    "surface-container-lowest": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "tertiary-fixed-dim": "#6bd8cb",
+                    "surface-container": "#e5eeff",
+                    "secondary-container": "#fd761a",
+                    "outline": "#76777d",
+                    "secondary-fixed": "#ffdbca",
+                    "inverse-on-surface": "#eaf1ff",
+                    "on-surface-variant": "#45464d",
+                    "secondary": "#9d4300",
+                    "primary-fixed": "#dae2fd",
+                    "on-primary": "#ffffff",
+                    "surface-dim": "#cbdbf5",
+                    "on-error-container": "#93000a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-xl": "40px",
+                    "stack-sm": "8px",
+                    "margin-mobile": "16px",
+                    "gutter": "24px",
+                    "container-max": "1280px",
+                    "stack-xs": "4px",
+                    "stack-md": "16px",
+                    "stack-lg": "24px",
+                    "margin-desktop": "32px",
+                    "base": "8px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "data-mono": ["Inter"],
+                    "label-md": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "body-sm": ["Inter"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "data-mono": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                    "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-sm": ["11px", {"lineHeight": "14px", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex overflow-hidden">
+<!-- SideNavBar (Authority: JSON) -->
+<aside class="hidden md:flex flex-col h-full py-stack-lg px-base gap-stack-sm bg-surface-container-low border-r border-outline-variant w-64 shrink-0 z-40">
+<div class="px-4 mb-stack-lg">
+<h1 class="text-headline-md font-headline-md font-bold text-primary">Importadora Admin</h1>
+<p class="font-body-sm text-body-sm text-on-surface-variant">System Management</p>
+</div>
+<nav class="flex-1 flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-md text-label-md">Inventory</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-primary-container text-on-primary-container font-bold rounded-lg scale-98 transition-transform" href="#">
+<span class="material-symbols-outlined">chat</span>
+<span class="font-label-md text-label-md">Live Chat</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined">point_of_sale</span>
+<span class="font-label-md text-label-md">POS</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined">account_balance</span>
+<span class="font-label-md text-label-md">Financials</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high transition-all rounded-lg" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-md text-label-md">Users</span>
+</a>
+</nav>
+<button class="mt-auto mx-4 bg-secondary-container text-on-secondary-container font-bold py-3 rounded-xl hover:opacity-90 active:scale-95 transition-all">
+            New Transaction
+        </button>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col min-w-0">
+<!-- TopAppBar (Authority: JSON) -->
+<header class="flex justify-between items-center px-margin-desktop w-full h-16 z-50 bg-surface border-b border-outline-variant">
+<div class="flex items-center gap-4">
+<h2 class="text-headline-md font-headline-md font-bold text-primary">Live Chat</h2>
+<div class="flex items-center gap-2 px-3 py-1 bg-surface-container-high rounded-full">
+<span class="w-2 h-2 bg-on-tertiary-container rounded-full"></span>
+<span class="text-label-sm font-label-sm text-on-surface-variant">Live Management</span>
+</div>
+</div>
+<div class="flex items-center gap-stack-md">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="bg-surface-container-low border-none rounded-full pl-10 pr-4 py-2 text-body-sm focus:ring-2 focus:ring-primary w-64 transition-all" placeholder="Search conversations..." type="text"/>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant">
+<span class="material-symbols-outlined cursor-pointer hover:bg-surface-container transition-colors p-2 rounded-full">shopping_cart</span>
+<span class="material-symbols-outlined cursor-pointer hover:bg-surface-container transition-colors p-2 rounded-full">notifications</span>
+<span class="material-symbols-outlined cursor-pointer hover:bg-surface-container transition-colors p-2 rounded-full">account_circle</span>
+</div>
+</div>
+</header>
+<!-- Live Chat 3-Pane Layout -->
+<section class="flex-1 flex overflow-hidden">
+<!-- Pane 1: Conversations List -->
+<div class="w-80 border-r border-outline-variant flex flex-col bg-surface-container-lowest">
+<div class="p-4 border-b border-outline-variant bg-surface">
+<div class="flex gap-2">
+<button class="flex-1 py-2 text-label-md font-label-md bg-primary text-on-primary rounded-lg">Active</button>
+<button class="flex-1 py-2 text-label-md font-label-md text-on-surface-variant hover:bg-surface-container transition-all rounded-lg">Queued</button>
+<button class="flex-1 py-2 text-label-md font-label-md text-on-surface-variant hover:bg-surface-container transition-all rounded-lg">Closed</button>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto hide-scrollbar">
+<!-- Chat Item (Active) -->
+<div class="p-4 border-b border-outline-variant bg-surface-container-low cursor-pointer border-l-4 border-primary">
+<div class="flex gap-3">
+<div class="relative shrink-0">
+<img class="w-12 h-12 rounded-full object-cover" data-alt="A close-up studio portrait of a professional male customer with a friendly expression. The lighting is bright and even, characteristic of a clean corporate light-mode design. The background is a soft, out-of-focus modern office interior with a neutral blue-gray color palette, reflecting high-performance efficiency." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBVZPNo3SFPJdqTMHMSlVF-fXEbqYmhN55VYbWUCAq1NU9Jl-3BwRPCPF3cbOWXFiXPHNqtHSdh1-IoPdxtad4uvetRQYncqg4BRgHSSVMiRFh2X7FcNEFL76zblpmUIo1QkKXPv_5NwkrwTiwPcC5CUVf0SiZxH2JEPZP-wsl4NUiDcfkiGZ6w1pgu5zHfFJjEUcoTJILTkYa6xw0lw06elshFoecLQ5vNz3bOaR8XuVQ68GARsFPyNJgnV4iLUZyGqjLEZGA_z_k"/>
+<span class="absolute bottom-0 right-0 w-3 h-3 bg-on-tertiary-container border-2 border-surface rounded-full"></span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<h4 class="font-bold text-body-md truncate">Alejandro Silva</h4>
+<span class="text-label-sm font-label-sm text-outline shrink-0">14:02</span>
+</div>
+<p class="text-body-sm text-on-surface-variant truncate font-bold">Regarding the last shipment delay...</p>
+<div class="mt-2 flex justify-between items-center">
+<span class="px-2 py-0.5 bg-secondary-container text-on-secondary-container text-label-sm rounded-md font-bold">VIP Tier</span>
+<span class="bg-secondary text-on-secondary text-label-sm px-1.5 rounded-full">3</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Chat Item (Inactive) -->
+<div class="p-4 border-b border-outline-variant hover:bg-surface-container transition-all cursor-pointer">
+<div class="flex gap-3">
+<div class="relative shrink-0">
+<img class="w-12 h-12 rounded-full object-cover" data-alt="A professional female customer smiling in a bright, modern corporate setting. The visual style is crisp and clean, utilizing a professional color palette of whites and soft blues. High-key lighting accentuates the detail and reliability of the platform's user interface aesthetics." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEA-bbipboTV90u__v9-fdlXsqKkZagAGGoL6haEf5_UEXz8zIEg4Jb4scvwM0SLA2RIRbcQE0HnkvpetgpXQoeHtN3uAVTYjbzlfUEd_-Xg3brlxHGm1kcrWhHwM-GZX9bvk9wo-uYlwha64fZZrYpyUwJ_IcnJfLvzSMn2lA894j6O7k2meATkx2vfMlnYPoAOGARdg9G7hGyPUMsNp2aipMyBc9dgFwn5lE4sVcgufYuwgtLXQVwaGSWAvIDuyNL5teg6VzFTw"/>
+<span class="absolute bottom-0 right-0 w-3 h-3 bg-outline border-2 border-surface rounded-full"></span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<h4 class="font-bold text-body-md truncate">Lucia Fernandez</h4>
+<span class="text-label-sm font-label-sm text-outline shrink-0">13:45</span>
+</div>
+<p class="text-body-sm text-on-surface-variant truncate">Thank you for the quick resolution!</p>
+</div>
+</div>
+</div>
+<!-- More Items -->
+<div class="p-4 border-b border-outline-variant hover:bg-surface-container transition-all cursor-pointer">
+<div class="flex gap-3">
+<div class="relative shrink-0">
+<div class="w-12 h-12 rounded-full bg-primary-container text-on-primary-container flex items-center justify-center font-bold">MS</div>
+<span class="absolute bottom-0 right-0 w-3 h-3 bg-on-tertiary-container border-2 border-surface rounded-full"></span>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex justify-between items-start">
+<h4 class="font-bold text-body-md truncate">Mario Santos</h4>
+<span class="text-label-sm font-label-sm text-outline shrink-0">12:30</span>
+</div>
+<p class="text-body-sm text-on-surface-variant truncate">I can't see the new inventory list.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Pane 2: Main Chat Window -->
+<div class="flex-1 flex flex-col bg-surface relative">
+<!-- Chat Header -->
+<div class="px-6 py-3 border-b border-outline-variant bg-surface-container-lowest flex justify-between items-center">
+<div class="flex items-center gap-3">
+<h3 class="font-bold text-headline-md text-primary">Alejandro Silva</h3>
+<span class="text-body-sm text-on-tertiary-container font-bold">• Active</span>
+</div>
+<div class="flex gap-2">
+<button class="p-2 hover:bg-surface-container rounded-full text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined">call</span>
+</button>
+<button class="p-2 hover:bg-surface-container rounded-full text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined">videocam</span>
+</button>
+<button class="p-2 hover:bg-surface-container rounded-full text-on-surface-variant transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</div>
+</div>
+<!-- Chat Bubbles -->
+<div class="flex-1 overflow-y-auto p-6 space-y-6 bg-surface-bright">
+<!-- Received -->
+<div class="flex items-end gap-3 max-w-[80%]">
+<img class="w-8 h-8 rounded-full" data-alt="Small thumbnail avatar of a professional man, used in a messaging interface. The style is consistent with high-performance corporate software, featuring clean edges and high contrast against a neutral background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtTWRfuLUK2mxldoIsKju7OrWJF3WisbPs_hwlUj47DZX7A9oMwl4oCS5hLDutVo3dZX0gqhaoXMe2-QMMT2-AFuFJryj8_dpkFBJ9Cfmym2Zys3EHhDls3uzMBhc8p6MiGqcM1-dHmBHif405ugNcTvtOZ3x89klSNf8LXtTgwKrkXZjKEW5AEHRNhayYnH2998RIDIoESXxXpDHDteenUmgfAWEuREp_NRDvcU8gI1yt5bnHAlzByVEeDnCKat056mECNF-rZ1c"/>
+<div class="space-y-1">
+<div class="bg-surface-container-high text-on-surface px-4 py-3 rounded-2xl rounded-bl-none shadow-sm">
+<p class="text-body-md">Good afternoon, I'm reaching out regarding Order #8821. It shows as 'Processing' but I need it for a project starting tomorrow morning.</p>
+</div>
+<span class="text-label-sm text-outline ml-1">14:00</span>
+</div>
+</div>
+<!-- Sent -->
+<div class="flex flex-col items-end gap-1 ml-auto max-w-[80%]">
+<div class="bg-primary text-on-primary px-4 py-3 rounded-2xl rounded-br-none shadow-md">
+<p class="text-body-md">Hello Alejandro! I'm checking that for you right now. Give me a moment to look at the logistics terminal.</p>
+</div>
+<div class="flex items-center gap-1 text-label-sm text-outline mr-1">
+<span>14:02</span>
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">done_all</span>
+</div>
+</div>
+<!-- Received -->
+<div class="flex items-end gap-3 max-w-[80%]">
+<img class="w-8 h-8 rounded-full" data-alt="Small thumbnail avatar in chat context." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcv5wlmi2U7W6z4Dd7YOzwTksCdd-ZgrbPo7RKNdMaxBTxGOwXGRYFrdmNbhnrKD-E9xgZyVjdFYTkJzuTk4DcSOM3uJb8YOL0n9ABnrRzYWtKfFI04bTkeKKgG5xJTQrPBtApa5VMqAdSLaPy2-XbFsiqzdcvIJylxsX7dzuCIQqeDNRkOBYcSyvq8vL0tNHq4yhmfuHm43Lvx5Jy4r7wlWoQ6v67g6fH41Hazan-YciawXjfCfIQJW4HM99nmJW-kHK9BN_mtoA"/>
+<div class="space-y-1">
+<div class="bg-surface-container-high text-on-surface px-4 py-3 rounded-2xl rounded-bl-none shadow-sm">
+<p class="text-body-md">Thank you. It's quite urgent as we have a site inspection scheduled.</p>
+</div>
+<span class="text-label-sm text-outline ml-1">14:03</span>
+</div>
+</div>
+</div>
+<!-- Chat Input -->
+<div class="p-4 border-t border-outline-variant bg-surface-container-lowest">
+<div class="flex items-end gap-2 bg-surface rounded-xl border border-outline-variant p-2 shadow-sm focus-within:border-primary transition-all">
+<button class="p-2 text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined">add_circle</span>
+</button>
+<textarea class="flex-1 bg-transparent border-none focus:ring-0 text-body-md resize-none py-2 px-2" placeholder="Type a message..." rows="1"></textarea>
+<button class="p-2 text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined">sentiment_satisfied</span>
+</button>
+<button class="bg-primary text-on-primary w-10 h-10 rounded-lg flex items-center justify-center hover:opacity-90 active:scale-95 transition-all">
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Pane 3: User Profile Sidebar -->
+<div class="w-80 border-l border-outline-variant bg-surface-container-lowest overflow-y-auto hide-scrollbar hidden lg:flex flex-col">
+<div class="p-6 text-center border-b border-outline-variant">
+<img class="w-24 h-24 rounded-full object-cover mx-auto mb-4 border-4 border-surface shadow-lg" data-alt="A professional customer profile picture, showcasing a man in a corporate light-mode setting. The image is brightly lit, crisp, and focuses on trust and reliability. The aesthetic is modern and high-end." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBN1BjAyFWcnAmLgfsbz3NJD8jHrQpDWBn0HK0XROr4WGPH7XcZmcXZDfvrTgAICYi1NX5pawqJuSNNijSRwpg49f-j3BEgeXag6uiQYlMDwZNiE5ZNff30VTYvIcqxNUV_uqO13RtadbPs4unRnjwDbznGnpFk-sAJ0XlZPZeeHPxHmdQAxQIgWc7IakRmDbUZJf_Da7vI99LmAUa-c99ix56Uy1XzG7-cFnnKH3Xzo19NhjypJYJWiV5nhU5oYENfTNcHVby9krg"/>
+<h4 class="font-bold text-headline-md text-primary">Alejandro Silva</h4>
+<p class="text-body-sm text-on-surface-variant">Procurement Manager, BuildCorp</p>
+<div class="mt-4 inline-flex items-center gap-2 px-3 py-1 bg-on-tertiary-container/10 text-on-tertiary-container rounded-full font-bold text-label-md">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+                        Loyalty Level: Platinum
+                    </div>
+</div>
+<div class="p-6 space-y-stack-lg">
+<!-- Stats Grid -->
+<div class="grid grid-cols-2 gap-4">
+<div class="p-3 bg-surface rounded-xl border border-outline-variant">
+<p class="text-label-sm text-outline mb-1">Total Spent</p>
+<p class="font-bold text-body-lg text-primary">$42,500.00</p>
+</div>
+<div class="p-3 bg-surface rounded-xl border border-outline-variant">
+<p class="text-label-sm text-outline mb-1">Orders</p>
+<p class="font-bold text-body-lg text-primary">124</p>
+</div>
+</div>
+<!-- Purchase History -->
+<div>
+<h5 class="font-bold text-label-md uppercase tracking-wider text-outline mb-stack-md">Purchase History</h5>
+<div class="space-y-3">
+<div class="flex items-center justify-between p-3 bg-surface border border-outline-variant rounded-xl">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-surface-container-high rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">inventory_2</span>
+</div>
+<div>
+<p class="font-bold text-body-sm">Structural Steel</p>
+<p class="text-label-sm text-outline">Oct 12, 2024</p>
+</div>
+</div>
+<span class="font-bold text-body-sm">$12,400</span>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface border border-outline-variant rounded-xl">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-surface-container-high rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">architecture</span>
+</div>
+<div>
+<p class="font-bold text-body-sm">Casing Parts</p>
+<p class="text-label-sm text-outline">Sept 28, 2024</p>
+</div>
+</div>
+<span class="font-bold text-body-sm">$3,200</span>
+</div>
+<button class="w-full text-center py-2 text-primary font-bold text-label-md hover:underline transition-all">View All Orders</button>
+</div>
+</div>
+<!-- Customer Tags -->
+<div>
+<h5 class="font-bold text-label-md uppercase tracking-wider text-outline mb-stack-md">Customer Tags</h5>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-surface-container-high rounded-full text-label-sm">Bulk Buyer</span>
+<span class="px-3 py-1 bg-surface-container-high rounded-full text-label-sm">Fast Payment</span>
+<span class="px-3 py-1 bg-surface-container-high rounded-full text-label-sm">High Priority</span>
+<button class="px-3 py-1 border border-dashed border-outline rounded-full text-label-sm hover:bg-surface-container transition-all">Add Tag</button>
+</div>
+</div>
+<!-- Internal Notes -->
+<div>
+<h5 class="font-bold text-label-md uppercase tracking-wider text-outline mb-stack-md">Internal Notes</h5>
+<div class="p-3 bg-tertiary-fixed text-on-tertiary-fixed rounded-xl text-body-sm italic border-l-4 border-on-tertiary-container">
+                            "Prefer express shipping via GlobalLink for all Q4 orders."
+                        </div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Authority: JSON - Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 px-margin-mobile bg-surface border-t border-outline-variant shadow-lg">
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">home</span>
+<span class="text-label-sm font-label-sm">Home</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">search</span>
+<span class="text-label-sm font-label-sm">Catalog</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-4 py-1">
+<span class="material-symbols-outlined">chat</span>
+<span class="text-label-sm font-label-sm">Chat</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined">person</span>
+<span class="text-label-sm font-label-sm">Profile</span>
+</div>
+</nav>
+</body></html>
