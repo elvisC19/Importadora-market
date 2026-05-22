@@ -41,3 +41,12 @@ node_modules
 dist
 .venv
 *.pyc
+
+# Permisos explícitos para scripts de inicialización y semillas en Render
+!init_db.py
+!seed_admin.py
+!app/init_db.py
+!backend/seed_admin.py
+!backend/seeds/seed_products.py
+!*init_db.py
+!*seed*.py
