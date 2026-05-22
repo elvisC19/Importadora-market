@@ -223,7 +223,7 @@ en la *Universidad Mayor, Real y Pontificia de San Francisco Xavier de Chuquisac
 |--------|--------|-----|
 | Elvis | [@elvisC19](https://github.com/elvisC19) | ------ |
 | Marvin | [@Señor_Gus](https://github.com/Marvin-Gustavo) | ------ |
-| Job | @___________ | --------- |
+| Job | [@JOB](https://github.com/mamanicondorijobismael) | --------- |
 
 ---
 
