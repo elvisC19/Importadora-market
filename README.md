@@ -1,0 +1,202 @@
+# 🏪 Importadora Market — Sistema Web MVP
+
+<div align="center">
+
+![Version](https://img.shields.io/badge/versión-1.0.0--beta-orange?style=for-the-badge)
+![Status](https://img.shields.io/badge/estado-en%20desarrollo-blue?style=for-the-badge)
+![License](https://img.shields.io/badge/licencia-MIT-green?style=for-the-badge)
+
+**Plataforma web responsive para una importadora boliviana.**
+Centraliza la presencia digital, genera confianza en los clientes
+y gestiona pedidos de forma eficiente.
+
+[Ver Demo](#) · [Reportar Bug](https://github.com/elvisC19/Importadora-market/issues) · [Documentación API](http://localhost:8000/docs)
+
+</div>
+
+---
+
+## 📋 Tabla de Contenidos
+
+- [Sobre el Proyecto](#-sobre-el-proyecto)
+- [Tecnologías](#-tecnologías)
+- [Arquitectura](#-arquitectura)
+- [Instalación](#-instalación)
+- [Variables de Entorno](#-variables-de-entorno)
+- [Uso](#-uso)
+- [Módulos del Sistema](#-módulos-del-sistema)
+- [API Endpoints](#-api-endpoints)
+- [Equipo](#-equipo)
+
+---
+
+## 🚀 Sobre el Proyecto
+
+**Importadora Market** es una plataforma web desarrollada como MVP (Producto Mínimo Viable) para una importadora boliviana. El sistema permite:
+
+- 🛍️ **Clientes** — explorar catálogo, gestionar carrito y realizar pedidos
+- 🔧 **Administradores** — gestionar productos, ofertas, pedidos y estadísticas
+
+### Características principales
+
+| Módulo | Descripción | Estado |
+|--------|-------------|--------|
+| Autenticación | Registro, login, JWT, recuperación de contraseña | ✅ Completo |
+| Catálogo | Productos, filtros, búsqueda, ofertas | 🔄 En desarrollo |
+| Carrito | Persistente, gestión de cantidades | 🔄 En desarrollo |
+| Pedidos | Creación, seguimiento, historial | 🔄 En desarrollo |
+| Panel Admin | Dashboard, estadísticas, exportación CSV | 🔄 En desarrollo |
+| Notificaciones | Correos de confirmación y contacto | 🔄 En desarrollo |
+
+---
+
+## 🛠 Tecnologías
+
+### Backend
+![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=flat-square&logo=python&logoColor=white)
+![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688?style=flat-square&logo=fastapi&logoColor=white)
+![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-2.0-red?style=flat-square)
+![SQLite](https://img.shields.io/badge/SQLite-dev-003B57?style=flat-square&logo=sqlite&logoColor=white)
+![JWT](https://img.shields.io/badge/JWT-auth-black?style=flat-square&logo=jsonwebtokens)
+
+### Frontend
+![React](https://img.shields.io/badge/React-18-61DAFB?style=flat-square&logo=react&logoColor=black)
+![Vite](https://img.shields.io/badge/Vite-5-646CFF?style=flat-square&logo=vite&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/Tailwind-3-06B6D4?style=flat-square&logo=tailwindcss&logoColor=white)
+![Axios](https://img.shields.io/badge/Axios-HTTP-5A29E4?style=flat-square)
+
+---
+
+## 🏗 Arquitectura
+
+```
+importadora-market/
+├── backend/                  # API REST (FastAPI)
+│   ├── app/
+│   │   ├── api/v1/endpoints/ # Controladores REST
+│   │   ├── core/             # Config, seguridad, base de datos
+│   │   ├── models/           # Modelos ORM (SQLAlchemy)
+│   │   ├── schemas/          # Validación Pydantic
+│   │   ├── repositories/     # Acceso a datos
+│   │   └── services/         # Lógica de negocio
+│   ├── migrations/           # Migraciones Alembic
+│   └── tests/                # Pruebas automatizadas
+│
+├── frontend/                 # React + Vite
+│   └── src/
+│       ├── components/       # Componentes reutilizables
+│       ├── pages/            # Vistas principales
+│       ├── contexts/         # Estado global (Auth, Cart)
+│       ├── services/         # Comunicación con API
+│       └── hooks/            # Custom hooks
+│
+└── docs/                     # Especificación y diseños
+    ├── spec.md
+    ├── ui-inventory.md
+    └── designs/
+```
+
+---
+
+
+## 🖥 Uso
+
+| URL | Descripción | Acceso |
+|-----|-------------|--------|
+| `http://localhost:5173` | Página principal | Público |
+| `http://localhost:5173/login` | Iniciar sesión | Público |
+| `http://localhost:5173/registro` | Registrarse | Público |
+| `http://localhost:5173/perfil` | Mi perfil | Autenticado |
+| `http://localhost:5173/admin/usuarios` | Gestión usuarios | Admin |
+| `http://localhost:8000/docs` | Documentación API | Desarrollo |
+
+---
+
+## 📦 Módulos del Sistema
+
+### Hito 1 — Gestión de Usuarios ✅
+- Registro con validación de teléfono boliviano
+- Login con JWT (expiración configurable)
+- Recuperación de contraseña con token temporal
+- Panel admin: crear, editar, eliminar, cambiar roles
+
+### Hito 2 — Catálogo de Productos 🔄
+- Listado con paginación y filtros
+- Búsqueda por nombre/categoría
+- Ofertas y novedades
+- CRUD completo para admin
+
+### Hito 3 — Carrito y Pedidos 🔄
+- Carrito persistente (localStorage + DB)
+- Checkout con validación
+- Historial de pedidos
+- Estados: pendiente → confirmado → entregado
+
+### Hito 4 — Panel Admin y Estadísticas 🔄
+- Dashboard con métricas
+- Gráficos con Chart.js
+- Exportación CSV
+
+### Hito 5 — Notificaciones y Contacto 🔄
+- Correos automáticos (confirmación, cambio estado)
+- Formulario de contacto con reCAPTCHA
+- Página "Sobre nosotros"
+
+### Hito 6 — Pruebas y Despliegue 🔄
+- Cobertura de tests ≥ 70%
+- Documentación completa
+- Despliegue con HTTPS
+
+---
+
+## 🔌 API Endpoints
+
+### Autenticación
+```
+POST   /api/v1/auth/register          Registrar usuario
+POST   /api/v1/auth/login             Iniciar sesión
+POST   /api/v1/auth/forgot-password   Solicitar reset
+POST   /api/v1/auth/reset-password    Confirmar reset
+```
+
+### Usuarios
+```
+GET    /api/v1/users/me               Ver perfil
+PUT    /api/v1/users/me               Editar perfil
+```
+
+### Admin
+```
+GET    /api/v1/admin/users            Listar usuarios
+POST   /api/v1/admin/users            Crear usuario
+PUT    /api/v1/admin/users/{id}       Editar usuario
+DELETE /api/v1/admin/users/{id}       Eliminar usuario
+PATCH  /api/v1/admin/users/{id}/role  Cambiar rol
+```
+
+> Documentación completa e interactiva: `http://localhost:8000/docs`
+
+---
+
+## 👥 Equipo
+
+Desarrollado como proyecto académico para la materia **SIS-324**
+en la *Universidad Mayor, Real y Pontificia de San Francisco Xavier de Chuquisaca*.
+
+| Nombre | GitHub | Rol |
+|--------|--------|-----|
+| Elvis | [@elvisC19](https://github.com/elvisC19) | ------ |
+| Marvin | [@Señor_Gus](https://github.com/Marvin-Gustavo) | ------ |
+| Job | @___________ | --------- |
+
+---
+
+## 📄 Licencia
+
+Este proyecto es de uso académico. Todos los derechos reservados © 2026.
+
+---
+
+<div align="center">
+  Hecho con ❤️ en Sucre, Bolivia 🇧🇴
+</div>
