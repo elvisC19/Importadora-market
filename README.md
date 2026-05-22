@@ -42,7 +42,7 @@ y gestiona pedidos de forma eficiente.
 | Módulo | Descripción | Estado |
 |--------|-------------|--------|
 | Autenticación | Registro, login, JWT, recuperación de contraseña | ✅ Completo |
-| Catálogo | Productos, filtros, búsqueda, ofertas | 🔄 En desarrollo |
+| Catálogo | Productos, filtros, búsqueda, ofertas | ✅ Completo |
 | Carrito | Persistente, gestión de cantidades | 🔄 En desarrollo |
 | Pedidos | Creación, seguimiento, historial | 🔄 En desarrollo |
 | Panel Admin | Dashboard, estadísticas, exportación CSV | 🔄 En desarrollo |
@@ -104,10 +104,13 @@ importadora-market/
 | URL | Descripción | Acceso |
 |-----|-------------|--------|
 | `http://localhost:5173` | Página principal | Público |
+| `http://localhost:5173/productos` | Catálogo de productos | Público |
+| `http://localhost:5173/productos/:id` | Detalle de producto | Público |
 | `http://localhost:5173/login` | Iniciar sesión | Público |
 | `http://localhost:5173/registro` | Registrarse | Público |
 | `http://localhost:5173/perfil` | Mi perfil | Autenticado |
 | `http://localhost:5173/admin/usuarios` | Gestión usuarios | Admin |
+| `http://localhost:5173/admin/inventario` | Gestión de inventario | Admin |
 | `http://localhost:8000/docs` | Documentación API | Desarrollo |
 
 ---
@@ -120,7 +123,7 @@ importadora-market/
 - Recuperación de contraseña con token temporal
 - Panel admin: crear, editar, eliminar, cambiar roles
 
-### Hito 2 — Catálogo de Productos 🔄
+### Hito 2 — Catálogo de Productos ✅
 - Listado con paginación y filtros
 - Búsqueda por nombre/categoría
 - Ofertas y novedades
@@ -174,6 +177,25 @@ DELETE /api/v1/admin/users/{id}       Eliminar usuario
 PATCH  /api/v1/admin/users/{id}/role  Cambiar rol
 ```
 
+### Productos
+```
+GET    /api/v1/products                     Listar productos
+GET    /api/v1/products/featured            Listar productos destacados
+GET    /api/v1/products/offers              Listar productos en oferta
+GET    /api/v1/products/new-arrivals        Listar novedades
+GET    /api/v1/products/{id}                Ver detalle de producto
+GET    /api/v1/categories                   Listar categorías
+POST   /api/v1/products                     Enviar producto para aprobación
+GET    /api/v1/admin/products/pending       Listar productos pendientes (Admin)
+POST   /api/v1/admin/products               Crear producto directamente (Admin)
+PUT    /api/v1/admin/products/{id}          Editar producto (Admin)
+PATCH  /api/v1/admin/products/{id}/approve  Aprobar/Desaprobar producto (Admin)
+PATCH  /api/v1/admin/products/{id}/visibility Alternar destacado (Admin)
+DELETE /api/v1/admin/products/{id}          Eliminar producto (Admin)
+POST   /api/v1/admin/categories             Crear categoría (Admin)
+DELETE /api/v1/admin/categories/{id}        Eliminar categoría (Admin)
+```
+
 > Documentación completa e interactiva: `http://localhost:8000/docs`
 
 ---
@@ -198,5 +220,5 @@ Este proyecto es de uso académico. Todos los derechos reservados © 2026.
 ---
 
 <div align="center">
-  Hecho con ❤️ en Sucre, Bolivia 🇧🇴
+  Hecho con mucho esfuerzo y amor por el equipo 😅(jeje)
 </div>

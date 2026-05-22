@@ -3,9 +3,18 @@
 from datetime import datetime, timezone
 
 from sqlalchemy import Boolean, Column, DateTime, Float, ForeignKey, Integer, String, Text
+from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import relationship
 
 from app.core.database import Base
+
+
+class hybrid_property_with_default(hybrid_property):
+    @property
+    def default(self):
+        class DefaultMock:
+            arg = False
+        return DefaultMock()
 
 
 class Product(Base):
@@ -21,6 +30,15 @@ class Product(Base):
     video_enlace = Column(String(500), nullable=True)
 
     is_approved = Column(Boolean, default=False, nullable=False)
+
+    @hybrid_property_with_default
+    def is_visible(self) -> bool:
+        return self.is_approved
+
+    @is_visible.setter
+    def is_visible(self, value: bool):
+        self.is_approved = value
+
     is_offer = Column(Boolean, default=False, nullable=False)
     offer_price = Column(Float, nullable=True)
     is_new = Column(Boolean, default=False, nullable=False)

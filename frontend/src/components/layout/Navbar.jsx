@@ -1,16 +1,24 @@
 import { useState, useRef, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
   const [isAdminDropdownOpen, setIsAdminDropdownOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const dropdownRef = useRef(null);
 
   const handleLogout = () => {
     logout();
     navigate('/login');
+  };
+
+  const handleSearchSubmit = (e) => {
+    if (e.key === 'Enter') {
+      navigate(`/productos?nombre=${encodeURIComponent(searchQuery.trim())}`);
+    }
   };
 
   // Close dropdown on outside click
@@ -24,33 +32,80 @@ const Navbar = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  const isActive = (path) => location.pathname === path;
+
   return (
-    <header className="flex justify-between items-center px-8 w-full h-16 z-50 bg-primary text-white border-b border-white/10 sticky top-0 shadow-md">
-      <div className="flex items-center gap-6">
-        <Link to="/" className="text-xl font-bold tracking-tight flex items-center gap-2">
-          <div className="w-8 h-8 bg-accent rounded-lg flex items-center justify-center">
-            <span className="material-symbols-outlined text-white text-[20px]">store</span>
-          </div>
-          <span className="hidden sm:inline">Importadora Market</span>
+    <header className="flex justify-between items-center px-margin-desktop w-full h-16 z-50 bg-surface border-b border-outline-variant fixed top-0 select-none">
+      {/* Brand logo & Main Navigation */}
+      <div className="flex items-center gap-stack-md">
+        <Link to="/" className="text-headline-md font-headline-md font-bold text-primary dark:text-primary-fixed">
+          Importadora Market
         </Link>
-        <nav className="hidden md:flex items-center gap-6 ml-8">
-          <Link to="/" className="text-sm font-medium hover:text-accent transition-colors">Inicio</Link>
-          <Link to="/productos" className="text-sm font-medium hover:text-accent transition-colors">Productos</Link>
+        <nav className="hidden md:flex items-center gap-stack-lg ml-stack-xl">
+          <Link 
+            to="/" 
+            className={`font-body-md text-body-md transition-colors ${
+              isActive('/') 
+                ? 'text-primary border-b-2 border-primary pb-1 font-bold' 
+                : 'text-on-surface-variant hover:text-primary'
+            }`}
+          >
+            Inicio
+          </Link>
+          <Link 
+            to="/productos" 
+            className={`font-body-md text-body-md transition-colors ${
+              isActive('/productos') 
+                ? 'text-primary border-b-2 border-primary pb-1 font-bold' 
+                : 'text-on-surface-variant hover:text-primary'
+            }`}
+          >
+            Catálogo
+          </Link>
           {user && (
-            <Link to="/pedidos" className="text-sm font-medium hover:text-accent transition-colors">Mis Pedidos</Link>
+            <Link 
+              to="/pedidos" 
+              className={`font-body-md text-body-md transition-colors ${
+                isActive('/pedidos') 
+                  ? 'text-primary border-b-2 border-primary pb-1 font-bold' 
+                  : 'text-on-surface-variant hover:text-primary'
+              }`}
+            >
+              Mis Pedidos
+            </Link>
           )}
         </nav>
       </div>
 
-      <div className="flex items-center gap-4">
+      {/* Central Search Input (matches tienda_inicio) */}
+      <div className="flex items-center gap-stack-md flex-1 max-w-md mx-stack-xl">
+        <div className="relative w-full">
+          <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">
+            search
+          </span>
+          <input 
+            type="text"
+            placeholder="Buscar importaciones premium..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={handleSearchSubmit}
+            className="w-full pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-lg focus:outline-none focus:border-primary font-body-sm text-body-sm"
+          />
+        </div>
+      </div>
+
+      {/* Right-hand Action Icons & Profiles */}
+      <div className="flex items-center gap-stack-md">
         {user ? (
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-stack-md">
             {user.is_admin && (
               <div className="relative" ref={dropdownRef}>
                 <button 
                   onClick={() => setIsAdminDropdownOpen(!isAdminDropdownOpen)}
-                  className={`flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-bold transition-all ${
-                    isAdminDropdownOpen ? 'bg-accent text-white shadow-lg' : 'bg-white/10 hover:bg-white/20'
+                  className={`flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-bold transition-all border ${
+                    isAdminDropdownOpen 
+                      ? 'bg-primary text-white border-primary shadow-lg' 
+                      : 'bg-white text-slate-700 border-outline-variant hover:bg-slate-50'
                   }`}
                 >
                   Panel Admin
@@ -60,8 +115,8 @@ const Navbar = () => {
                 </button>
                 
                 {isAdminDropdownOpen && (
-                  <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-2xl border border-slate-100 overflow-hidden text-slate-700 animate-in fade-in slide-in-from-top-2 duration-200">
-                    <div className="p-2 border-b border-slate-50 bg-slate-50/50">
+                  <div className="absolute right-0 mt-2 w-56 bg-white rounded-xl shadow-2xl border border-outline-variant overflow-hidden text-slate-700 animate-in fade-in slide-in-from-top-2 duration-200">
+                    <div className="p-2 border-b border-outline-variant bg-slate-50/50">
                       <p className="text-[10px] font-bold text-slate-400 uppercase px-3 py-1">Administración</p>
                     </div>
                     <div className="p-1">
@@ -80,37 +135,46 @@ const Navbar = () => {
                         <span className="material-symbols-outlined text-[20px]">group</span>
                         Usuarios
                       </Link>
-                      <button 
-                        className="w-full text-left px-4 py-2.5 text-sm font-semibold text-slate-300 cursor-not-allowed flex items-center gap-3"
-                        title="Próximamente"
+                      <Link 
+                        to="/admin/inventario" 
+                        onClick={() => setIsAdminDropdownOpen(false)}
+                        className="w-full text-left px-4 py-2.5 text-sm font-semibold hover:bg-slate-50 hover:text-primary transition-colors flex items-center gap-3 rounded-lg"
                       >
                         <span className="material-symbols-outlined text-[20px]">inventory_2</span>
                         Inventario
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 )}
               </div>
             )}
             
-            <div className="flex items-center gap-3 pl-2 border-l border-white/10">
+            {/* Account Profile info */}
+            <div className="flex items-center gap-3 pl-2 border-l border-outline-variant">
               <div className="flex flex-col items-end hidden sm:flex">
-                <span className="text-xs font-bold leading-tight">{user.nombre}</span>
-                <Link to="/perfil" className="text-[10px] text-slate-400 hover:text-accent transition-colors font-semibold uppercase tracking-wider">Ver Perfil</Link>
+                <span className="text-xs font-bold leading-tight text-on-surface">{user.nombre}</span>
+                <Link to="/perfil" className="text-[10px] text-on-surface-variant hover:text-secondary transition-colors font-semibold uppercase tracking-wider">Ver Perfil</Link>
               </div>
               <button 
                 onClick={handleLogout}
-                className="p-2 hover:bg-white/10 rounded-full transition-colors group"
+                className="p-2 hover:bg-surface-container-high rounded-full transition-colors group"
                 title="Cerrar Sesión"
               >
-                <span className="material-symbols-outlined text-slate-300 group-hover:text-error transition-colors">logout</span>
+                <span className="material-symbols-outlined text-on-surface-variant group-hover:text-error transition-colors text-[20px]">
+                  logout
+                </span>
               </button>
             </div>
           </div>
         ) : (
-          <div className="flex items-center gap-6">
-            <Link to="/login" className="text-sm font-bold hover:text-accent transition-colors">Iniciar Sesión</Link>
-            <Link to="/registro" className="px-5 py-2 bg-accent text-white text-sm font-bold rounded-lg hover:shadow-lg hover:opacity-90 active:scale-[0.98] transition-all">
+          <div className="flex items-center gap-stack-lg">
+            <Link to="/login" className="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-colors font-bold">
+              Iniciar Sesión
+            </Link>
+            <Link 
+              to="/registro" 
+              className="px-stack-xl py-2 bg-secondary text-on-secondary font-label-md text-label-md rounded-lg hover:opacity-90 active:scale-95 transition-all font-bold shadow-sm"
+            >
               Registrarse
             </Link>
           </div>
