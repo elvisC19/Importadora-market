@@ -17,6 +17,7 @@ class UserCreate(BaseModel):
     nombre: str
     password: str
     telefono: Optional[str] = None
+    role: Optional[str] = "cliente"
 
     @field_validator("nombre")
     @classmethod
@@ -41,10 +42,16 @@ class UserCreate(BaseModel):
             )
         return v
 
+    @field_validator("role")
+    @classmethod
+    def validate_role(cls, v: Optional[str]) -> Optional[str]:
+        if v is not None and v not in ("admin", "importadora", "cliente"):
+            raise ValueError("El rol debe ser uno de: admin, importadora, cliente")
+        return v
+
 
 class UserCreateAdmin(UserCreate):
     is_admin: bool = False
-
 
 
 class UserLogin(BaseModel):
@@ -56,6 +63,7 @@ class UserUpdate(BaseModel):
     nombre: Optional[str] = None
     email: Optional[EmailStr] = None
     telefono: Optional[str] = None
+    role: Optional[str] = None
 
     @field_validator("nombre")
     @classmethod
@@ -71,6 +79,24 @@ class UserUpdate(BaseModel):
             raise ValueError(
                 "El teléfono debe ser boliviano: 8 dígitos comenzando con 6 o 7"
             )
+        return v
+
+    @field_validator("role")
+    @classmethod
+    def validate_role(cls, v: Optional[str]) -> Optional[str]:
+        if v is not None and v not in ("admin", "importadora", "cliente"):
+            raise ValueError("El rol debe ser uno de: admin, importadora, cliente")
+        return v
+
+
+class RoleUpdate(BaseModel):
+    role: str
+
+    @field_validator("role")
+    @classmethod
+    def validate_role(cls, v: str) -> str:
+        if v not in ("admin", "importadora", "cliente"):
+            raise ValueError("El rol debe ser uno de: admin, importadora, cliente")
         return v
 
 
@@ -98,5 +124,7 @@ class UserResponse(BaseModel):
     email: str
     nombre: str
     telefono: Optional[str] = None
+    role: str
     is_admin: bool
     created_at: datetime
+

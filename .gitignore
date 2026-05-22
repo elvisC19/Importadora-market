@@ -1,4 +1,4 @@
-﻿# Python
+# Python
 backend/venv/
 backend/__pycache__/
 backend/app/__pycache__/
@@ -32,3 +32,12 @@ Thumbs.db
 # Test database
 test.db
 *.db
+
+# Render / Deploy ignores
+dev.db
+__pycache__
+.env
+node_modules
+dist
+.venv
+*.pyc

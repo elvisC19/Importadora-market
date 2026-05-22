@@ -6,7 +6,7 @@ from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, Query, status
 from sqlalchemy.orm import Session
 
-from app.api.v1.deps import get_current_admin_user, get_current_user
+from app.api.v1.deps import get_current_admin_user, get_current_user, get_current_importadora_user
 from app.core.database import get_db
 from app.models.user import User
 from app.repositories.category_repository import category_repository
@@ -143,7 +143,23 @@ def submit_product(
     Un cliente autenticado envía un producto para aprobación.
     El producto se crea con is_approved=False automáticamente.
     """
-    return product_service.create_product(db, product_in=product_in, user_id=current_user.id)
+    return product_service.create_product(db, product_in=product_in, current_user=current_user)
+
+
+# ══════════════════════════════════════════════════════════════
+# ENDPOINTS PROTEGIDOS — IMPORTADORA
+# ══════════════════════════════════════════════════════════════
+
+
+@router.get("/importadora/my-products", response_model=List[ProductResponse])
+def list_my_submitted_products(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_importadora_user),
+):
+    """
+    Lista todos los productos subidos por el usuario importadora actual.
+    """
+    return product_service.get_my_products(db, user_id=current_user.id)
 
 
 # ══════════════════════════════════════════════════════════════
@@ -166,17 +182,20 @@ def list_pending_products(
 
 
 @router.post("/admin/products", response_model=ProductResponse, status_code=status.HTTP_201_CREATED)
+@router.post("/products/submit", response_model=ProductResponse, status_code=status.HTTP_201_CREATED)
 def admin_create_product(
     product_in: ProductCreate,
     db: Session = Depends(get_db),
-    current_admin: User = Depends(get_current_admin_user),
+    current_user: User = Depends(get_current_importadora_user),
 ):
     """
-    Un administrador crea un producto directamente y lo aprueba de inmediato.
+    Crea o envía un producto para aprobación. Admite importadoras y administradores.
+    Si es administrador, se aprueba de inmediato. Si no, queda pendiente.
     """
-    product = product_service.create_product(db, product_in=product_in, user_id=current_admin.id)
-    # Aprobar inmediatamente
-    return product_service.approve_product(db, product_id=product.id, admin_id=current_admin.id)
+    product = product_service.create_product(db, product_in=product_in, current_user=current_user)
+    if current_user.role == "admin":
+        product = product_service.approve_product(db, product_id=product.id, admin_id=current_user.id)
+    return product
 
 
 @router.put("/admin/products/{product_id}", response_model=ProductResponse)

@@ -32,8 +32,8 @@ export const AuthProvider = ({ children }) => {
     setUser(userData);
   };
 
-  const register = async (nombre, email, password, telefono) => {
-    await authService.register(nombre, email, password, telefono);
+  const register = async (nombre, email, password, telefono, role = 'cliente') => {
+    await authService.register(nombre, email, password, telefono, role);
     // Optionally login automatically after registration
     // For now we just follow the request
   };
@@ -43,12 +43,19 @@ export const AuthProvider = ({ children }) => {
     setUser(null);
   };
 
+  const isAdmin = user?.role === 'admin' || user?.is_admin === true;
+  const isImportadora = user?.role === 'importadora';
+  const isCliente = user?.role === 'cliente';
+
   const value = {
     user,
     loading,
     login,
     register,
     logout,
+    isAdmin,
+    isImportadora,
+    isCliente,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

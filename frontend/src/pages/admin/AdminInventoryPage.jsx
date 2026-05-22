@@ -333,8 +333,11 @@ const AdminInventoryPage = () => {
         </div>
 
         {/* Pending Products */}
-        <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-5">
-          <div className="w-12 h-12 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center">
+        <div 
+          onClick={() => setActiveTab('pending')}
+          className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-5 cursor-pointer hover:shadow-md hover:border-orange-200 transition-all group"
+        >
+          <div className="w-12 h-12 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
             <span className="material-symbols-outlined text-[28px]">pending_actions</span>
           </div>
           <div>
@@ -444,6 +447,12 @@ const AdminInventoryPage = () => {
                       {/* Product details */}
                       <td className="px-6 py-4 max-w-[200px]">
                         <h4 className="font-bold text-primary truncate" title={p.nombre}>{p.nombre}</h4>
+                        {p.submitted_by_id && (
+                          <div className="text-[11px] text-gray-500 font-semibold mt-0.5 flex items-center gap-1">
+                            <span className="material-symbols-outlined text-[12px]">person</span>
+                            Enviado por: ID {p.submitted_by_id}
+                          </div>
+                        )}
                         <div className="flex gap-1.5 mt-1">
                           {p.is_new && <span className="text-[9px] bg-green-50 text-green-600 border border-green-200 px-1 rounded font-bold uppercase">Nuevo</span>}
                           {p.is_offer && <span className="text-[9px] bg-orange-50 text-orange-600 border border-orange-200 px-1 rounded font-bold uppercase">Oferta</span>}
@@ -493,48 +502,60 @@ const AdminInventoryPage = () => {
 
                       {/* Actions */}
                       <td className="px-6 py-4 text-right">
-                        <div className="flex justify-end gap-2">
-                          {/* Approve Action */}
-                          {!p.is_approved && (
-                            <button 
-                              onClick={() => handleApproveProduct(p.id)}
-                              className="p-1.5 hover:bg-green-50 text-green-600 rounded-lg transition-colors"
-                              title="Aprobar Producto"
-                            >
-                              <span className="material-symbols-outlined">check_circle</span>
-                            </button>
+                        <div className="flex justify-end items-center gap-2">
+                          {!p.is_approved ? (
+                            <>
+                              <button 
+                                onClick={() => handleApproveProduct(p.id)}
+                                className="inline-flex items-center gap-1 px-3 py-1.5 bg-green-50 hover:bg-green-100 text-green-700 rounded-lg text-xs font-bold border border-green-200 shadow-sm transition-all"
+                                title="Aprobar Producto"
+                              >
+                                <span className="material-symbols-outlined text-[16px]">check_circle</span>
+                                Aprobar
+                              </button>
+                              <button 
+                                onClick={() => handleDeleteProduct(p.id)}
+                                className="inline-flex items-center gap-1 px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-700 rounded-lg text-xs font-bold border border-red-200 shadow-sm transition-all"
+                                title="Rechazar Producto"
+                              >
+                                <span className="material-symbols-outlined text-[16px]">cancel</span>
+                                Rechazar
+                              </button>
+                            </>
+                          ) : (
+                            <>
+                              {/* Toggle Visibility (Featured) */}
+                              <button 
+                                onClick={() => handleToggleVisibility(p.id)}
+                                className={`p-1.5 rounded-lg transition-colors ${
+                                  p.is_featured 
+                                    ? 'text-yellow-500 hover:bg-yellow-50' 
+                                    : 'text-gray-400 hover:bg-gray-100'
+                                }`}
+                                title="Alternar Destacado"
+                              >
+                                <span className="material-symbols-outlined">{p.is_featured ? 'star_rate' : 'star'}</span>
+                              </button>
+
+                              {/* Edit Action */}
+                              <button 
+                                onClick={() => openEditModal(p)}
+                                className="p-1.5 hover:bg-blue-50 text-blue-600 rounded-lg transition-colors"
+                                title="Editar Producto"
+                              >
+                                <span className="material-symbols-outlined">edit</span>
+                              </button>
+
+                              {/* Delete Action */}
+                              <button 
+                                onClick={() => handleDeleteProduct(p.id)}
+                                className="p-1.5 hover:bg-red-50 text-red-600 rounded-lg transition-colors"
+                                title="Eliminar Producto"
+                              >
+                                <span className="material-symbols-outlined">delete</span>
+                              </button>
+                            </>
                           )}
-                          
-                          {/* Toggle Visibility (Featured) */}
-                          <button 
-                            onClick={() => handleToggleVisibility(p.id)}
-                            className={`p-1.5 rounded-lg transition-colors ${
-                              p.is_featured 
-                                ? 'text-yellow-500 hover:bg-yellow-50' 
-                                : 'text-gray-400 hover:bg-gray-100'
-                            }`}
-                            title="Alternar Destacado"
-                          >
-                            <span className="material-symbols-outlined">{p.is_featured ? 'star_rate' : 'star'}</span>
-                          </button>
-
-                          {/* Edit Action */}
-                          <button 
-                            onClick={() => openEditModal(p)}
-                            className="p-1.5 hover:bg-blue-50 text-blue-600 rounded-lg transition-colors"
-                            title="Editar Producto"
-                          >
-                            <span className="material-symbols-outlined">edit</span>
-                          </button>
-
-                          {/* Delete Action */}
-                          <button 
-                            onClick={() => handleDeleteProduct(p.id)}
-                            className="p-1.5 hover:bg-red-50 text-red-600 rounded-lg transition-colors"
-                            title="Eliminar Producto"
-                          >
-                            <span className="material-symbols-outlined">delete</span>
-                          </button>
                         </div>
                       </td>
                     </tr>

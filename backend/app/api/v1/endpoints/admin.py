@@ -1,12 +1,12 @@
 import math
-from typing import List
+from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.orm import Session
 
 from app.api.v1.deps import get_current_admin_user
 from app.core.database import get_db
 from app.models.user import User
-from app.schemas.user import UserResponse, UserUpdate, UserCreateAdmin
+from app.schemas.user import UserResponse, UserUpdate, UserCreateAdmin, RoleUpdate
 from app.schemas.common import PaginatedResponse, MessageResponse
 from app.repositories.user_repository import user_repository
 from app.core.security import hash_password
@@ -135,13 +135,15 @@ def delete_user(
 
 
 @router.patch("/users/{user_id}/role", response_model=UserResponse)
-def toggle_user_role(
+def update_user_role(
     user_id: int,
+    role_in: Optional[RoleUpdate] = None,
     db: Session = Depends(get_db),
     current_admin: User = Depends(get_current_admin_user),
 ):
     """
-    Cambia el rol de administrador de un usuario.
+    Cambia el rol de un usuario.
+    Si no se proporciona cuerpo (Hito 1 retrocompatible), alterna el rol entre admin y cliente.
     No permite que un administrador se quite el rol a sí mismo.
     """
     if user_id == current_admin.id:
@@ -157,7 +159,12 @@ def toggle_user_role(
             detail="Usuario no encontrado",
         )
     
-    user.is_admin = not user.is_admin
+    if role_in is None:
+        # Alternar rol para retrocompatibilidad con el Hito 1
+        user.role = "cliente" if user.role == "admin" else "admin"
+    else:
+        user.role = role_in.role
+        
     db.add(user)
     db.commit()
     db.refresh(user)

@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './contexts/AuthContext';
 import PrivateRoute from './components/layout/PrivateRoute';
 import AdminRoute from './components/layout/AdminRoute';
+import ImportadoraRoute from './components/layout/ImportadoraRoute';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
@@ -12,6 +13,8 @@ import ProductDetailPage from './pages/ProductDetailPage';
 import HomePage from './pages/HomePage';
 import AdminUsersPage from './pages/admin/AdminUsersPage';
 import AdminInventoryPage from './pages/admin/AdminInventoryPage';
+import MisProductosPage from './pages/importadora/MisProductosPage';
+import SubirProductoPage from './pages/importadora/SubirProductoPage';
 import Navbar from './components/layout/Navbar';
 
 
@@ -38,6 +41,12 @@ function App() {
               <Route element={<PrivateRoute />}>
                 <Route path="/perfil" element={<ProfilePage />} />
                 <Route path="/pedidos" element={<div className="p-8">Mis Pedidos</div>} />
+              </Route>
+
+              {/* Importadora Routes */}
+              <Route element={<ImportadoraRoute />}>
+                <Route path="/importadora/productos" element={<MisProductosPage />} />
+                <Route path="/importadora/subir" element={<SubirProductoPage />} />
               </Route>
 
               {/* Admin Routes */}

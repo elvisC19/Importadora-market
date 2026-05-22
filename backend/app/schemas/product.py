@@ -106,6 +106,8 @@ class ProductResponse(BaseModel):
     vistas_actuales: int
     created_at: datetime
     updated_at: datetime
+    submitted_by: Optional[int] = None
+    approval_status: Optional[str] = None
 
     # Relación con categoría
     categoria: Optional[CategoryResponse] = None
@@ -123,6 +125,11 @@ class ProductResponse(BaseModel):
         else:
             self.final_price = self.precio
             self.discount_percentage = None
+        
+        if self.submitted_by_id is not None:
+            self.submitted_by = self.submitted_by_id
+            
+        self.approval_status = "aprobado" if self.is_approved else "pendiente"
         return self
 
 

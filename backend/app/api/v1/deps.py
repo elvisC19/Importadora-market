@@ -37,9 +37,18 @@ def get_current_user(
     return user
 
 def get_current_admin_user(current_user: User = Depends(get_current_user)) -> User:
-    if not current_user.is_admin:
+    if current_user.role != "admin":
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="No tienes permisos de administrador",
         )
     return current_user
+
+def get_current_importadora_user(current_user: User = Depends(get_current_user)) -> User:
+    if current_user.role not in ("admin", "importadora"):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="No tienes suficientes permisos (requiere rol de importadora o administrador)",
+        )
+    return current_user
+

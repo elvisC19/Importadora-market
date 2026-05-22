@@ -3,6 +3,7 @@
 from datetime import datetime, timezone
 
 from sqlalchemy import Boolean, Column, DateTime, Integer, String
+from sqlalchemy.ext.hybrid import hybrid_property
 
 from app.core.database import Base
 
@@ -15,9 +16,22 @@ class User(Base):
     nombre = Column(String(100), nullable=False)
     telefono = Column(String(20), nullable=True)
     password_hash = Column(String(255), nullable=True)
-    is_admin = Column(Boolean, default=False)
+    role = Column(String(20), default="cliente", nullable=False)
     google_id = Column(String(100), nullable=True, unique=True)
     is_online = Column(Boolean, default=False)
     reset_token = Column(String(255), nullable=True)
     reset_token_expires = Column(DateTime, nullable=True)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+
+    @hybrid_property
+    def is_admin(self) -> bool:
+        return self.role == "admin"
+
+    @is_admin.setter
+    def is_admin(self, value: bool):
+        self.role = "admin" if value else "cliente"
+
+    @is_admin.expression
+    def is_admin(cls):
+        return cls.role == "admin"
+

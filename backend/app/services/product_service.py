@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 
 from app.models.product import Product
 from app.models.category import Category
+from app.models.user import User
 from app.repositories.product_repository import product_repository
 from app.repositories.category_repository import category_repository
 from app.schemas.product import ProductCreate, ProductUpdate, ProductFilter
@@ -30,7 +31,13 @@ class ProductService:
         
         return product
 
-    def create_product(self, db: Session, product_in: ProductCreate, user_id: int) -> Product:
+    def create_product(
+        self,
+        db: Session,
+        product_in: ProductCreate,
+        current_user: User = None,
+        user_id: int = None
+    ) -> Product:
         if product_in.is_featured:
             if product_repository.count_featured(db) >= 10:
                 raise HTTPException(
@@ -40,13 +47,25 @@ class ProductService:
         
         product_data = product_in.model_dump()
         product_data["is_approved"] = False
-        product_data["submitted_by_id"] = user_id
+        
+        final_user_id = None
+        if isinstance(current_user, User):
+            final_user_id = current_user.id
+        elif isinstance(current_user, int):
+            final_user_id = current_user
+        elif user_id is not None:
+            final_user_id = user_id
+            
+        product_data["submitted_by_id"] = final_user_id
         
         db_obj = Product(**product_data)
         db.add(db_obj)
         db.commit()
         db.refresh(db_obj)
         return db_obj
+
+    def get_my_products(self, db: Session, user_id: int) -> List[Product]:
+        return db.query(Product).filter(Product.submitted_by_id == user_id).all()
 
     def update_product(self, db: Session, product_id: int, product_in: ProductUpdate, user_id: int) -> Product:
         product = product_repository.get(db, id=product_id)

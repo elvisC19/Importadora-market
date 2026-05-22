@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: importadora-market-frontend
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm install && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://TU-BACKEND.onrender.com/api/v1

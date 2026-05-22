@@ -35,6 +35,16 @@ const productService = {
     const response = await api.post('/products', productData);
     return response.data;
   },
+
+  submitImportadoraProduct: async (productData) => {
+    const response = await api.post('/products/submit', productData);
+    return response.data;
+  },
+
+  getMySubmittedProducts: async () => {
+    const response = await api.get('/importadora/my-products');
+    return response.data;
+  },
 };
 
 export default productService;

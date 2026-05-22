@@ -1,8 +1,8 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 
-const AdminRoute = () => {
-  const { user, loading, isAdmin } = useAuth();
+const ImportadoraRoute = () => {
+  const { user, loading, isAdmin, isImportadora } = useAuth();
 
   if (loading) {
     return (
@@ -12,11 +12,11 @@ const AdminRoute = () => {
     );
   }
 
-  if (!user || !isAdmin) {
+  if (!user || (!isAdmin && !isImportadora)) {
     return <Navigate to="/" replace />;
   }
 
   return <Outlet />;
 };
 
-export default AdminRoute;
+export default ImportadoraRoute;

@@ -7,6 +7,8 @@ sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from app.core.database import SessionLocal, engine, Base
 from app.models.category import Category
 from app.models.product import Product
+from app.models.user import User
+from app.core.security import hash_password
 
 def seed():
     print("Starting database seeding...")
@@ -15,8 +17,38 @@ def seed():
         # Clear existing data to ensure exact counts
         db.query(Product).delete()
         db.query(Category).delete()
+        db.query(User).delete()
         db.commit()
-        print("Cleared existing products and categories.")
+        print("Cleared existing users, products, and categories.")
+
+        # Create 3 test users
+        admin_user = User(
+            nombre="Administrador",
+            email="admin@market.com",
+            password_hash=hash_password("ImportadoraMarket@2026#Adm"),
+            role="admin"
+        )
+        importadora_user = User(
+            nombre="Importadora Ramos",
+            email="importadora@market.com",
+            password_hash=hash_password("ImportadoraMarket@2026#Imp"),
+            role="importadora"
+        )
+        cliente_user = User(
+            nombre="Juan Perez",
+            email="cliente@market.com",
+            password_hash=hash_password("ImportadoraMarket@2026#Cli"),
+            role="cliente"
+        )
+
+        db.add_all([admin_user, importadora_user, cliente_user])
+        db.commit()
+
+        # Refresh users to get IDs
+        db.refresh(admin_user)
+        db.refresh(importadora_user)
+        db.refresh(cliente_user)
+        print(f"Seeded 3 users: admin, importadora (ID: {importadora_user.id}), cliente.")
 
         # Create 3 categories
         cat1 = Category(nombre="Tecnología y Audio", descripcion="Dispositivos electrónicos, auriculares y parlantes de alta calidad.")
@@ -182,14 +214,20 @@ def seed():
             )
         ]
 
+        # Set submitted_by_id and approved_by_id
+        for p in products:
+            p.submitted_by_id = importadora_user.id
+            if p.is_approved:
+                p.approved_by_id = admin_user.id
+
         db.add_all(products)
         db.commit()
         print("Successfully seeded 12 products.")
 
         # Print statistics to verify
         total_count = db.query(Product).count()
-        visible_count = db.query(Product).filter(Product.is_visible == True).count()
-        pending_count = db.query(Product).filter(Product.is_visible == False).count()
+        visible_count = db.query(Product).filter(Product.is_approved == True).count()
+        pending_count = db.query(Product).filter(Product.is_approved == False).count()
         category_count = db.query(Category).count()
 
         print("\n--- Seeding Summary ---")
