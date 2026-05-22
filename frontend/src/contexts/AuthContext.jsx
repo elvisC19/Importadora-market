@@ -28,6 +28,8 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     await authService.login(email, password);
+    // Esperar un pequeño instante para asegurar que el token esté completamente persistido y disponible
+    await new Promise((resolve) => setTimeout(resolve, 50));
     const userData = await authService.getCurrentUser();
     setUser(userData);
   };

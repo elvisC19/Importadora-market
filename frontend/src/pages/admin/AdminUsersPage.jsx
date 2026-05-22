@@ -11,6 +11,7 @@ const AdminUsersPage = () => {
   const [skip, setSkip] = useState(0);
   const [limit] = useState(10);
   const [loading, setLoading] = useState(true);
+  const [alert, setAlert] = useState({ show: false, message: '', type: '' });
 
   // Modal states
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -112,24 +113,48 @@ const AdminUsersPage = () => {
     if (window.confirm(`¿Estás seguro de eliminar a ${user.nombre}? Esta acción no se puede deshacer.`)) {
       try {
         await adminService.deleteUser(user.id);
+        showAlert('Usuario eliminado correctamente.', 'success');
         fetchUsers();
       } catch (error) {
-        alert(error.response?.data?.detail || 'Error al eliminar el usuario.');
+        showAlert(error.response?.data?.detail || 'Error al eliminar el usuario.', 'error');
       }
     }
   };
 
+  const showAlert = (message, type = 'success') => {
+    setAlert({ show: true, message, type });
+    setTimeout(() => {
+      setAlert({ show: false, message: '', type: '' });
+    }, 4000);
+  };
+
   const handleToggleRole = async (userId) => {
     if (userId === currentUser.id) {
-      alert('No puedes cambiar tu propio rol de administrador.');
+      showAlert('No puedes cambiar tu propio rol de administrador.', 'error');
       return;
     }
 
     try {
       await adminService.toggleUserRole(userId);
+      showAlert('Rol alternado correctamente.', 'success');
       fetchUsers();
     } catch (error) {
-      alert(error.response?.data?.detail || 'Error al cambiar el rol.');
+      showAlert(error.response?.data?.detail || 'Error al cambiar el rol.', 'error');
+    }
+  };
+
+  const handleRoleChange = async (userId, newRole) => {
+    if (userId === currentUser.id) {
+      showAlert('No puedes cambiar tu propio rol de administrador.', 'error');
+      return;
+    }
+
+    try {
+      await adminService.updateUserRole(userId, newRole);
+      showAlert(`Rol actualizado correctamente a "${newRole}".`, 'success');
+      fetchUsers();
+    } catch (error) {
+      showAlert(error.response?.data?.detail || 'Error al cambiar el rol.', 'error');
     }
   };
 
@@ -225,7 +250,9 @@ const AdminUsersPage = () => {
                     <tr key={u.id} className="hover:bg-slate-50 transition-colors group">
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
-                          <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-white shadow-sm ${u.is_admin ? 'bg-primary' : 'bg-slate-400'}`}>
+                          <div className={`w-10 h-10 rounded-full flex items-center justify-center font-bold text-white shadow-sm ${
+                            u.role === 'admin' ? 'bg-primary' : u.role === 'importadora' ? 'bg-accent' : 'bg-slate-400'
+                          }`}>
                             {u.nombre.charAt(0).toUpperCase()}
                           </div>
                           <div>
@@ -239,13 +266,32 @@ const AdminUsersPage = () => {
                         <p className="text-xs text-slate-500 font-mono">{u.telefono || 'Sin teléfono'}</p>
                       </td>
                       <td className="px-6 py-4">
-                        <span className={`inline-flex items-center px-2 py-0.5 rounded text-[10px] font-extrabold uppercase border ${
-                          u.is_admin 
-                            ? 'bg-blue-50 text-blue-700 border-blue-200' 
-                            : 'bg-slate-50 text-slate-600 border-slate-200'
-                        }`}>
-                          {u.is_admin ? 'Admin' : 'Cliente'}
-                        </span>
+                        <div className="flex flex-col gap-2">
+                          <span className={`inline-flex items-center w-fit px-2 py-0.5 rounded text-[10px] font-extrabold uppercase border ${
+                            u.role === 'admin' 
+                              ? 'bg-blue-50 text-blue-700 border-blue-200' 
+                              : u.role === 'importadora'
+                                ? 'bg-orange-50 text-orange-700 border-orange-200'
+                                : 'bg-slate-50 text-slate-600 border-slate-200'
+                          }`}>
+                            {u.role === 'admin' ? 'Admin' : u.role === 'importadora' ? 'Importadora' : 'Cliente'}
+                          </span>
+                          
+                          <select
+                            value={u.role || 'cliente'}
+                            disabled={u.id === currentUser.id}
+                            onChange={(e) => handleRoleChange(u.id, e.target.value)}
+                            className={`px-2 py-1.5 text-xs font-semibold bg-white border border-slate-200 rounded-lg outline-none cursor-pointer focus:border-primary transition-all max-w-[125px] ${
+                              u.id === currentUser.id 
+                                ? 'opacity-60 cursor-not-allowed bg-slate-50 text-slate-400' 
+                                : 'hover:border-slate-350 text-slate-700'
+                            }`}
+                          >
+                            <option value="cliente">Cliente</option>
+                            <option value="importadora">Importadora</option>
+                            <option value="admin">Admin</option>
+                          </select>
+                        </div>
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-2">
@@ -396,6 +442,19 @@ const AdminUsersPage = () => {
               </div>
             </form>
           </div>
+        </div>
+      )}
+      {/* Premium Notification Toast */}
+      {alert.show && (
+        <div className={`fixed top-6 right-6 z-[100] flex items-center gap-3 px-5 py-4 rounded-xl border shadow-lg transition-all animate-in slide-in-from-top-5 duration-300 ${
+          alert.type === 'success' 
+            ? 'bg-teal-50 border-teal-200 text-teal-800' 
+            : 'bg-red-50 border-red-200 text-red-800'
+        }`}>
+          <span className="material-symbols-outlined text-[20px] font-bold">
+            {alert.type === 'success' ? 'check_circle' : 'error'}
+          </span>
+          <span className="text-sm font-semibold">{alert.message}</span>
         </div>
       )}
     </div>

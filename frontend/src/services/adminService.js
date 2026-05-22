@@ -14,6 +14,11 @@ const adminService = {
     return response.data;
   },
 
+  updateUserRole: async (userId, role) => {
+    const response = await api.patch(`/admin/users/${userId}/role`, { role });
+    return response.data;
+  },
+
   createUser: async (userData) => {
     const response = await api.post('/admin/users', userData);
     return response.data;

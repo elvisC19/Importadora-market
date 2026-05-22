@@ -21,13 +21,25 @@ app = FastAPI(
 app.include_router(api_router, prefix="/api/v1")
 
 # ── CORS ──────────────────────────────────────────────────
+# Permitir tanto el origen configurado como los locales típicos para desarrollo
+origins = [
+    settings.FRONTEND_URL,
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "http://127.0.0.1:5173",
+    "http://127.0.0.1:5174",
+]
+# Eliminar posibles duplicados
+origins = sorted(list(set(origins)))
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[settings.FRONTEND_URL],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 
 # ── Endpoint raíz ────────────────────────────────────────
