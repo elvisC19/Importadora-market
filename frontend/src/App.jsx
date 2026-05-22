@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './contexts/AuthContext';
+import { CartProvider } from './contexts/CartContext';
 import PrivateRoute from './components/layout/PrivateRoute';
 import AdminRoute from './components/layout/AdminRoute';
 import ImportadoraRoute from './components/layout/ImportadoraRoute';
@@ -15,6 +16,9 @@ import AdminUsersPage from './pages/admin/AdminUsersPage';
 import AdminInventoryPage from './pages/admin/AdminInventoryPage';
 import MisProductosPage from './pages/importadora/MisProductosPage';
 import SubirProductoPage from './pages/importadora/SubirProductoPage';
+import CartPage from './pages/CartPage';
+import CheckoutPage from './pages/CheckoutPage';
+import OrdersPage from './pages/OrdersPage';
 import Navbar from './components/layout/Navbar';
 
 
@@ -25,7 +29,8 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <Router>
+        <CartProvider>
+          <Router>
           <div className="min-h-screen bg-background pt-16">
             <Navbar />
             <Routes>
@@ -36,11 +41,13 @@ function App() {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/registro" element={<RegisterPage />} />
               <Route path="/recuperar-contrasena" element={<ForgotPasswordPage />} />
+              <Route path="/carrito" element={<CartPage />} />
 
               {/* Protected Routes */}
               <Route element={<PrivateRoute />}>
                 <Route path="/perfil" element={<ProfilePage />} />
-                <Route path="/pedidos" element={<div className="p-8">Mis Pedidos</div>} />
+                <Route path="/checkout" element={<CheckoutPage />} />
+                <Route path="/pedidos" element={<OrdersPage />} />
               </Route>
 
               {/* Importadora Routes */}
@@ -76,6 +83,7 @@ function App() {
             </a>
           </div>
         </Router>
+        </CartProvider>
       </AuthProvider>
 
     </QueryClientProvider>

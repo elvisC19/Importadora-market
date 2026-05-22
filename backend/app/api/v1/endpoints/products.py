@@ -4,6 +4,7 @@ import math
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException, Query, status
+from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
 from app.api.v1.deps import get_current_admin_user, get_current_user, get_current_importadora_user
@@ -94,7 +95,7 @@ def list_offer_products(
     """
     Lista los productos en oferta aprobados.
     """
-    return product_repository.get_offers(db, skip=skip, limit=limit)
+    return product_service.get_active_offers(db, skip=skip, limit=limit)
 
 
 @router.get("/products/new-arrivals", response_model=List[ProductResponse])
@@ -106,7 +107,7 @@ def list_new_arrival_products(
     """
     Lista las novedades aprobadas, ordenadas por fecha de creación descendente.
     """
-    return product_repository.get_new_arrivals(db, skip=skip, limit=limit)
+    return product_service.get_new_arrivals(db, skip=skip, limit=limit)
 
 
 @router.get("/products/{product_id}", response_model=ProductResponse)
@@ -209,6 +210,74 @@ def admin_update_product(
     Actualiza un producto existente (solo admin).
     """
     return product_service.update_product(db, product_id=product_id, product_in=product_in, user_id=current_admin.id)
+
+
+class SetOfferRequest(BaseModel):
+    offer_price: float = Field(..., gt=0, description="Precio de oferta a establecer")
+
+
+@router.put("/admin/products/{product_id}/set-offer", response_model=ProductResponse)
+def admin_set_offer(
+    product_id: int,
+    offer_in: SetOfferRequest,
+    db: Session = Depends(get_db),
+    current_admin: User = Depends(get_current_admin_user),
+):
+    """
+    Establece o actualiza una oferta para un producto (solo admin).
+    Valida que el precio de oferta sea estrictamente menor al precio original.
+    """
+    product = product_repository.get(db, id=product_id)
+    if not product:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Producto no encontrado"
+        )
+    
+    if offer_in.offer_price >= product.precio:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="El precio de oferta debe ser estrictamente menor al precio original"
+        )
+        
+    product_update = ProductUpdate(
+        is_offer=True,
+        offer_price=offer_in.offer_price
+    )
+    return product_service.update_product(
+        db,
+        product_id=product_id,
+        product_in=product_update,
+        user_id=current_admin.id
+    )
+
+
+@router.delete("/admin/products/{product_id}/remove-offer", response_model=ProductResponse)
+def admin_remove_offer(
+    product_id: int,
+    db: Session = Depends(get_db),
+    current_admin: User = Depends(get_current_admin_user),
+):
+    """
+    Desactiva la oferta de un producto (solo admin).
+    """
+    product = product_repository.get(db, id=product_id)
+    if not product:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Producto no encontrado"
+        )
+        
+    product_update = ProductUpdate(
+        is_offer=False,
+        offer_price=None
+    )
+    return product_service.update_product(
+        db,
+        product_id=product_id,
+        product_in=product_update,
+        user_id=current_admin.id
+    )
 
 
 @router.patch("/admin/products/{product_id}/approve", response_model=ProductResponse)

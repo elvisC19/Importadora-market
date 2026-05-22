@@ -67,13 +67,13 @@ const ProductCard = ({ product }) => {
         {/* Badges Container */}
         <div className="absolute top-stack-md left-stack-md flex flex-col gap-1.5 z-10">
           {is_new && (
-            <span className="px-3 py-1 bg-secondary text-on-secondary font-label-sm text-label-sm rounded font-bold uppercase tracking-wider">
-              NUEVO
+            <span className="px-3 py-1 bg-teal-600 text-white font-label-sm text-label-sm rounded-lg font-bold uppercase tracking-wider shadow-md">
+              NEW
             </span>
           )}
           {is_offer && (
-            <span className="px-3 py-1 bg-secondary-container text-on-secondary-container font-label-sm text-label-sm rounded font-bold uppercase tracking-wider">
-              OFERTA
+            <span className="px-3 py-1 bg-red-600 text-white font-label-sm text-label-sm rounded-lg font-bold uppercase tracking-wider shadow-md animate-pulse">
+              -{discount_percentage ? `${Math.round(discount_percentage)}%` : 'OFERTA'}
             </span>
           )}
         </div>
@@ -110,7 +110,7 @@ const ProductCard = ({ product }) => {
           <div className="flex items-center gap-stack-md">
             {is_offer ? (
               <>
-                <span className="font-data-mono text-data-mono text-secondary font-bold text-sm">Bs. {final_price.toFixed(2)}</span>
+                <span className="font-data-mono text-data-mono text-red-600 font-extrabold text-base">Bs. {final_price.toFixed(2)}</span>
                 <span className="font-data-mono text-data-mono text-outline line-through text-xs">Bs. {precio.toFixed(2)}</span>
               </>
             ) : (

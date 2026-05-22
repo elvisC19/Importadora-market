@@ -52,16 +52,16 @@ const HomePage = () => {
     const loadStorefrontData = async () => {
       try {
         setLoading(true);
-        const [cats, featured, offers, productsResponse] = await Promise.all([
+        const [cats, featured, offers, newArrivals] = await Promise.all([
           productService.getCategories(),
           productService.getFeatured(0, 4),
           productService.getOffers(0, 4),
-          productService.getProducts({ is_new: true, limit: 4 })
+          productService.getNewArrivals(0, 4)
         ]);
         setCategories(cats);
         setFeaturedProducts(featured);
         setOfferProducts(offers);
-        setNewProducts(productsResponse.items || []);
+        setNewProducts(newArrivals || []);
       } catch (err) {
         console.error("Error loading storefront data", err);
         setError("Error de conexión. Intente cargar nuevamente.");
@@ -220,7 +220,7 @@ const HomePage = () => {
       {/* 4. EXCLUSIVE DEALS SECTION */}
       <section className="px-margin-desktop py-stack-xl max-w-container-max mx-auto">
         <div className="flex items-center gap-stack-md mb-stack-xl">
-          <h2 className="font-headline-md text-headline-md text-on-surface font-extrabold tracking-tight">Ofertas de Temporada</h2>
+          <h2 className="font-headline-md text-headline-md text-on-surface font-extrabold tracking-tight">Ofertas Imperdibles</h2>
           <div className="h-px bg-outline-variant flex-1"></div>
           <Link to="/productos?is_offer=true" className="text-secondary hover:underline font-semibold text-sm">Ver Todas</Link>
         </div>
@@ -250,7 +250,7 @@ const HomePage = () => {
       <section className="px-margin-desktop py-stack-xl bg-surface-container-low border-y border-outline-variant">
         <div className="max-w-container-max mx-auto">
           <div className="flex items-center gap-stack-md mb-stack-xl">
-            <h2 className="font-headline-md text-headline-md text-on-surface font-extrabold tracking-tight">Recién Llegados</h2>
+            <h2 className="font-headline-md text-headline-md text-on-surface font-extrabold tracking-tight">Novedades</h2>
             <div className="h-px bg-outline-variant flex-1"></div>
             <Link to="/productos?is_new=true" className="text-secondary hover:underline font-semibold text-sm">Ver Todos</Link>
           </div>

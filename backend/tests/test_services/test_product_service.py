@@ -56,3 +56,96 @@ def test_get_product_detail_raises_404_unapproved_non_admin(db, category):
     # Admin access should succeed
     product = product_service.get_product_detail(db, product_id=db_prod.id, is_admin=True)
     assert product.id == db_prod.id
+
+
+def test_get_active_offers(db, category):
+    # 1. Product 1: Approved offer with stock
+    prod1 = product_repository.create(db, obj_in=ProductCreate(
+        nombre="Active Offer",
+        precio=100.0,
+        stock=5,
+        categoria_id=category.id,
+        is_offer=True,
+        offer_price=80.0
+    ))
+    prod1.is_approved = True
+    db.add(prod1)
+
+    # 2. Product 2: Approved offer with no stock
+    prod2 = product_repository.create(db, obj_in=ProductCreate(
+        nombre="Out of Stock Offer",
+        precio=100.0,
+        stock=0,
+        categoria_id=category.id,
+        is_offer=True,
+        offer_price=70.0
+    ))
+    prod2.is_approved = True
+    db.add(prod2)
+
+    # 3. Product 3: Unapproved offer with stock
+    prod3 = product_repository.create(db, obj_in=ProductCreate(
+        nombre="Unapproved Offer",
+        precio=100.0,
+        stock=5,
+        categoria_id=category.id,
+        is_offer=True,
+        offer_price=60.0
+    ))
+    db.add(prod3)
+
+    db.commit()
+
+    active_offers = product_service.get_active_offers(db)
+    
+    # Assertions
+    assert len(active_offers) == 1
+    assert active_offers[0].nombre == "Active Offer"
+    assert active_offers[0].discount_percentage == 20.0
+    assert active_offers[0].final_price == 80.0
+
+
+def test_get_new_arrivals(db, category):
+    from datetime import datetime, timedelta, timezone
+
+    # 1. Product 1: Approved and new, created earlier
+    prod1 = product_repository.create(db, obj_in=ProductCreate(
+        nombre="Old New Arrival",
+        precio=100.0,
+        categoria_id=category.id,
+        is_new=True
+    ))
+    prod1.is_approved = True
+    prod1.created_at = datetime.now(timezone.utc) - timedelta(days=2)
+    db.add(prod1)
+
+    # 2. Product 2: Approved and new, created later
+    prod2 = product_repository.create(db, obj_in=ProductCreate(
+        nombre="Fresh New Arrival",
+        precio=120.0,
+        categoria_id=category.id,
+        is_new=True
+    ))
+    prod2.is_approved = True
+    prod2.created_at = datetime.now(timezone.utc) - timedelta(hours=1)
+    db.add(prod2)
+
+    # 3. Product 3: Unapproved new arrival
+    prod3 = product_repository.create(db, obj_in=ProductCreate(
+        nombre="Unapproved New Arrival",
+        precio=130.0,
+        categoria_id=category.id,
+        is_new=True
+    ))
+    db.add(prod3)
+
+    db.commit()
+
+    new_arrivals = product_service.get_new_arrivals(db)
+    
+    # Assertions
+    assert len(new_arrivals) == 2
+    # Verify descending ordering by created_at
+    assert new_arrivals[0].nombre == "Fresh New Arrival"
+    assert new_arrivals[1].nombre == "Old New Arrival"
+

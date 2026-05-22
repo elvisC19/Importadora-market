@@ -192,8 +192,8 @@ const MisProductosPage = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-outline-variant">
-                  {filteredProducts.map((product) => (
-                    <tr key={product.id} className="hover:bg-slate-50/50 transition-colors">
+                  {filteredProducts.map((product, index) => (
+                    <tr key={`${product.id}-${index}`} className="hover:bg-slate-50/50 transition-colors">
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-4">
                           <div className="w-12 h-12 rounded-lg bg-slate-100 overflow-hidden flex-shrink-0 flex items-center justify-center border border-outline-variant">
@@ -212,7 +212,7 @@ const MisProductosPage = () => {
                         </div>
                       </td>
                       <td className="px-6 py-4 text-sm font-semibold text-on-surface-variant">
-                        {product.categoria || `ID: ${product.categoria_id}`}
+                        {product.categoria?.nombre || `ID: ${product.categoria_id}`}
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex flex-col">

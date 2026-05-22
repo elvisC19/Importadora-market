@@ -21,8 +21,6 @@ y gestiona pedidos de forma eficiente.
 - [Sobre el Proyecto](#-sobre-el-proyecto)
 - [Tecnologías](#-tecnologías)
 - [Arquitectura](#-arquitectura)
-- [Instalación](#-instalación)
-- [Variables de Entorno](#-variables-de-entorno)
 - [Uso](#-uso)
 - [Módulos del Sistema](#-módulos-del-sistema)
 - [API Endpoints](#-api-endpoints)
@@ -43,8 +41,8 @@ y gestiona pedidos de forma eficiente.
 |--------|-------------|--------|
 | Autenticación | Registro, login, JWT, recuperación de contraseña | ✅ Completo |
 | Catálogo | Productos, filtros, búsqueda, ofertas | ✅ Completo |
-| Carrito | Persistente, gestión de cantidades | 🔄 En desarrollo |
-| Pedidos | Creación, seguimiento, historial | 🔄 En desarrollo |
+| Carrito | Persistente, gestión de cantidades | ✅ Completo |
+| Pedidos | Creación, seguimiento, historial | ✅ Completo |
 | Panel Admin | Dashboard, estadísticas, exportación CSV | 🔄 En desarrollo |
 | Notificaciones | Correos de confirmación y contacto | 🔄 En desarrollo |
 
@@ -98,8 +96,9 @@ importadora-market/
 
 ---
 
-
 ## 🖥 Uso
+
+### Rutas del Frontend
 
 | URL | Descripción | Acceso |
 |-----|-------------|--------|
@@ -108,7 +107,13 @@ importadora-market/
 | `http://localhost:5173/productos/:id` | Detalle de producto | Público |
 | `http://localhost:5173/login` | Iniciar sesión | Público |
 | `http://localhost:5173/registro` | Registrarse | Público |
+| `http://localhost:5173/recuperar-contrasena` | Recuperar contraseña | Público |
+| `http://localhost:5173/carrito` | Carrito de compras reactivo | Público |
 | `http://localhost:5173/perfil` | Mi perfil | Autenticado |
+| `http://localhost:5173/checkout` | Formulario de pago y contacto | Autenticado |
+| `http://localhost:5173/pedidos` | Historial de pedidos | Autenticado |
+| `http://localhost:5173/importadora/productos` | Mis productos cargados | Importadora |
+| `http://localhost:5173/importadora/subir` | Subir nuevo producto | Importadora |
 | `http://localhost:5173/admin/usuarios` | Gestión usuarios | Admin |
 | `http://localhost:5173/admin/inventario` | Gestión de inventario | Admin |
 | `http://localhost:8000/docs` | Documentación API | Desarrollo |
@@ -129,11 +134,12 @@ importadora-market/
 - Ofertas y novedades
 - CRUD completo para admin
 
-### Hito 3 — Carrito y Pedidos 🔄
-- Carrito persistente (localStorage + DB)
-- Checkout con validación
-- Historial de pedidos
-- Estados: pendiente → confirmado → entregado
+### Hito 3 — Carrito y Pedidos ✅
+- Carrito de compras interactivo y persistente (`localStorage` + sincronización con el estado global)
+- Sincronización de ofertas, cálculo automático de totales y control de stock en tiempo real
+- Formulario de checkout con validación estricta de celular en formato boliviano (`^[67]\d{7}$`)
+- Historial de pedidos personal en formato acordeón dinámico ordenado cronológicamente
+- Gestión y actualización de estados del pedido (`pendiente` → `confirmado` → `entregado` → `cancelado`)
 
 ### Hito 4 — Panel Admin y Estadísticas 🔄
 - Dashboard con métricas
@@ -196,6 +202,14 @@ POST   /api/v1/admin/categories             Crear categoría (Admin)
 DELETE /api/v1/admin/categories/{id}        Eliminar categoría (Admin)
 ```
 
+### Pedidos (Hito 3)
+```
+POST   /api/v1/orders/                      Crear nuevo pedido a partir de carrito
+GET    /api/v1/orders/me                    Obtener historial de pedidos del cliente
+GET    /api/v1/orders/                      Obtener todos los pedidos (Admin)
+PUT    /api/v1/orders/{order_id}/status     Actualizar estado de un pedido (Admin)
+```
+
 > Documentación completa e interactiva: `http://localhost:8000/docs`
 
 ---
@@ -220,5 +234,5 @@ Este proyecto es de uso académico. Todos los derechos reservados © 2026.
 ---
 
 <div align="center">
-  Hecho con mucho esfuerzo y amor por el equipo 😅(jeje)
+  Hecho por C19🦖
 </div>

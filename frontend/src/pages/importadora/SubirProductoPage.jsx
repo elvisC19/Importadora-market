@@ -6,6 +6,7 @@ const SubirProductoPage = () => {
   const navigate = useNavigate();
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [catsLoading, setCatsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
@@ -55,38 +56,45 @@ const SubirProductoPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+    setIsSubmitting(true);
     setError(null);
 
     // Validation
     if (!form.nombre.trim()) {
       setError('El nombre del producto es obligatorio.');
       setLoading(false);
+      setIsSubmitting(false);
       return;
     }
     if (!form.precio || parseFloat(form.precio) <= 0) {
       setError('El precio debe ser un número mayor a 0.');
       setLoading(false);
+      setIsSubmitting(false);
       return;
     }
     if (!form.stock || parseInt(form.stock) < 0) {
       setError('El stock debe ser un número entero mayor o igual a 0.');
       setLoading(false);
+      setIsSubmitting(false);
       return;
     }
     if (!form.categoria_id) {
       setError('Debes seleccionar una categoría.');
       setLoading(false);
+      setIsSubmitting(false);
       return;
     }
     if (form.is_offer) {
       if (!form.offer_price || parseFloat(form.offer_price) <= 0) {
         setError('Si el producto está en oferta, debes especificar un precio de oferta válido.');
         setLoading(false);
+        setIsSubmitting(false);
         return;
       }
       if (parseFloat(form.offer_price) >= parseFloat(form.precio)) {
         setError('El precio de oferta debe ser menor al precio original.');
         setLoading(false);
+        setIsSubmitting(false);
         return;
       }
     }
@@ -119,6 +127,7 @@ const SubirProductoPage = () => {
       );
     } finally {
       setLoading(false);
+      setIsSubmitting(false);
     }
   };
 
@@ -411,13 +420,13 @@ const SubirProductoPage = () => {
                 </Link>
                 <button
                   type="submit"
-                  disabled={loading}
-                  className="w-full sm:w-auto px-8 py-3 bg-primary text-white rounded-xl font-bold text-sm shadow-lg hover:opacity-90 active:scale-95 transition-all flex items-center justify-center gap-2"
+                  disabled={isSubmitting}
+                  className="w-full sm:w-auto px-8 py-3 bg-primary text-white rounded-xl font-bold text-sm shadow-lg hover:opacity-90 active:scale-95 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  {loading ? (
+                  {isSubmitting ? (
                     <>
                       <div className="animate-spin rounded-full h-4 w-4 border-t-2 border-b-2 border-white"></div>
-                      Enviando producto...
+                      Guardando...
                     </>
                   ) : (
                     <>

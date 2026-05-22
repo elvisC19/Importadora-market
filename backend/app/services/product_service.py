@@ -9,7 +9,7 @@ from app.models.category import Category
 from app.models.user import User
 from app.repositories.product_repository import product_repository
 from app.repositories.category_repository import category_repository
-from app.schemas.product import ProductCreate, ProductUpdate, ProductFilter
+from app.schemas.product import ProductCreate, ProductUpdate, ProductFilter, ProductResponse
 
 
 class ProductService:
@@ -139,6 +139,16 @@ class ProductService:
         db.commit()
         db.refresh(product)
         return product
+
+    def get_active_offers(self, db: Session, skip: int = 0, limit: int = 20) -> List[ProductResponse]:
+        """Obtener ofertas activas aprobadas con stock > 0 mapeadas a Pydantic."""
+        products = product_repository.get_active_offers(db, skip=skip, limit=limit)
+        return [ProductResponse.model_validate(p) for p in products]
+
+    def get_new_arrivals(self, db: Session, skip: int = 0, limit: int = 20) -> List[ProductResponse]:
+        """Obtener novedades aprobadas ordenadas por creación DESC mapeadas a Pydantic."""
+        products = product_repository.get_new_arrivals(db, skip=skip, limit=limit)
+        return [ProductResponse.model_validate(p) for p in products]
 
     def get_categories(self, db: Session) -> List[Category]:
         return category_repository.get_all(db)

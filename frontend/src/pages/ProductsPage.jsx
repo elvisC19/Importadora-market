@@ -52,6 +52,8 @@ const ProductsPage = () => {
   }, []);
 
   // Fetch Products
+  const { categoria_id, precio_min, precio_max, is_offer, is_new, is_featured } = filters;
+
   const fetchProducts = useCallback(async () => {
     setLoading(true);
     try {
@@ -60,12 +62,12 @@ const ProductsPage = () => {
         skip,
         limit,
         ...(debouncedSearch && { nombre: debouncedSearch }),
-        ...(filters.categoria_id && { categoria_id: filters.categoria_id }),
-        ...(filters.precio_min && { precio_min: filters.precio_min }),
-        ...(filters.precio_max && { precio_max: filters.precio_max }),
-        ...(filters.is_offer && { is_offer: true }),
-        ...(filters.is_new && { is_new: true }),
-        ...(filters.is_featured && { is_featured: true }),
+        ...(categoria_id && { categoria_id }),
+        ...(precio_min && { precio_min }),
+        ...(precio_max && { precio_max }),
+        ...(is_offer && { is_offer: true }),
+        ...(is_new && { is_new: true }),
+        ...(is_featured && { is_featured: true }),
       };
       
       const data = await productService.getProducts(params);
@@ -75,12 +77,12 @@ const ProductsPage = () => {
       // Update URL params
       const currentParams = new URLSearchParams();
       if (debouncedSearch) currentParams.set('nombre', debouncedSearch);
-      if (filters.categoria_id) currentParams.set('categoria_id', filters.categoria_id);
-      if (filters.precio_min) currentParams.set('precio_min', filters.precio_min);
-      if (filters.precio_max) currentParams.set('precio_max', filters.precio_max);
-      if (filters.is_offer) currentParams.set('is_offer', 'true');
-      if (filters.is_new) currentParams.set('is_new', 'true');
-      if (filters.is_featured) currentParams.set('is_featured', 'true');
+      if (categoria_id) currentParams.set('categoria_id', categoria_id);
+      if (precio_min) currentParams.set('precio_min', precio_min);
+      if (precio_max) currentParams.set('precio_max', precio_max);
+      if (is_offer) currentParams.set('is_offer', 'true');
+      if (is_new) currentParams.set('is_new', 'true');
+      if (is_featured) currentParams.set('is_featured', 'true');
       if (page > 1) currentParams.set('page', page);
       setSearchParams(currentParams);
       
@@ -89,7 +91,7 @@ const ProductsPage = () => {
     } finally {
       setLoading(false);
     }
-  }, [page, debouncedSearch, filters, setSearchParams]);
+  }, [page, debouncedSearch, categoria_id, precio_min, precio_max, is_offer, is_new, is_featured, setSearchParams]);
 
   useEffect(() => {
     fetchProducts();

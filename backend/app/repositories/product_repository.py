@@ -61,6 +61,20 @@ class ProductRepository(CRUDBase[Product, ProductCreate, ProductUpdate]):
             .all()
         )
 
+    def get_active_offers(self, db: Session, *, skip: int = 0, limit: int = 20) -> List[Product]:
+        """Obtener ofertas activas (aprobadas y con stock > 0)."""
+        return (
+            db.query(Product)
+            .filter(
+                Product.is_approved == True,
+                Product.is_offer == True,
+                Product.stock > 0
+            )
+            .offset(skip)
+            .limit(limit)
+            .all()
+        )
+
     def get_new_arrivals(self, db: Session, *, skip: int = 0, limit: int = 20) -> List[Product]:
         """Obtener novedades aprobadas ordenadas por fecha de creación descendente."""
         return (

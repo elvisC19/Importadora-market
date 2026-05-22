@@ -3,7 +3,7 @@
 from datetime import datetime
 from typing import Optional
 
-from pydantic import BaseModel, ConfigDict, Field, model_validator
+from pydantic import BaseModel, ConfigDict, Field, model_validator, field_validator
 
 
 # ── Category Schemas ──────────────────────────────────────
@@ -115,6 +115,13 @@ class ProductResponse(BaseModel):
     # Campos calculados
     discount_percentage: Optional[float] = None
     final_price: float = 0.0
+
+    @field_validator("submitted_by", mode="before")
+    @classmethod
+    def get_submitted_by_id(cls, v):
+        if hasattr(v, "id"):
+            return v.id
+        return v
 
     @model_validator(mode="after")
     def compute_extra_fields(self) -> "ProductResponse":
