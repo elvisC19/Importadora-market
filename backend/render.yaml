@@ -7,7 +7,7 @@ services:
     startCommand: bash start.sh
     envVars:
       - key: DATABASE_URL
-        value: sqlite:///./market.db
+        value: sqlite:///market.db
       - key: SECRET_KEY
         generateValue: true
       - key: ALGORITHM

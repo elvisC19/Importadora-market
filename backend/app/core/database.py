@@ -7,13 +7,25 @@ Conexión a la base de datos con SQLAlchemy.
   no se requiere ningún cambio de código.
 """
 
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 
 from app.core.config import settings
 
+# Read DATABASE_URL environment variable, falling back to central settings
+DATABASE_URL = os.getenv("DATABASE_URL", settings.DATABASE_URL)
+
+# Implement Absolute Path Resolution for SQLite
+if DATABASE_URL.startswith("sqlite:///"):
+    db_file = DATABASE_URL.replace("sqlite:///", "")
+    DATABASE_URL = f"sqlite:///{os.path.abspath(db_file)}"
+
+# Synchronize the central settings so that migrations/env.py also uses this absolute URL
+settings.DATABASE_URL = DATABASE_URL
+
 # ── Detección SQLite ──────────────────────────────────────
-_is_sqlite = settings.DATABASE_URL.startswith("sqlite")
+_is_sqlite = DATABASE_URL.startswith("sqlite")
 
 _connect_args: dict = {}
 if _is_sqlite:
@@ -21,7 +33,7 @@ if _is_sqlite:
 
 # ── Engine, Session, Base ─────────────────────────────────
 engine = create_engine(
-    settings.DATABASE_URL,
+    DATABASE_URL,
     connect_args=_connect_args,
 )
 
@@ -45,13 +57,12 @@ def get_db():
 
 
 # ── Resiliencia de Inicialización de SQLite ────────────────
-import os
 import logging
 
 logger = logging.getLogger("app.core.database")
 
 if _is_sqlite:
-    db_url = settings.DATABASE_URL
+    db_url = DATABASE_URL
     db_path = None
     if db_url.startswith("sqlite:///"):
         db_path = db_url[10:]
