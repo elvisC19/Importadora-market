@@ -124,7 +124,7 @@ const ProductsPage = () => {
 
   return (
     <div className="min-h-screen">
-      <div className="max-w-container-max mx-auto px-margin-desktop py-stack-xl">
+      <div className="max-w-container-max mx-auto px-4 md:px-margin-desktop py-stack-xl">
         <div className="flex flex-col lg:flex-row gap-stack-xl">
           
           {/* Sidebar Filters */}

@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     """Variables de entorno requeridas por la aplicación."""
 
     # ── Database ──────────────────────────────────────────
-    DATABASE_URL: str = "sqlite:///./dev.db"
+    DATABASE_URL: str = "sqlite:///./market.db"
 
     # ── JWT / Auth ────────────────────────────────────────
     SECRET_KEY: str = "change-this-secret"

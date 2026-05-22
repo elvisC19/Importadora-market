@@ -4,10 +4,10 @@ services:
     runtime: python
     rootDir: backend
     buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    startCommand: bash start.sh
     envVars:
       - key: DATABASE_URL
-        value: sqlite:///./dev.db
+        value: sqlite:///./market.db
       - key: SECRET_KEY
         generateValue: true
       - key: ALGORITHM

@@ -45,7 +45,7 @@ const CartPage = () => {
       <div className="max-w-7xl mx-auto">
         {/* Breadcrumb / Title */}
         <div className="mb-8">
-          <div className="flex items-center gap-2 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
+          <div className="flex items-center gap-2 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 overflow-x-auto whitespace-nowrap pb-1">
             <Link to="/" className="hover:text-primary transition-colors">Inicio</Link>
             <span className="material-symbols-outlined text-[12px]">chevron_right</span>
             <Link to="/productos" className="hover:text-primary transition-colors">Catálogo</Link>

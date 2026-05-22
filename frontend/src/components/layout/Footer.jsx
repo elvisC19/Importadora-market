@@ -2,7 +2,7 @@ import React from 'react';
 
 const Footer = () => {
   return (
-    <footer className="w-full py-stack-xl px-margin-desktop flex flex-col md:flex-row justify-between items-start gap-stack-md bg-surface-container-lowest border-t border-outline-variant mt-16">
+    <footer className="w-full py-stack-xl px-4 md:px-margin-desktop flex flex-col md:flex-row justify-between items-start gap-stack-md bg-surface-container-lowest border-t border-outline-variant mt-16">
       <div className="max-w-xs text-left">
         <span className="text-headline-sm font-headline-sm font-bold text-primary mb-stack-md block">Importadora Market</span>
         <p className="font-body-sm text-body-sm text-on-surface-variant mb-stack-lg leading-relaxed">

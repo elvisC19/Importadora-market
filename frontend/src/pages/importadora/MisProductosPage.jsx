@@ -180,7 +180,7 @@ const MisProductosPage = () => {
         ) : (
           <div className="bg-white border border-outline-variant rounded-2xl overflow-hidden shadow-sm">
             <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
+              <table className="w-full min-w-[700px] text-left border-collapse">
                 <thead>
                   <tr className="bg-slate-50 border-b border-outline-variant">
                     <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase">Producto</th>

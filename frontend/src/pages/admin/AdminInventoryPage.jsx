@@ -418,7 +418,7 @@ const AdminInventoryPage = () => {
             </div>
           ) : filteredProducts.length > 0 ? (
             <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
+              <table className="w-full min-w-[800px] text-left border-collapse">
                 <thead>
                   <tr className="bg-slate-50 text-slate-400 uppercase text-[10px] font-extrabold tracking-wider border-b border-gray-100">
                     <th className="px-6 py-4">Imagen</th>

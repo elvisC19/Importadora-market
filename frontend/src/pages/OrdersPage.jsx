@@ -120,7 +120,7 @@ const OrdersPage = () => {
       <div className="max-w-4xl mx-auto">
         {/* Header Title */}
         <div className="mb-8">
-          <div className="flex items-center gap-2 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
+          <div className="flex items-center gap-2 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 overflow-x-auto whitespace-nowrap pb-1">
             <Link to="/" className="hover:text-primary transition-colors">Inicio</Link>
             <span className="material-symbols-outlined text-[12px]">chevron_right</span>
             <span className="text-primary">Mis Pedidos</span>

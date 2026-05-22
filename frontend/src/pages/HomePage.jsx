@@ -88,7 +88,7 @@ const HomePage = () => {
     <div className="min-h-screen">
       
       {/* 1. HERO CAROUSEL SECTION */}
-      <section className="relative w-full h-[520px] overflow-hidden bg-slate-950">
+      <section className="relative w-full h-[300px] sm:h-[420px] lg:h-[520px] overflow-hidden bg-slate-950">
         <div className="absolute inset-0 flex transition-transform duration-700 h-full w-full">
           {slides.map((slide, idx) => (
             <div 
@@ -102,15 +102,15 @@ const HomePage = () => {
                 src={slide.image} 
                 alt={slide.title}
               />
-              <div className="absolute inset-0 flex flex-col justify-center px-margin-desktop bg-gradient-to-r from-on-background/90 via-on-background/50 to-transparent">
-                <div className="max-w-container-max mx-auto w-full text-left space-y-4">
+              <div className="absolute inset-0 flex flex-col justify-center px-4 md:px-margin-desktop bg-gradient-to-r from-on-background/90 via-on-background/50 to-transparent">
+                <div className="max-w-container-max mx-auto w-full text-left space-y-2 sm:space-y-4">
                   <span className="inline-block px-3.5 py-1 bg-secondary-container text-on-secondary-container font-label-md text-label-md rounded-full mb-stack-md w-max font-bold tracking-wider">
                     {slide.badge}
                   </span>
-                  <h1 className="font-display-lg text-display-lg text-white max-w-2xl leading-none">
+                  <h1 className="text-2xl sm:text-4xl lg:text-display-lg font-display-lg text-white max-w-2xl leading-none">
                     {slide.title}
                   </h1>
-                  <p className="font-body-lg text-body-lg text-surface-container-highest max-w-xl pb-4">
+                  <p className="font-body-lg text-sm sm:text-body-lg text-surface-container-highest max-w-xl pb-2 sm:pb-4 hidden sm:block">
                     {slide.desc}
                   </p>
                   <Link 
@@ -126,7 +126,7 @@ const HomePage = () => {
         </div>
         
         {/* Carousel Indicators */}
-        <div className="absolute bottom-stack-xl right-margin-desktop flex gap-stack-sm z-20">
+        <div className="absolute bottom-stack-xl right-4 md:right-margin-desktop flex gap-stack-sm z-20">
           {slides.map((_, idx) => (
             <button 
               key={idx}
@@ -140,7 +140,7 @@ const HomePage = () => {
       </section>
 
       {/* 2. PREMIUM CATEGORIES GRID */}
-      <section className="px-margin-desktop py-stack-xl max-w-container-max mx-auto">
+      <section className="px-4 md:px-margin-desktop py-stack-xl max-w-container-max mx-auto">
         <div className="flex justify-between items-end mb-stack-lg border-b border-outline-variant pb-4">
           <div>
             <h2 className="font-headline-md text-headline-md text-on-surface font-extrabold tracking-tight">Categorías Premium</h2>
@@ -186,7 +186,7 @@ const HomePage = () => {
       </section>
 
       {/* 3. FEATURED PRODUCTS GRID */}
-      <section className="px-margin-desktop py-stack-xl bg-surface-container-lowest">
+      <section className="px-4 md:px-margin-desktop py-stack-xl bg-surface-container-lowest">
         <div className="max-w-container-max mx-auto">
           <div className="flex items-center gap-stack-md mb-stack-xl">
             <h2 className="font-headline-md text-headline-md text-on-surface font-extrabold tracking-tight">Destacados de Importación</h2>
@@ -195,7 +195,7 @@ const HomePage = () => {
           </div>
 
           {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-stack-lg">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-stack-lg">
               {[1, 2, 3, 4].map((n) => (
                 <div key={n} className="bg-surface rounded-xl p-4 border border-outline-variant space-y-4 animate-pulse">
                   <div className="aspect-square bg-slate-200 rounded-lg"></div>
@@ -208,7 +208,7 @@ const HomePage = () => {
           ) : featuredProducts.length === 0 ? (
             <p className="text-center text-slate-400 py-6">No hay productos destacados disponibles.</p>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-stack-lg">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-stack-lg">
               {featuredProducts.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
@@ -218,7 +218,7 @@ const HomePage = () => {
       </section>
 
       {/* 4. EXCLUSIVE DEALS SECTION */}
-      <section className="px-margin-desktop py-stack-xl max-w-container-max mx-auto">
+      <section className="px-4 md:px-margin-desktop py-stack-xl max-w-container-max mx-auto">
         <div className="flex items-center gap-stack-md mb-stack-xl">
           <h2 className="font-headline-md text-headline-md text-on-surface font-extrabold tracking-tight">Ofertas Imperdibles</h2>
           <div className="h-px bg-outline-variant flex-1"></div>
@@ -247,7 +247,7 @@ const HomePage = () => {
       </section>
 
       {/* 5. NEW ARRIVALS GRID */}
-      <section className="px-margin-desktop py-stack-xl bg-surface-container-low border-y border-outline-variant">
+      <section className="px-4 md:px-margin-desktop py-stack-xl bg-surface-container-low border-y border-outline-variant">
         <div className="max-w-container-max mx-auto">
           <div className="flex items-center gap-stack-md mb-stack-xl">
             <h2 className="font-headline-md text-headline-md text-on-surface font-extrabold tracking-tight">Novedades</h2>
@@ -278,8 +278,8 @@ const HomePage = () => {
       </section>
 
       {/* 6. NEWSLETTER / CORPORATE CALL TO ACTION */}
-      <section className="px-margin-desktop py-stack-xl">
-        <div className="max-w-container-max mx-auto bg-primary text-white rounded-2xl p-stack-xl flex flex-col md:flex-row items-center justify-between gap-stack-xl overflow-hidden relative">
+      <section className="px-4 md:px-margin-desktop py-stack-xl">
+        <div className="max-w-container-max mx-auto bg-primary text-white rounded-2xl p-6 md:p-stack-xl flex flex-col md:flex-row items-center justify-between gap-6 md:gap-stack-xl overflow-hidden relative">
           <div className="z-10 relative space-y-2">
             <h2 className="font-headline-lg text-headline-lg font-bold leading-tight">Reliability delivered to your door.</h2>
             <p className="font-body-lg text-body-lg text-slate-300">Suscríbete para recibir alertas exclusivas sobre novedades de importación.</p>

@@ -191,7 +191,7 @@ const AdminUsersPage = () => {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 lg:ml-64 p-8">
+      <main className="flex-1 lg:ml-64 p-4 md:p-8">
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
           <div>
             <h2 className="text-3xl font-bold text-slate-900">Gestión de Usuarios</h2>
@@ -225,7 +225,7 @@ const AdminUsersPage = () => {
         {/* Table Container */}
         <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
+            <table className="w-full min-w-[750px] text-left border-collapse">
               <thead>
                 <tr className="bg-slate-50 border-b border-slate-200">
                   <th className="px-6 py-4 text-xs font-bold text-slate-500 uppercase tracking-wider">Usuario</th>

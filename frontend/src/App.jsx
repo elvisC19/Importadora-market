@@ -31,7 +31,7 @@ function App() {
       <AuthProvider>
         <CartProvider>
           <Router>
-          <div className="min-h-screen bg-background pt-16">
+          <div className="min-h-screen bg-background pt-16 overflow-x-hidden">
             <Navbar />
             <Routes>
               {/* Public Routes */}

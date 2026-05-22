@@ -166,7 +166,7 @@ const ProductDetailPage = () => {
           
           {/* LEFT SIDE: Image Gallery & Video (Bento Style) */}
           <div className="lg:col-span-7 flex flex-col gap-stack-lg">
-            <div className="grid grid-cols-4 grid-rows-4 gap-stack-md h-[550px]">
+            <div className="grid grid-cols-4 grid-rows-4 gap-stack-md h-[300px] sm:h-[400px] lg:h-[550px]">
               
               {/* Big Main Image Container */}
               <div className="col-span-4 row-span-3 rounded-xl overflow-hidden border border-outline-variant bg-surface-container-lowest relative flex items-center justify-center shadow-sm">
