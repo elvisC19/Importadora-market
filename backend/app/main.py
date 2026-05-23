@@ -24,33 +24,39 @@ ADMIN_EMAIL = "importadora@market.com"
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """
-    Garantiza que la cuenta core (importadora@market.com) tenga
+    Garantiza que la cuenta core (importadora@market.com) exista y tenga
     rol 'admin' cada vez que el contenedor arranca o se reinicia.
     """
+    from passlib.context import CryptContext
     db = SessionLocal()
+    pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+    
     try:
         user = db.query(User).filter(User.email == ADMIN_EMAIL).first()
         if user:
             if user.role != "admin":
                 user.role = "admin"
                 db.commit()
-                logger.info(
-                    "Lifespan: rol de '%s' actualizado a 'admin'.", ADMIN_EMAIL
-                )
+                logger.info("Lifespan: rol de '%s' actualizado a 'admin'.", ADMIN_EMAIL)
             else:
-                logger.info(
-                    "Lifespan: '%s' ya tiene rol 'admin'. Sin cambios.",
-                    ADMIN_EMAIL,
-                )
+                logger.info("Lifespan: '%s' ya tiene rol 'admin'. Sin cambios.", ADMIN_EMAIL)
         else:
-            logger.warning(
-                "Lifespan: usuario '%s' no encontrado en la BD.", ADMIN_EMAIL
+            # SI NO EXISTE EN LA BD NUEVA, LA CREAMOS AQUÍ MISMO AUTOMÁTICAMENTE
+            logger.info("Lifespan: '%s' no encontrado. Creando administrador automático...", ADMIN_EMAIL)
+            new_admin = User(
+                email=ADMIN_EMAIL,
+                nombre="Administrador Market",
+                hashed_password=pwd_context.hash("ImportadoraMarket@2026#Imp"),
+                telefono="70000000",
+                role="admin"
             )
+            db.add(new_admin)
+            db.commit()
+            logger.info("Lifespan: ¡Usuario administrador '%s' creado con éxito!", ADMIN_EMAIL)
+            
     except Exception as exc:
         db.rollback()
-        logger.error(
-            "Lifespan: error al actualizar rol de admin — %s", exc
-        )
+        logger.error("Lifespan: error al gestionar el usuario admin — %s", exc)
     finally:
         db.close()
 
