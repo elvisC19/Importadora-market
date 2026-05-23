@@ -46,7 +46,7 @@ async def lifespan(app: FastAPI):
             new_admin = User(
                 email=ADMIN_EMAIL,
                 nombre="Administrador Market",
-                hashed_password=pwd_context.hash("ImportadoraMarket@2026#Imp"),
+                password=pwd_context.hash("ImportadoraMarket@2026#Imp"),
                 telefono="70000000",
                 role="admin"
             )
