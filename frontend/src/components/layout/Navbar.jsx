@@ -200,6 +200,14 @@ const Navbar = () => {
                             <span className="material-symbols-outlined text-[20px]">upload_file</span>
                             {t('nav.uploadProduct')}
                           </Link>
+                          <Link 
+                            to="/importadora/pedidos" 
+                            onClick={() => setIsImportadoraDropdownOpen(false)}
+                            className="w-full text-left px-4 py-2.5 text-sm font-semibold hover:bg-brand-tech/20 hover:text-brand-copper-light transition-colors flex items-center gap-3 rounded-lg"
+                          >
+                            <span className="material-symbols-outlined text-[20px]">point_of_sale</span>
+                            Mis Ventas
+                          </Link>
                         </div>
                       </div>
                     )}
@@ -396,6 +404,10 @@ const Navbar = () => {
                   <Link to="/importadora/subir" className={mobileNavLinkClass('/importadora/subir')}>
                     <span className="material-symbols-outlined text-[20px]">upload_file</span>
                     {t('nav.uploadProduct')}
+                  </Link>
+                  <Link to="/importadora/pedidos" className={mobileNavLinkClass('/importadora/pedidos')}>
+                    <span className="material-symbols-outlined text-[20px]">point_of_sale</span>
+                    Mis Ventas
                   </Link>
                 </div>
               )}

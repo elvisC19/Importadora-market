@@ -18,6 +18,7 @@ import AdminInventoryPage from './pages/admin/AdminInventoryPage';
 import AdminOrdersPage from './pages/admin/AdminOrdersPage';
 import MisProductosPage from './pages/importadora/MisProductosPage';
 import SubirProductoPage from './pages/importadora/SubirProductoPage';
+import ImportadoraOrdersPage from './pages/importadora/ImportadoraOrdersPage';
 import CartPage from './pages/CartPage';
 import CheckoutPage from './pages/CheckoutPage';
 import OrdersPage from './pages/OrdersPage';
@@ -61,6 +62,7 @@ function App() {
               <Route element={<ImportadoraRoute />}>
                 <Route path="/importadora/productos" element={<MisProductosPage />} />
                 <Route path="/importadora/subir" element={<SubirProductoPage />} />
+                <Route path="/importadora/pedidos" element={<ImportadoraOrdersPage />} />
               </Route>
 
               {/* Admin Routes */}

@@ -54,13 +54,22 @@ const MisProductosPage = () => {
               Gestiona y realiza seguimiento de las importaciones que has enviado para aprobación.
             </p>
           </div>
-          <Link
-            to="/importadora/subir"
-            className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-secondary text-on-secondary rounded-xl hover:opacity-90 active:scale-95 transition-all font-bold shadow-md self-start md:self-auto"
-          >
-            <span className="material-symbols-outlined text-[20px]">upload_file</span>
-            Subir Nuevo Producto
-          </Link>
+          <div className="flex flex-wrap gap-3 self-start md:self-auto">
+            <Link
+              to="/importadora/pedidos"
+              className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white text-primary border border-gray-200 rounded-xl hover:bg-slate-50 active:scale-95 transition-all font-bold shadow-sm"
+            >
+              <span className="material-symbols-outlined text-[20px]">point_of_sale</span>
+              Ver mis ventas
+            </Link>
+            <Link
+              to="/importadora/subir"
+              className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-secondary text-on-secondary rounded-xl hover:opacity-90 active:scale-95 transition-all font-bold shadow-md"
+            >
+              <span className="material-symbols-outlined text-[20px]">upload_file</span>
+              Subir Nuevo Producto
+            </Link>
+          </div>
         </div>
 
         {/* Stats Cards */}

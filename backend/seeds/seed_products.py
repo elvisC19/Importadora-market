@@ -13,6 +13,14 @@ from app.core.security import hash_password
 def seed():
     print("Starting database seeding...")
     db = SessionLocal()
+    
+    # Verificar si ya existen datos
+    existing = db.query(User).filter(User.email == "admin@market.com").first()
+    if existing:
+        print("Datos ya inicializados, omitiendo seed.")
+        db.close()
+        exit(0)
+
     try:
         # Clear existing data to ensure exact counts
         db.query(Product).delete()
