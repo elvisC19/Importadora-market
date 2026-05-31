@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { useCart } from '../../contexts/CartContext';
 
 const ProductCard = ({ product }) => {
   const { t } = useTranslation();
+  const { addItem } = useCart();
   const {
     id,
     nombre,
@@ -21,18 +23,8 @@ const ProductCard = ({ product }) => {
   const handleAddToCart = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    // Trigger local storage cart / custom toast
-    const existingCart = JSON.parse(localStorage.getItem('cart') || '[]');
-    const itemIndex = existingCart.findIndex(item => item.id === id);
-    if (itemIndex > -1) {
-      existingCart[itemIndex].quantity += 1;
-    } else {
-      existingCart.push({ ...product, quantity: 1 });
-    }
-    localStorage.setItem('cart', JSON.stringify(existingCart));
     
-    // Dispatch a global storage event to update the navbar cart badge
-    window.dispatchEvent(new Event('storage'));
+    addItem(product, 1);
     
     // Show a premium native toast notice
     const toast = document.createElement('div');

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import productService from '../services/productService';
 import Footer from '../components/layout/Footer';
+import { useCart } from '../contexts/CartContext';
 
 // Fallback component for images that haven't been added yet
 const ImageFallback = ({ label, className = '' }) => (
@@ -69,6 +70,7 @@ const EmptySectionState = ({ icon }) => {
 // Local premium product card for homepage matching specific guidelines
 const HomeProductCard = ({ product }) => {
   const { t } = useTranslation();
+  const { addItem } = useCart();
   
   const {
     id,
@@ -87,15 +89,7 @@ const HomeProductCard = ({ product }) => {
   const handleAddToCart = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    const existingCart = JSON.parse(localStorage.getItem('cart') || '[]');
-    const itemIndex = existingCart.findIndex(item => item.id === id);
-    if (itemIndex > -1) {
-      existingCart[itemIndex].quantity += 1;
-    } else {
-      existingCart.push({ ...product, quantity: 1 });
-    }
-    localStorage.setItem('cart', JSON.stringify(existingCart));
-    window.dispatchEvent(new Event('storage'));
+    addItem(product, 1);
     
     // Toast notification
     const toast = document.createElement('div');

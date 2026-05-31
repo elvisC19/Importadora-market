@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import productService from '../services/productService';
 import Footer from '../components/layout/Footer';
+import { useCart } from '../contexts/CartContext';
 
 const ProductDetailPage = () => {
   const { id } = useParams();
+  const { addItem } = useCart();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -44,17 +46,7 @@ const ProductDetailPage = () => {
   const handleAddToCart = () => {
     if (!product || product.stock <= 0) return;
     
-    const existingCart = JSON.parse(localStorage.getItem('cart') || '[]');
-    const itemIndex = existingCart.findIndex(item => item.id === product.id);
-    if (itemIndex > -1) {
-      existingCart[itemIndex].quantity += quantity;
-    } else {
-      existingCart.push({ ...product, quantity });
-    }
-    localStorage.setItem('cart', JSON.stringify(existingCart));
-    
-    // Dispatch event to update Navbar count
-    window.dispatchEvent(new Event('storage'));
+    addItem(product, quantity);
 
     // Custom Toast Notice
     const toast = document.createElement('div');

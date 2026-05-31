@@ -3,24 +3,31 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  const [cart, setCart] = useState(() => {
-    const stored = localStorage.getItem('cart');
-    if (!stored) return [];
+  // 5. Al inicializar el carrito carga desde localStorage primero
+  const [items, setItems] = useState(() => {
     try {
-      const parsed = JSON.parse(stored);
-      // Ensure the parsed structure matches [{ product: {...}, cantidad: N }]
-      if (Array.isArray(parsed)) {
-        return parsed.map(item => {
-          // Backward compatibility / robustness: if stored in old format, normalize it
-          if (item && item.id && !item.product) {
-            const { quantity, ...product } = item;
-            return {
-              product,
-              cantidad: quantity || 1
-            };
-          }
-          return item;
-        }).filter(item => item && item.product && item.product.id);
+      const saved = localStorage.getItem('cart_items') || localStorage.getItem('cart');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed)) {
+          return parsed.map(item => {
+            // Normalización: si viene en formato estructurado viejo [{ product, cantidad }], convertir a [{ ...product, quantity }]
+            if (item && item.product && item.product.id && item.cantidad !== undefined) {
+              return {
+                ...item.product,
+                quantity: item.cantidad
+              };
+            }
+            // Formato directo [{ ...product, quantity }]
+            if (item && item.id) {
+              return {
+                ...item,
+                quantity: item.quantity || 1
+              };
+            }
+            return null;
+          }).filter(item => item && item.id);
+        }
       }
       return [];
     } catch (error) {
@@ -29,80 +36,125 @@ export const CartProvider = ({ children }) => {
     }
   });
 
-  // Sync state with localStorage on any cart modification
+  // 4. Persiste en localStorage inmediatamente cada vez que cambia el carrito
   useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cart));
-    // Dispatch standard storage event so other non-context elements (like custom toast) are notified
+    localStorage.setItem('cart_items', JSON.stringify(items));
+    // Escribir también a la clave antigua 'cart' para mantener compatibilidad absoluta con ProductCard, HomePage, etc.
+    localStorage.setItem('cart', JSON.stringify(items));
+    // Propagar evento standard para notificar a otras vistas o toasts
     window.dispatchEvent(new Event('storage'));
-  }, [cart]);
+  }, [items]);
 
-  // Add an item to the cart
-  const addItem = (product, quantity) => {
-    if (!product || !product.id) return;
-    const qtyToAdd = Math.max(1, quantity);
+  // Escuchar cambios de localStorage en tiempo real para sincronizar clics externos en 'Add to cart'
+  useEffect(() => {
+    const handleStorageChange = () => {
+      try {
+        const stored = localStorage.getItem('cart_items') || localStorage.getItem('cart');
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed)) {
+            const normalized = parsed.map(item => {
+              if (item && item.product && item.product.id && item.cantidad !== undefined) {
+                return {
+                  ...item.product,
+                  quantity: item.cantidad
+                };
+              }
+              if (item && item.id) {
+                return {
+                  ...item,
+                  quantity: item.quantity || 1
+                };
+              }
+              return null;
+            }).filter(item => item && item.id);
 
-    setCart((prevCart) => {
-      const existingIndex = prevCart.findIndex((item) => item.product.id === product.id);
-
-      if (existingIndex > -1) {
-        const newCart = [...prevCart];
-        const newQty = newCart[existingIndex].cantidad + qtyToAdd;
-        // Limit quantity to available stock if available
-        const maxStock = product.stock != null ? product.stock : Infinity;
-        newCart[existingIndex] = {
-          ...newCart[existingIndex],
-          cantidad: Math.min(newQty, maxStock),
-        };
-        return newCart;
-      } else {
-        const maxStock = product.stock != null ? product.stock : Infinity;
-        return [...prevCart, { product, cantidad: Math.min(qtyToAdd, maxStock) }];
+            setItems(prevItems => {
+              // Evitar ciclos de re-renderizado infinitos comparando valores id/quantity
+              const isIdentical = prevItems.length === normalized.length && 
+                prevItems.every((item, idx) => 
+                  item.id === normalized[idx].id && 
+                  item.quantity === normalized[idx].quantity
+                );
+              if (isIdentical) {
+                return prevItems;
+              }
+              return normalized;
+            });
+          }
+        }
+      } catch (error) {
+        console.error('Failed to sync cart on storage event:', error);
       }
-    });
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
+
+  // 1. En la función addItem actualiza el estado local primero y luego sincroniza
+  const addItem = (product, quantity = 1) => {
+    if (!product || !product.id) return;
+
+    // Actualizar estado local INMEDIATAMENTE
+    setItems(prevItems => {
+      const existing = prevItems.find(item => item.id === product.id)
+      if (existing) {
+        return prevItems.map(item =>
+          item.id === product.id
+            ? { ...item, quantity: item.quantity + quantity }
+            : item
+        )
+      }
+      return [...prevItems, { ...product, quantity }]
+    })
+    // Mostrar feedback visual inmediato (toast o badge)
   };
 
-  // Remove an item from the cart completely
+  // 2. En la función removeItem igual, actualiza primero
   const removeItem = (productId) => {
-    setCart((prevCart) => prevCart.filter((item) => item.product.id !== productId));
+    setItems(prevItems => prevItems.filter(item => item.id !== productId))
   };
 
-  // Update quantity of an item in the cart
+  // 3. En la función updateQuantity actualiza primero
   const updateQuantity = (productId, quantity) => {
     if (quantity <= 0) {
-      removeItem(productId);
-      return;
+      removeItem(productId)
+      return
     }
-
-    setCart((prevCart) =>
-      prevCart.map((item) => {
-        if (item.product.id === productId) {
-          const maxStock = item.product.stock != null ? item.product.stock : Infinity;
-          return {
-            ...item,
-            cantidad: Math.min(quantity, maxStock),
-          };
-        }
-        return item;
-      })
-    );
+    setItems(prevItems =>
+      prevItems.map(item =>
+        item.id === productId ? { ...item, quantity } : item
+      )
+    )
   };
 
-  // Clear the entire cart
+  // Vaciar el carrito
   const clearCart = () => {
-    setCart([]);
+    setItems([]);
   };
 
-  // Helper selectors
-  const cartItemsCount = cart.reduce((sum, item) => sum + item.cantidad, 0);
+  // Capas de compatibilidad para componentes de páginas existentes (CartPage, CheckoutPage, etc.)
+  // Convierte los items [{ ...product, quantity }] de vuelta al formato estructurado viejo [{ product, cantidad }]
+  const cart = items.map(item => {
+    const { quantity, ...product } = item;
+    return {
+      product,
+      cantidad: quantity
+    };
+  });
 
-  const cartTotal = cart.reduce((sum, item) => {
-    const price = item.product.is_offer && item.product.offer_price != null
-      ? item.product.offer_price
-      : item.product.precio;
-    return sum + (price * item.cantidad);
+  const cartItemsCount = items.reduce((sum, item) => sum + item.quantity, 0);
+
+  const cartTotal = items.reduce((sum, item) => {
+    const price = item.is_offer && item.offer_price != null
+      ? item.offer_price
+      : item.precio;
+    return sum + (price * item.quantity);
   }, 0);
 
   const value = {
+    items,
     cart,
     addItem,
     removeItem,
@@ -122,3 +174,4 @@ export const useCart = () => {
   }
   return context;
 };
+
