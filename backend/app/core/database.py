@@ -16,6 +16,10 @@ from app.core.config import settings
 # Read DATABASE_URL environment variable, falling back to central settings
 DATABASE_URL = os.getenv("DATABASE_URL", settings.DATABASE_URL)
 
+# ── Corrección prefijo PostgreSQL (Render usa "postgres://") ──
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql://", 1)
+
 # Implement Absolute Path Resolution for SQLite
 if DATABASE_URL.startswith("sqlite:///"):
     db_file = DATABASE_URL.replace("sqlite:///", "")

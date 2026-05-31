@@ -3,16 +3,24 @@ services:
     name: importadora-market-backend
     runtime: python
     rootDir: backend
-    buildCommand: pip install -r requirements.txt
+    buildCommand: pip install -r requirements.txt && python -m alembic upgrade head
     startCommand: bash start.sh
     envVars:
       - key: DATABASE_URL
-        value: sqlite:///market.db
+        fromDatabase:
+          name: importadora-market-db
+          property: connectionURI
       - key: SECRET_KEY
         generateValue: true
       - key: ALGORITHM
         value: HS256
       - key: ACCESS_TOKEN_EXPIRE_MINUTES
-        value: 120
+        value: "120"
       - key: FRONTEND_URL
         value: https://TU-FRONTEND.onrender.com
+      - key: ADMIN_EMAIL
+        value: elvishcordova@gmail.com
+
+databases:
+  - name: importadora-market-db
+    plan: free

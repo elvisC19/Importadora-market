@@ -141,20 +141,80 @@ importadora-market/
 - Historial de pedidos personal en formato acordeón dinámico ordenado cronológicamente
 - Gestión y actualización de estados del pedido (`pendiente` → `confirmado` → `entregado` → `cancelado`)
 
-### Hito 4 — Panel Admin y Estadísticas 🔄
+### Hito 4 — Panel Admin y Estadísticas ✅
 - Dashboard con métricas
 - Gráficos con Chart.js
 - Exportación CSV
 
-### Hito 5 — Notificaciones y Contacto 🔄
+### Hito 5 — Notificaciones y Contacto ✅
 - Correos automáticos (confirmación, cambio estado)
-- Formulario de contacto con reCAPTCHA
+- Formulario de contacto
 - Página "Sobre nosotros"
 
-### Hito 6 — Pruebas y Despliegue 🔄
+### Hito 6 — Pruebas, Documentación y Despliegue ✅
 - Cobertura de tests ≥ 70%
 - Documentación completa
-- Despliegue con HTTPS
+- Despliegue en Render con PostgreSQL y HTTPS
+
+---
+
+## 🚀 Despliegue en Render
+
+### Variables de entorno requeridas en producción
+
+| Variable | Descripción | Ejemplo |
+|----------|-------------|---------|
+| `DATABASE_URL` | URI de conexión PostgreSQL (proporcionada por Render) | `postgresql://user:pass@host/db` |
+| `SECRET_KEY` | Clave secreta para firmar tokens JWT | *(generada automáticamente por Render)* |
+| `ALGORITHM` | Algoritmo de firma JWT | `HS256` |
+| `ACCESS_TOKEN_EXPIRE_MINUTES` | Tiempo de vida del token en minutos | `120` |
+| `FRONTEND_URL` | URL del frontend desplegado (para CORS) | `https://importadora-market-frontend.onrender.com` |
+| `ADMIN_EMAIL` | Correo del administrador del sistema | `elvishcordova@gmail.com` |
+| `SMTP_HOST` | Servidor SMTP para envío de correos | `smtp.gmail.com` |
+| `SMTP_PORT` | Puerto del servidor SMTP | `587` |
+| `SMTP_USER` | Usuario SMTP | `tu-correo@gmail.com` |
+| `SMTP_PASSWORD` | Contraseña de aplicación SMTP | `xxxx xxxx xxxx xxxx` |
+| `VITE_API_URL` | *(Frontend)* URL base de la API | `https://importadora-market-backend.onrender.com/api/v1` |
+
+### Pasos para crear la base de datos PostgreSQL en Render
+
+1. **Crear la base de datos**: En el Dashboard de Render → **New** → **PostgreSQL** → seleccionar plan **Free** → nombre: `importadora-market-db` → **Create Database**.
+2. **Crear el servicio backend**: **New** → **Web Service** → conectar el repositorio de GitHub → seleccionar `backend/` como **Root Directory** → runtime **Python**.
+3. **Configurar Build Command**:
+   ```bash
+   pip install -r requirements.txt && python -m alembic upgrade head
+   ```
+4. **Configurar Start Command**:
+   ```bash
+   bash start.sh
+   ```
+5. **Vincular la base de datos**: En el servicio backend → **Environment** → agregar `DATABASE_URL` → seleccionar **From Database** → elegir `importadora-market-db` → propiedad `connectionURI`.
+6. **Configurar las demás variables de entorno** listadas en la tabla anterior.
+7. **Crear el servicio frontend**: **New** → **Static Site** → conectar el repositorio → seleccionar `frontend/` como **Root Directory** → Build Command: `npm install && npm run build` → Publish Directory: `dist`.
+8. **Configurar `VITE_API_URL`** en el frontend con la URL del backend desplegado.
+
+### Comando para ejecutar el seed inicial después del primer despliegue
+
+Conectarse al **Shell** del servicio backend en Render y ejecutar:
+
+```bash
+# Sembrar usuario administrador
+python seed_admin.py
+
+# Sembrar categorías y productos de demostración
+python seeds/seed_products.py
+```
+
+> **Nota:** El script `start.sh` ya ejecuta ambos seeds automáticamente en cada despliegue, por lo que normalmente no es necesario ejecutarlos manualmente.
+
+### 📖 Documentación de la API
+
+La documentación interactiva de la API está disponible en:
+
+- **Swagger UI**: `https://TU-BACKEND.onrender.com/docs`
+- **ReDoc**: `https://TU-BACKEND.onrender.com/redoc`
+
+En desarrollo local: `http://localhost:8000/docs`
 
 ---
 
@@ -236,3 +296,4 @@ Este proyecto es de uso académico. Todos los derechos reservados © 2026.
 <div align="center">
   Hecho por 🦖
 </div>
+
