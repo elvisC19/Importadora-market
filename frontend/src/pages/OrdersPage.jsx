@@ -52,41 +52,52 @@ const OrdersPage = () => {
     }
   };
 
-  // Helper to style status badges
+  // Helper to style status badges — Hito 3 statuses
   const getStatusBadge = (status) => {
-    const cleanStatus = status?.toLowerCase() || 'pendiente';
+    const cleanStatus = status?.toLowerCase() || 'pending';
     
-    switch (cleanStatus) {
-      case 'confirmado':
-        return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-blue-50 text-blue-700 rounded-full text-xs font-bold border border-blue-200">
-            <span className="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
-            Confirmado
-          </span>
-        );
-      case 'entregado':
-        return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-green-50 text-green-700 rounded-full text-xs font-bold border border-green-200">
-            <span className="w-1.5 h-1.5 rounded-full bg-green-600"></span>
-            Entregado
-          </span>
-        );
-      case 'cancelado':
-        return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-red-50 text-red-700 rounded-full text-xs font-bold border border-red-200">
-            <span className="w-1.5 h-1.5 rounded-full bg-red-600"></span>
-            Cancelado
-          </span>
-        );
-      case 'pendiente':
-      default:
-        return (
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 text-amber-700 rounded-full text-xs font-bold border border-amber-200 animate-pulse">
-            <span className="w-1.5 h-1.5 rounded-full bg-amber-600"></span>
-            Pendiente
-          </span>
-        );
-    }
+    const statusConfig = {
+      pending: {
+        label: 'Pendiente',
+        classes: 'bg-amber-50 text-amber-700 border-amber-200',
+        dotClass: 'bg-amber-600',
+        animate: true,
+      },
+      confirmed: {
+        label: 'Confirmado',
+        classes: 'bg-blue-50 text-blue-700 border-blue-200',
+        dotClass: 'bg-blue-600',
+      },
+      processing: {
+        label: 'En Proceso',
+        classes: 'bg-indigo-50 text-indigo-700 border-indigo-200',
+        dotClass: 'bg-indigo-600',
+      },
+      shipped: {
+        label: 'Enviado',
+        classes: 'bg-purple-50 text-purple-700 border-purple-200',
+        dotClass: 'bg-purple-600',
+      },
+      delivered: {
+        label: 'Entregado',
+        classes: 'bg-green-50 text-green-700 border-green-200',
+        dotClass: 'bg-green-600',
+      },
+      cancelled: {
+        label: 'Cancelado',
+        classes: 'bg-red-50 text-red-700 border-red-200',
+        dotClass: 'bg-red-600',
+      },
+    };
+
+    const config = statusConfig[cleanStatus] || statusConfig.pending;
+
+    return (
+      <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${config.classes} ${config.animate ? 'animate-pulse' : ''}`}>
+        <span className={`w-1.5 h-1.5 rounded-full ${config.dotClass}`}></span>
+        {config.label}
+      </span>
+    );
   };
 
   if (loading) {
@@ -156,7 +167,7 @@ const OrdersPage = () => {
               const isExpanded = expandedOrderId === order.id;
               
               // Calculate details totals
-              const itemsCount = order.items?.reduce((sum, it) => sum + (it.cantidad || 0), 0) || 0;
+              const itemsCount = order.items?.reduce((sum, it) => sum + (it.quantity || 0), 0) || 0;
 
               return (
                 <div 
@@ -173,14 +184,14 @@ const OrdersPage = () => {
                         #{order.id}
                       </div>
                       <div className="text-sm font-semibold text-slate-400">
-                        {formatDate(order.created_at)}
+                        {formatDate(order.order_date)}
                       </div>
                     </div>
 
                     <div className="flex items-center justify-between md:justify-end gap-6 w-full md:w-auto">
                       <div className="text-left md:text-right">
                         <p className="text-xs text-slate-400 font-medium">{itemsCount} {itemsCount === 1 ? 'artículo' : 'artículos'}</p>
-                        <p className="text-base font-bold text-primary mt-0.5">{order.total?.toFixed(2)} Bs.</p>
+                        <p className="text-base font-bold text-primary mt-0.5">{order.total_amount?.toFixed(2)} Bs.</p>
                       </div>
 
                       <div className="flex items-center gap-3">
@@ -215,19 +226,26 @@ const OrdersPage = () => {
                           <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-1">Contacto Registrado</p>
                           <p className="text-on-surface bg-white p-3 rounded-xl border border-outline-variant/40 flex items-center gap-2">
                             <span className="material-symbols-outlined text-[18px] text-green-600">phone</span>
-                            +591 {order.phone}
+                            {order.phone}
                           </p>
                         </div>
                         <div>
-                          <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-1">Tipo de Transacción</p>
-                          <p className="text-on-surface bg-white p-3 rounded-xl border border-outline-variant/40 capitalize flex items-center gap-2 font-bold">
-                            <span className="material-symbols-outlined text-[18px] text-primary">
-                              {order.tipo_venta === 'retail' ? 'storefront' : 'inventory_2'}
-                            </span>
-                            {order.tipo_venta === 'retail' ? 'Venta por Menor' : 'Venta por Mayor'}
-                          </p>
+                          <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-1">Estado del Pedido</p>
+                          <div className="bg-white p-3 rounded-xl border border-outline-variant/40">
+                            {getStatusBadge(order.status)}
+                          </div>
                         </div>
                       </div>
+
+                      {/* Notes section (if present) */}
+                      {order.notes && (
+                        <div className="border-b border-outline-variant/60 pb-5">
+                          <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-1">Notas</p>
+                          <p className="text-on-surface bg-white p-3 rounded-xl border border-outline-variant/40 text-sm font-medium leading-relaxed">
+                            {order.notes}
+                          </p>
+                        </div>
+                      )}
 
                       {/* Items list breakdown */}
                       <div className="space-y-4">
@@ -250,13 +268,13 @@ const OrdersPage = () => {
                                       {prod.nombre || 'Producto no especificado'}
                                     </h5>
                                     <p className="text-xs text-slate-400 mt-0.5">
-                                      Cantidad: <strong className="text-slate-600 font-semibold">{item.cantidad}</strong> x {item.precio_unitario?.toFixed(2) || prod.precio?.toFixed(2)} Bs.
+                                      Cantidad: <strong className="text-slate-600 font-semibold">{item.quantity}</strong> x {item.unit_price?.toFixed(2)} Bs.
                                     </p>
                                   </div>
                                 </div>
                                 
                                 <span className="text-sm font-bold text-on-surface whitespace-nowrap">
-                                  {((item.precio_unitario || prod.precio || 0) * (item.cantidad || 0)).toFixed(2)} Bs.
+                                  {item.subtotal?.toFixed(2)} Bs.
                                 </span>
                               </div>
                             );
@@ -264,11 +282,11 @@ const OrdersPage = () => {
                         </div>
                       </div>
 
-                      {/* PDF / WhatsApp Help center CTA */}
+                      {/* Footer CTA */}
                       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-outline-variant/60 pt-5 bg-slate-50 -mx-5 -mb-5 px-5 py-4 rounded-b-2xl">
                         <div className="flex items-center gap-2 text-xs font-bold text-slate-400">
                           <span className="material-symbols-outlined text-[16px] text-green-600">lock</span>
-                          Pedido Seguro en WhatsApp
+                          Pedido Seguro
                         </div>
                         <a 
                           href={`https://wa.me/59170000000?text=Hola%21%20Quisiera%20consultar%20por%20mi%20pedido%20con%20código%20%23${order.id}`}

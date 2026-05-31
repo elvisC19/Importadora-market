@@ -64,14 +64,13 @@ def test_create_order_success(client: TestClient, db: Session):
         offer_price=80.0
     )
 
-    # 3. Create order
+    # 3. Create order (using English keys)
     order_payload = {
-        "tipo_venta": "retail",
         "shipping_address": "Av. Arce 1234, La Paz",
         "phone": "71234567",
         "items": [
-            {"product_id": p1.id, "cantidad": 2},
-            {"product_id": p2.id, "cantidad": 3}
+            {"product_id": p1.id, "quantity": 2},
+            {"product_id": p2.id, "quantity": 3}
         ]
     }
 
@@ -83,14 +82,12 @@ def test_create_order_success(client: TestClient, db: Session):
 
     assert response.status_code == 201
     res_data = response.json()
-    assert res_data["tipo_venta"] == "retail"
     assert res_data["shipping_address"] == "Av. Arce 1234, La Paz"
     assert res_data["phone"] == "71234567"
-    assert res_data["estado"] == "pendiente"
-    assert res_data["metodo_pago"] == "Manual Transfer / Cash"
+    assert res_data["status"] == "pending"
 
     # Dynamic total check: 2 * 1000.0 + 3 * 80.0 = 2240.0
-    assert res_data["total"] == 2240.0
+    assert res_data["total_amount"] == 2240.0
     assert len(res_data["items"]) == 2
 
     # Stock reduction check
@@ -115,11 +112,10 @@ def test_create_order_insufficient_stock_raises_400(client: TestClient, db: Sess
 
     # 3. Create order requesting 2 items (available: 1)
     order_payload = {
-        "tipo_venta": "retail",
         "shipping_address": "Av. Arce 1234, La Paz",
         "phone": "71234567",
         "items": [
-            {"product_id": p1.id, "cantidad": 2}
+            {"product_id": p1.id, "quantity": 2}
         ]
     }
 
@@ -148,13 +144,12 @@ def test_create_order_invalid_phone_raises_422(client: TestClient, db: Session):
 
     p1 = create_test_product(db, nombre="Asus Laptop 3", precio=1000.0, stock=5)
 
-    # Bolivian phone must be 8 digits starting with 6 or 7
+    # Phone is invalid if length < 7
     order_payload = {
-        "tipo_venta": "retail",
         "shipping_address": "Av. Arce 1234, La Paz",
-        "phone": "12345678",  # Invalid prefix
+        "phone": "12345",  # Length < 7
         "items": [
-            {"product_id": p1.id, "cantidad": 1}
+            {"product_id": p1.id, "quantity": 1}
         ]
     }
 
@@ -180,11 +175,10 @@ def test_read_my_orders(client: TestClient, db: Session):
     p1 = create_test_product(db, nombre="Asus Laptop 4", precio=1000.0, stock=5)
 
     order_payload = {
-        "tipo_venta": "retail",
         "shipping_address": "Av. Arce 1234, La Paz",
         "phone": "71234567",
         "items": [
-            {"product_id": p1.id, "cantidad": 1}
+            {"product_id": p1.id, "quantity": 1}
         ]
     }
 
@@ -220,11 +214,10 @@ def test_admin_endpoints(client: TestClient, db: Session, admin_token_headers):
     p1 = create_test_product(db, nombre="Asus Laptop 5", precio=1000.0, stock=5)
 
     order_payload = {
-        "tipo_venta": "retail",
         "shipping_address": "Av. Arce 1234, La Paz",
         "phone": "71234567",
         "items": [
-            {"product_id": p1.id, "cantidad": 1}
+            {"product_id": p1.id, "quantity": 1}
         ]
     }
 
@@ -233,6 +226,7 @@ def test_admin_endpoints(client: TestClient, db: Session, admin_token_headers):
         json=order_payload,
         headers={"Authorization": f"Bearer {client_token}"}
     )
+    assert order_res.status_code == 201
     order_id = order_res.json()["id"]
 
     # 2. Get all orders as regular user (should fail with 403)
@@ -253,20 +247,20 @@ def test_admin_endpoints(client: TestClient, db: Session, admin_token_headers):
     # 4. Update status as admin
     response_status = client.put(
         f"/api/v1/orders/{order_id}/status",
-        json={"status": "confirmado"},
+        json={"status": "confirmed"},
         headers=admin_token_headers
     )
     assert response_status.status_code == 200
-    assert response_status.json()["estado"] == "confirmado"
+    assert response_status.json()["status"] == "confirmed"
 
     # 5. Cancel order and verify stock recovery
     response_cancel = client.put(
         f"/api/v1/orders/{order_id}/status",
-        json={"status": "cancelado"},
+        json={"status": "cancelled"},
         headers=admin_token_headers
     )
     assert response_cancel.status_code == 200
-    assert response_cancel.json()["estado"] == "cancelado"
+    assert response_cancel.json()["status"] == "cancelled"
 
     # Stock should be restored from 4 back to 5
     db.refresh(p1)

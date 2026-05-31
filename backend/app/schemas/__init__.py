@@ -18,11 +18,16 @@ from app.schemas.product import (
     ProductFilter,
 )
 from app.schemas.order import (
+    OrderStatus,
     OrderItemCreate,
     OrderCreate,
+    OrderStatusUpdate,
+    OrderUserInfo,
     OrderItemResponse,
     OrderResponse,
+    OrderFilter,
 )
+from app.schemas.contact import ContactCreate, ContactResponse
 
 __all__ = [
     "UserCreate",
@@ -39,8 +44,16 @@ __all__ = [
     "ProductUpdate",
     "ProductResponse",
     "ProductFilter",
+    "OrderStatus",
     "OrderItemCreate",
     "OrderCreate",
+    "OrderStatusUpdate",
+    "OrderUserInfo",
     "OrderItemResponse",
     "OrderResponse",
+    "OrderFilter",
+    "ContactCreate",
+    "ContactResponse",
 ]
+
+

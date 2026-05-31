@@ -12,14 +12,19 @@ import ProfilePage from './pages/ProfilePage';
 import ProductsPage from './pages/ProductsPage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import HomePage from './pages/HomePage';
+import AdminDashboardPage from './pages/admin/AdminDashboardPage';
 import AdminUsersPage from './pages/admin/AdminUsersPage';
 import AdminInventoryPage from './pages/admin/AdminInventoryPage';
+import AdminOrdersPage from './pages/admin/AdminOrdersPage';
 import MisProductosPage from './pages/importadora/MisProductosPage';
 import SubirProductoPage from './pages/importadora/SubirProductoPage';
 import CartPage from './pages/CartPage';
 import CheckoutPage from './pages/CheckoutPage';
 import OrdersPage from './pages/OrdersPage';
 import Navbar from './components/layout/Navbar';
+import ContactPage from './pages/ContactPage';
+import AboutPage from './pages/AboutPage';
+import AdminContactsPage from './pages/admin/AdminContactsPage';
 
 
 
@@ -42,6 +47,8 @@ function App() {
               <Route path="/registro" element={<RegisterPage />} />
               <Route path="/recuperar-contrasena" element={<ForgotPasswordPage />} />
               <Route path="/carrito" element={<CartPage />} />
+              <Route path="/contacto" element={<ContactPage />} />
+              <Route path="/nosotros" element={<AboutPage />} />
 
               {/* Protected Routes */}
               <Route element={<PrivateRoute />}>
@@ -58,9 +65,11 @@ function App() {
 
               {/* Admin Routes */}
               <Route element={<AdminRoute />}>
-                <Route path="/admin" element={<div className="p-8">Admin Dashboard - Resumen</div>} />
+                <Route path="/admin" element={<AdminDashboardPage />} />
                 <Route path="/admin/usuarios" element={<AdminUsersPage />} />
                 <Route path="/admin/inventario" element={<AdminInventoryPage />} />
+                <Route path="/admin/pedidos" element={<AdminOrdersPage />} />
+                <Route path="/admin/contactos" element={<AdminContactsPage />} />
               </Route>
             </Routes>
 

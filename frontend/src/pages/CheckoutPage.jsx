@@ -12,7 +12,7 @@ const CheckoutPage = () => {
   // Form states
   const [shippingAddress, setShippingAddress] = useState('');
   const [phone, setPhone] = useState('');
-  const [tipoVenta, setTipoVenta] = useState('retail');
+  const [notes, setNotes] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(false);
@@ -28,22 +28,19 @@ const CheckoutPage = () => {
   }, 0);
   const finalTotal = cartTotal;
 
-  // Enforce Bolivian format for WhatsApp contact numbers
-  const bolivianPhoneRegex = /^[67]\d{7}$/;
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
 
     // Validate inputs
-    if (!shippingAddress.trim()) {
-      setError('Por favor ingresa una dirección de envío válida.');
+    if (!shippingAddress.trim() || shippingAddress.trim().length < 5) {
+      setError('Por favor ingresa una dirección de envío válida (mínimo 5 caracteres).');
       return;
     }
 
     const cleanPhone = phone.trim();
-    if (!bolivianPhoneRegex.test(cleanPhone)) {
-      setError('Número de teléfono inválido. Debe tener 8 dígitos y comenzar con 6 o 7 (ej. 76543210).');
+    if (cleanPhone.length < 7) {
+      setError('El teléfono debe tener al menos 7 dígitos.');
       return;
     }
 
@@ -55,16 +52,16 @@ const CheckoutPage = () => {
     setLoading(true);
 
     try {
-      // Map cart items to payload format
+      // Map cart items to payload format (quantity, not cantidad)
       const payloadItems = cart.map((item) => ({
         product_id: item.product.id,
-        cantidad: item.cantidad,
+        quantity: item.cantidad,
       }));
 
       const orderData = {
-        tipo_venta: tipoVenta,
         shipping_address: shippingAddress.trim(),
         phone: cleanPhone,
+        notes: notes.trim() || null,
         items: payloadItems,
       };
 
@@ -94,7 +91,7 @@ const CheckoutPage = () => {
           </div>
           <h1 className="text-3xl font-headline font-bold text-on-surface mb-2">¡Pedido Recibido!</h1>
           <p className="text-on-surface-variant mb-6 text-body-medium max-w-md mx-auto">
-            Muchas gracias por tu compra. Tu pedido con código <strong className="text-primary font-bold">#{createdOrder.id}</strong> ha sido registrado exitosamente y está listo para ser procesado por WhatsApp.
+            Muchas gracias por tu compra. Tu pedido con código <strong className="text-primary font-bold">#{createdOrder.id}</strong> ha sido registrado exitosamente y está siendo procesado.
           </p>
 
           {/* Quick specs preview */}
@@ -106,20 +103,20 @@ const CheckoutPage = () => {
                 <p className="text-on-surface mt-0.5">{user?.nombre}</p>
               </div>
               <div>
-                <p className="text-xs text-slate-400 font-medium">WhatsApp Contacto</p>
-                <p className="text-on-surface mt-0.5">+591 {createdOrder.phone}</p>
+                <p className="text-xs text-slate-400 font-medium">Teléfono Contacto</p>
+                <p className="text-on-surface mt-0.5">{createdOrder.phone}</p>
               </div>
               <div className="col-span-2">
                 <p className="text-xs text-slate-400 font-medium">Dirección de Destino</p>
                 <p className="text-on-surface mt-0.5 line-clamp-1">{createdOrder.shipping_address}</p>
               </div>
               <div>
-                <p className="text-xs text-slate-400 font-medium">Tipo de Venta</p>
-                <p className="text-primary mt-0.5 capitalize">{createdOrder.tipo_venta === 'retail' ? 'Por Menor (Retail)' : 'Por Mayor (Wholesale)'}</p>
+                <p className="text-xs text-slate-400 font-medium">Estado</p>
+                <p className="text-amber-600 mt-0.5 capitalize font-bold">{createdOrder.status}</p>
               </div>
               <div>
                 <p className="text-xs text-slate-400 font-medium">Monto Total</p>
-                <p className="text-green-600 mt-0.5 font-bold">{createdOrder.total?.toFixed(2) || finalTotal.toFixed(2)} Bs.</p>
+                <p className="text-green-600 mt-0.5 font-bold">{createdOrder.total_amount?.toFixed(2) || finalTotal.toFixed(2)} Bs.</p>
               </div>
             </div>
           </div>
@@ -218,48 +215,6 @@ const CheckoutPage = () => {
                   </div>
                 )}
 
-                {/* Tipo de Venta options */}
-                <div>
-                  <label className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-2">
-                    Tipo de Venta
-                  </label>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div
-                      onClick={() => setTipoVenta('retail')}
-                      className={`cursor-pointer p-4 rounded-xl border flex items-center gap-3 transition-all ${
-                        tipoVenta === 'retail'
-                          ? 'border-primary bg-blue-50/20 text-primary shadow-sm'
-                          : 'border-outline-variant bg-white text-slate-600 hover:bg-slate-50'
-                      }`}
-                    >
-                      <span className={`material-symbols-outlined text-[24px] ${tipoVenta === 'retail' ? 'text-primary' : 'text-slate-400'}`}>
-                        storefront
-                      </span>
-                      <div>
-                        <p className="text-sm font-bold">Por Menor</p>
-                        <p className="text-[10px] text-slate-400">Precios Retail standard</p>
-                      </div>
-                    </div>
-
-                    <div
-                      onClick={() => setTipoVenta('wholesale')}
-                      className={`cursor-pointer p-4 rounded-xl border flex items-center gap-3 transition-all ${
-                        tipoVenta === 'wholesale'
-                          ? 'border-primary bg-blue-50/20 text-primary shadow-sm'
-                          : 'border-outline-variant bg-white text-slate-600 hover:bg-slate-50'
-                      }`}
-                    >
-                      <span className={`material-symbols-outlined text-[24px] ${tipoVenta === 'wholesale' ? 'text-primary' : 'text-slate-400'}`}>
-                        inventory_2
-                      </span>
-                      <div>
-                        <p className="text-sm font-bold">Por Mayor</p>
-                        <p className="text-[10px] text-slate-400">Tarifas mayoristas exclusivas</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
                 {/* Shipping Address Input */}
                 <div>
                   <label htmlFor="shippingAddress" className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">
@@ -281,17 +236,16 @@ const CheckoutPage = () => {
                   </div>
                 </div>
 
-                {/* Contact Phone (Enforce Bolivian Regex ^[67]\d{7}$) */}
+                {/* Contact Phone */}
                 <div>
                   <label htmlFor="phone" className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">
-                    Teléfono Celular WhatsApp *
+                    Teléfono de Contacto *
                   </label>
                   <div className="relative">
                     <div className="absolute left-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5 text-slate-400">
                       <span className="material-symbols-outlined text-[20px]">
                         phone_iphone
                       </span>
-                      <span className="text-xs font-bold border-r pr-1.5 border-slate-300">+591</span>
                     </div>
                     <input
                       id="phone"
@@ -299,14 +253,28 @@ const CheckoutPage = () => {
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       placeholder="76543210"
-                      maxLength="8"
-                      className="w-full pl-[78px] pr-4 py-3 border border-outline-variant rounded-xl focus:outline-none focus:border-primary text-sm font-bold bg-slate-50/50"
+                      className="w-full pl-[42px] pr-4 py-3 border border-outline-variant rounded-xl focus:outline-none focus:border-primary text-sm font-bold bg-slate-50/50"
                       required
                     />
                   </div>
                   <p className="text-[10px] font-semibold text-slate-400 mt-1.5">
-                    Debe comenzar con 6 o 7 y tener exactamente 8 dígitos (ej. 71234567).
+                    Ingresa un número de teléfono válido para contacto.
                   </p>
+                </div>
+
+                {/* Notes (optional) */}
+                <div>
+                  <label htmlFor="notes" className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">
+                    Notas Adicionales (Opcional)
+                  </label>
+                  <textarea
+                    id="notes"
+                    rows="2"
+                    value={notes}
+                    onChange={(e) => setNotes(e.target.value)}
+                    placeholder="Instrucciones especiales, horario de entrega preferido, etc."
+                    className="w-full px-4 py-2.5 border border-outline-variant rounded-xl focus:outline-none focus:border-primary text-sm font-medium bg-slate-50/50"
+                  ></textarea>
                 </div>
               </div>
 
@@ -324,7 +292,7 @@ const CheckoutPage = () => {
                 ) : (
                   <>
                     <span className="material-symbols-outlined text-[22px]">send_and_archive</span>
-                    Confirmar Pedido y Enviar a WhatsApp
+                    Confirmar Pedido
                   </>
                 )}
               </button>

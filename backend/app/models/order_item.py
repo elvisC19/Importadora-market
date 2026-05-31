@@ -10,12 +10,12 @@ class OrderItem(Base):
     __tablename__ = "order_items"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    pedido_id = Column(Integer, ForeignKey("orders.id", ondelete="CASCADE"), nullable=False)
-    producto_id = Column(Integer, ForeignKey("products.id", ondelete="CASCADE"), nullable=False)
-    cantidad = Column(Integer, nullable=False)
+    order_id = Column(Integer, ForeignKey("orders.id", ondelete="CASCADE"), nullable=False)
+    product_id = Column(Integer, ForeignKey("products.id", ondelete="CASCADE"), nullable=False)
+    quantity = Column(Integer, nullable=False)
     unit_price = Column(Float, nullable=False)
     subtotal = Column(Float, nullable=False)
 
     # Relaciones
-    pedido = relationship("Order", back_populates="items")
-    producto = relationship("Product", backref="order_items")
+    order = relationship("Order", back_populates="items")
+    product = relationship("Product", backref="order_items")

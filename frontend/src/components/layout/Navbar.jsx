@@ -88,6 +88,12 @@ const Navbar = () => {
             <Link to="/productos" className={navLinkClass('/productos')}>
               Catálogo
             </Link>
+            <Link to="/nosotros" className={navLinkClass('/nosotros')}>
+              Nosotros
+            </Link>
+            <Link to="/contacto" className={navLinkClass('/contacto')}>
+              Contacto
+            </Link>
             {user && (
               <Link to="/pedidos" className={navLinkClass('/pedidos')}>
                 Mis Pedidos
@@ -201,14 +207,14 @@ const Navbar = () => {
                           <p className="text-[10px] font-bold text-slate-400 uppercase px-3 py-1">Administración</p>
                         </div>
                         <div className="p-1">
-                          <button 
-                            className="w-full text-left px-4 py-2.5 text-sm font-semibold text-slate-600 cursor-not-allowed flex items-center gap-3"
-                            title="Próximamente"
-                            disabled
+                          <Link 
+                            to="/admin" 
+                            onClick={() => setIsAdminDropdownOpen(false)}
+                            className="w-full text-left px-4 py-2.5 text-sm font-semibold hover:bg-slate-800 hover:text-teal-400 transition-colors flex items-center gap-3 rounded-lg"
                           >
                             <span className="material-symbols-outlined text-[20px]">dashboard</span>
                             Dashboard
-                          </button>
+                          </Link>
                           <Link 
                             to="/admin/usuarios" 
                             onClick={() => setIsAdminDropdownOpen(false)}
@@ -224,6 +230,22 @@ const Navbar = () => {
                           >
                             <span className="material-symbols-outlined text-[20px]">inventory_2</span>
                             Inventario
+                          </Link>
+                          <Link 
+                            to="/admin/pedidos" 
+                            onClick={() => setIsAdminDropdownOpen(false)}
+                            className="w-full text-left px-4 py-2.5 text-sm font-semibold hover:bg-slate-800 hover:text-teal-400 transition-colors flex items-center gap-3 rounded-lg"
+                          >
+                            <span className="material-symbols-outlined text-[20px]">receipt_long</span>
+                            Pedidos
+                          </Link>
+                          <Link 
+                            to="/admin/contactos" 
+                            onClick={() => setIsAdminDropdownOpen(false)}
+                            className="w-full text-left px-4 py-2.5 text-sm font-semibold hover:bg-slate-800 hover:text-teal-400 transition-colors flex items-center gap-3 rounded-lg"
+                          >
+                            <span className="material-symbols-outlined text-[20px]">mail</span>
+                            Contactos
                           </Link>
                         </div>
                       </div>
@@ -317,6 +339,14 @@ const Navbar = () => {
                   <span className="material-symbols-outlined text-[20px]">storefront</span>
                   Catálogo
                 </Link>
+                <Link to="/nosotros" className={mobileNavLinkClass('/nosotros')}>
+                  <span className="material-symbols-outlined text-[20px]">info</span>
+                  Nosotros
+                </Link>
+                <Link to="/contacto" className={mobileNavLinkClass('/contacto')}>
+                  <span className="material-symbols-outlined text-[20px]">mail</span>
+                  Contacto
+                </Link>
                 {user && (
                   <Link to="/pedidos" className={mobileNavLinkClass('/pedidos')}>
                     <span className="material-symbols-outlined text-[20px]">receipt_long</span>
@@ -351,6 +381,14 @@ const Navbar = () => {
                   <Link to="/admin/inventario" className={mobileNavLinkClass('/admin/inventario')}>
                     <span className="material-symbols-outlined text-[20px]">inventory_2</span>
                     Inventario
+                  </Link>
+                  <Link to="/admin/pedidos" className={mobileNavLinkClass('/admin/pedidos')}>
+                    <span className="material-symbols-outlined text-[20px]">receipt_long</span>
+                    Pedidos
+                  </Link>
+                  <Link to="/admin/contactos" className={mobileNavLinkClass('/admin/contactos')}>
+                    <span className="material-symbols-outlined text-[20px]">mail</span>
+                    Contactos
                   </Link>
                 </div>
               )}

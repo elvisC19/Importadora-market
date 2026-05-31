@@ -35,13 +35,13 @@ def test_create_order_and_items(db: Session):
     db.commit()
     db.refresh(user)
 
-    # 3. Create an Order
+    # 3. Create an Order (English fields)
     order = Order(
-        usuario_id=user.id,
-        tipo_venta="retail",
-        total=1200.0,
+        user_id=user.id,
+        total_amount=1200.0,
         shipping_address="Calle Falsa 123",
-        phone="71234567"
+        phone="71234567",
+        status="pending"
     )
     db.add(order)
     db.commit()
@@ -49,15 +49,14 @@ def test_create_order_and_items(db: Session):
 
     # Verify defaults
     assert order.id is not None
-    assert order.metodo_pago == "Manual Transfer / Cash"
-    assert order.estado == "pendiente"
+    assert order.status == "pending"
     assert order.order_date is not None
 
-    # 4. Create an OrderItem
+    # 4. Create an OrderItem (English fields)
     order_item = OrderItem(
-        pedido_id=order.id,
-        producto_id=product.id,
-        cantidad=1,
+        order_id=order.id,
+        product_id=product.id,
+        quantity=1,
         unit_price=1200.0,
         subtotal=1200.0
     )
@@ -79,8 +78,8 @@ def test_create_order_and_items(db: Session):
     assert product.order_items[0].id == order_item.id
 
     # Verify OrderItem relationships
-    assert order_item.pedido.id == order.id
-    assert order_item.producto.id == product.id
+    assert order_item.order.id == order.id
+    assert order_item.product.id == product.id
 
 
 def test_order_cascade_delete(db: Session):
@@ -110,22 +109,22 @@ def test_order_cascade_delete(db: Session):
     db.commit()
     db.refresh(user)
 
-    # 2. Create Order and OrderItem
+    # 2. Create Order and OrderItem (English fields)
     order = Order(
-        usuario_id=user.id,
-        tipo_venta="retail",
-        total=50.0,
+        user_id=user.id,
+        total_amount=50.0,
         shipping_address="Calle A 456",
-        phone="71112222"
+        phone="71112222",
+        status="pending"
     )
     db.add(order)
     db.commit()
     db.refresh(order)
 
     order_item = OrderItem(
-        pedido_id=order.id,
-        producto_id=product.id,
-        cantidad=1,
+        order_id=order.id,
+        product_id=product.id,
+        quantity=1,
         unit_price=50.0,
         subtotal=50.0
     )

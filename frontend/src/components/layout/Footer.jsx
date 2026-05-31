@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
@@ -23,21 +24,21 @@ const Footer = () => {
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-stack-xl text-left w-full md:w-auto">
         <div className="flex flex-col gap-stack-sm">
-          <h4 className="font-label-md text-label-md text-on-surface mb-stack-xs uppercase tracking-wider font-bold">Company</h4>
-          <a className="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a>
-          <a className="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Terms of Service</a>
-          <a className="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Corporate Info</a>
+          <h4 className="font-label-md text-label-md text-on-surface mb-stack-xs uppercase tracking-wider font-bold">Compañía</h4>
+          <Link className="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" to="/nosotros">Nosotros</Link>
+          <Link className="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" to="/contacto">Contacto</Link>
+          <a className="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Términos de Servicio</a>
         </div>
         <div className="flex flex-col gap-stack-sm">
-          <h4 className="font-label-md text-label-md text-on-surface mb-stack-xs uppercase tracking-wider font-bold">Support</h4>
-          <a className="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Shipping Info</a>
-          <a className="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Contact Support</a>
-          <a className="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Track Order</a>
+          <h4 className="font-label-md text-label-md text-on-surface mb-stack-xs uppercase tracking-wider font-bold">Soporte</h4>
+          <a className="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="mailto:contacto@importadoramarket.com">contacto@importadoramarket.com</a>
+          <a className="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="tel:+59133440000">Tel: +591 (3) 344-0000</a>
+          <a className="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="https://wa.me/59170000000">WhatsApp: +591 70000000</a>
         </div>
         <div className="flex flex-col gap-stack-sm col-span-2 md:col-span-1">
-          <h4 className="font-label-md text-label-md text-on-surface mb-stack-xs uppercase tracking-wider font-bold">Store Location</h4>
+          <h4 className="font-label-md text-label-md text-on-surface mb-stack-xs uppercase tracking-wider font-bold">Ubicación Central</h4>
           <p className="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
-            123 Logistics Plaza, Industrial District<br />San Salvador, ES
+            Av. Las Américas, Torres del Sol #450, Piso 4<br />Santa Cruz de la Sierra, Bolivia
           </p>
           <div className="mt-stack-sm w-full h-24 rounded-lg bg-surface-container-high relative overflow-hidden shadow-inner border border-outline-variant/30">
             <img 

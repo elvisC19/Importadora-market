@@ -1,6 +1,6 @@
 import math
 from typing import List, Optional
-from fastapi import APIRouter, Depends, HTTPException, status, Query
+from fastapi import APIRouter, Depends, HTTPException, status, Query, Response
 from sqlalchemy.orm import Session
 
 from app.api.v1.deps import get_current_admin_user
@@ -169,4 +169,102 @@ def update_user_role(
     db.commit()
     db.refresh(user)
     return user
+
+
+@router.get("/stats/dashboard")
+def get_admin_dashboard_stats(
+    db: Session = Depends(get_db),
+    _current_admin: User = Depends(get_current_admin_user),
+):
+    """
+    Retorna métricas clave para el panel del administrador,
+    incluyendo resumen general, top productos y conteos por estado.
+    """
+    from app.services import stats_service
+    return stats_service.get_dashboard_stats(db)
+
+
+@router.get("/stats/orders-chart")
+def get_admin_orders_chart(
+    days: int = Query(7, ge=1, le=90),
+    db: Session = Depends(get_db),
+    _current_admin: User = Depends(get_current_admin_user),
+):
+    """
+    Retorna pedidos agrupados por día de los últimos N días.
+    """
+    from app.services import stats_service
+    return stats_service.get_orders_chart_data(db, days=days)
+
+
+@router.get("/orders/export")
+def export_admin_orders_csv(
+    start_date: Optional[str] = Query(None),
+    end_date: Optional[str] = Query(None),
+    db: Session = Depends(get_db),
+    _current_admin: User = Depends(get_current_admin_user),
+):
+    """
+    Exporta pedidos de un período determinado a un archivo CSV descargable.
+    """
+    from app.services import stats_service
+    
+    csv_data = stats_service.get_exported_orders_csv(
+        db, start_date=start_date, end_date=end_date
+    )
+    
+    filename = f"pedidos_export_{start_date or 'inicio'}_to_{end_date or 'fin'}.csv"
+    return Response(
+        content=csv_data,
+        media_type="text/csv",
+        headers={
+            "Content-Disposition": f"attachment; filename={filename}",
+            "Cache-Control": "no-cache",
+        }
+    )
+
+
+# ── Contact Message Administration ────────────────────────
+from app.repositories.contact_repository import contact_repository
+from app.schemas.contact import ContactResponse
+
+@router.get("/contacts", response_model=PaginatedResponse[ContactResponse])
+def get_contacts(
+    db: Session = Depends(get_db),
+    skip: int = Query(0, ge=0),
+    limit: int = Query(20, ge=1, le=100),
+    _current_admin: User = Depends(get_current_admin_user),
+):
+    """
+    Lista todos los mensajes de contacto de forma paginada (solo para administradores).
+    """
+    contacts = contact_repository.get_all(db, skip=skip, limit=limit)
+    total = contact_repository.count(db)
+    
+    return {
+        "items": contacts,
+        "total": total,
+        "page": (skip // limit) + 1,
+        "pages": math.ceil(total / limit) if total > 0 else 1
+    }
+
+
+@router.put("/contacts/{id}/read", response_model=ContactResponse)
+def mark_contact_as_read(
+    id: int,
+    db: Session = Depends(get_db),
+    _current_admin: User = Depends(get_current_admin_user),
+):
+    """
+    Marca un mensaje de contacto como leído (solo para administradores).
+    """
+    contact = contact_repository.get_by_id(db, id=id)
+    if not contact:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Mensaje de contacto no encontrado",
+        )
+    return contact_repository.mark_as_read(db, db_obj=contact)
+
+
 
