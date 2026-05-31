@@ -25,7 +25,7 @@ ADMIN_EMAIL = "importadora@market.com"
 async def lifespan(app: FastAPI):
     """
     Garantiza que la cuenta core (importadora@market.com) tenga
-    rol 'admin' cada vez que el contenedor arranca o se reinicia.
+    rol 'admin' en cuanto exista en la base de datos.
     """
     db = SessionLocal()
     try:
@@ -34,27 +34,19 @@ async def lifespan(app: FastAPI):
             if user.role != "admin":
                 user.role = "admin"
                 db.commit()
-                logger.info(
-                    "Lifespan: rol de '%s' actualizado a 'admin'.", ADMIN_EMAIL
-                )
+                logger.info("Lifespan: ¡Rol de '%s' actualizado con éxito a 'admin'!", ADMIN_EMAIL)
             else:
-                logger.info(
-                    "Lifespan: '%s' ya tiene rol 'admin'. Sin cambios.",
-                    ADMIN_EMAIL,
-                )
+                logger.info("Lifespan: '%s' ya es administrador.", ADMIN_EMAIL)
         else:
-            logger.warning(
-                "Lifespan: usuario '%s' no encontrado en la BD.", ADMIN_EMAIL
-            )
+            logger.info("Lifespan: Esperando a que el usuario '%s' se registre en la app.", ADMIN_EMAIL)
+            
     except Exception as exc:
         db.rollback()
-        logger.error(
-            "Lifespan: error al actualizar rol de admin — %s", exc
-        )
+        logger.error("Lifespan: error al gestionar el usuario admin — %s", exc)
     finally:
         db.close()
 
-    yield  # ← la aplicación se ejecuta aquí
+    yield  # El servidor web se ejecuta aquí
 
 
 # ── Aplicación ────────────────────────────────────────────
