@@ -6,7 +6,8 @@ import { useTranslation } from 'react-i18next';
 
 const Navbar = () => {
   const { user, logout, isAdmin, isImportadora } = useAuth();
-  const { cartItemsCount } = useCart();
+  const { items } = useCart();
+  const totalItems = items.reduce((sum, item) => sum + item.quantity, 0);
   const navigate = useNavigate();
   const location = useLocation();
   const { t, i18n } = useTranslation();
@@ -150,9 +151,9 @@ const Navbar = () => {
             <span className="material-symbols-outlined text-[24px] group-hover:scale-105 transition-transform">
               shopping_cart
             </span>
-            {cartItemsCount > 0 && (
+            {totalItems > 0 && (
               <span className="absolute -top-0.5 -right-0.5 flex h-5 w-5 items-center justify-center rounded-full bg-brand-copper text-[10px] font-black text-brand-copper-light animate-pulse shadow-lg">
-                {cartItemsCount}
+                {totalItems}
               </span>
             )}
           </Link>
