@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useCart } from '../contexts/CartContext';
 import { useAuth } from '../contexts/AuthContext';
@@ -8,6 +8,18 @@ const CheckoutPage = () => {
   const { cart, cartItemsCount, cartTotal, clearCart } = useCart();
   const { user } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!user) {
+      // Guardar la intención de ir a checkout para redirigir después del login
+      localStorage.setItem('redirect_after_login', '/checkout');
+      navigate('/login', { 
+        state: { 
+          message: 'Debes iniciar sesión para completar tu compra' 
+        } 
+      });
+    }
+  }, [user, navigate]);
 
   // Form states
   const [shippingAddress, setShippingAddress] = useState('');

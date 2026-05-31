@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
 const LoginPage = () => {
@@ -9,6 +9,8 @@ const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const message = location.state?.message;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,7 +18,14 @@ const LoginPage = () => {
     setLoading(true);
     try {
       await login(email, password);
-      navigate('/');
+      
+      const redirectPath = localStorage.getItem('redirect_after_login');
+      if (redirectPath) {
+        localStorage.removeItem('redirect_after_login');
+        navigate(redirectPath);
+      } else {
+        navigate('/');
+      }
     } catch (err) {
       setError(err.response?.data?.detail || 'Error al iniciar sesión. Por favor, verifica tus credenciales.');
     } finally {
@@ -77,6 +86,20 @@ const LoginPage = () => {
               <h2 className="text-3xl font-bold text-slate-900">Bienvenido de nuevo</h2>
               <p className="text-slate-500 mt-2">Por favor, ingresa tus datos para iniciar sesión.</p>
             </header>
+
+            {message && (
+              <div style={{
+                background: '#FEF3C7',
+                border: '1px solid #B45309',
+                color: '#92400E',
+                padding: '12px 16px',
+                borderRadius: '8px',
+                marginBottom: '16px',
+                fontSize: '14px'
+              }}>
+                {message}
+              </div>
+            )}
 
             <form onSubmit={handleSubmit} className="space-y-6">
               {error && (
