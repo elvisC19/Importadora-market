@@ -4,7 +4,7 @@ import re
 from datetime import datetime
 from typing import Optional
 
-from pydantic import BaseModel, ConfigDict, EmailStr, field_validator
+from pydantic import BaseModel, ConfigDict, EmailStr, field_validator, Field
 
 
 # ── Helpers ───────────────────────────────────────────────
@@ -114,6 +114,15 @@ class PasswordResetConfirm(BaseModel):
         if len(v) < 6:
             raise ValueError("La contraseña debe tener al menos 6 caracteres")
         return v
+
+
+class PasswordChange(BaseModel):
+    new_password: str = Field(..., min_length=6)
+
+
+class MyPasswordChange(BaseModel):
+    current_password: str
+    new_password: str = Field(..., min_length=6)
 
 
 # ── Response schemas ──────────────────────────────────────

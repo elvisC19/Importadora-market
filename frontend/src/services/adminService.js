@@ -33,6 +33,13 @@ const adminService = {
     const response = await api.delete(`/admin/users/${userId}`);
     return response.data;
   },
+
+  changeUserPassword: async (userId, newPassword) => {
+    const response = await api.patch(`/admin/users/${userId}/password`, {
+      new_password: newPassword,
+    });
+    return response.data;
+  },
 };
 
 

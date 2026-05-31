@@ -43,8 +43,8 @@ y gestiona pedidos de forma eficiente.
 | Catálogo | Productos, filtros, búsqueda, ofertas | ✅ Completo |
 | Carrito | Persistente, gestión de cantidades | ✅ Completo |
 | Pedidos | Creación, seguimiento, historial | ✅ Completo |
-| Panel Admin | Dashboard, estadísticas, exportación CSV | 🔄 En desarrollo |
-| Notificaciones | Correos de confirmación y contacto | 🔄 En desarrollo |
+| Panel Admin | Dashboard, estadísticas, exportación CSV | ✅ Completo |
+| Notificaciones | Correos de confirmación y contacto | ✅ Completo |
 
 ---
 
@@ -94,31 +94,7 @@ importadora-market/
     └── designs/
 ```
 
----
 
-## 🖥 Uso
-
-### Rutas del Frontend
-
-| URL | Descripción | Acceso |
-|-----|-------------|--------|
-| `http://localhost:5173` | Página principal | Público |
-| `http://localhost:5173/productos` | Catálogo de productos | Público |
-| `http://localhost:5173/productos/:id` | Detalle de producto | Público |
-| `http://localhost:5173/login` | Iniciar sesión | Público |
-| `http://localhost:5173/registro` | Registrarse | Público |
-| `http://localhost:5173/recuperar-contrasena` | Recuperar contraseña | Público |
-| `http://localhost:5173/carrito` | Carrito de compras reactivo | Público |
-| `http://localhost:5173/perfil` | Mi perfil | Autenticado |
-| `http://localhost:5173/checkout` | Formulario de pago y contacto | Autenticado |
-| `http://localhost:5173/pedidos` | Historial de pedidos | Autenticado |
-| `http://localhost:5173/importadora/productos` | Mis productos cargados | Importadora |
-| `http://localhost:5173/importadora/subir` | Subir nuevo producto | Importadora |
-| `http://localhost:5173/admin/usuarios` | Gestión usuarios | Admin |
-| `http://localhost:5173/admin/inventario` | Gestión de inventario | Admin |
-| `http://localhost:8000/docs` | Documentación API | Desarrollo |
-
----
 
 ## 📦 Módulos del Sistema
 
@@ -163,7 +139,7 @@ en la *Universidad Mayor, Real y Pontificia de San Francisco Xavier de Chuquisac
 
 | Nombre | GitHub | Rol |
 |--------|--------|-----|
-| Elvis | [@elvisC19](https://github.com/elvisC19) | ------ |
+| Elvis | [@elvisC19](https://github.com/elvisC19) | Desarrollador |
 | Marvin | [@Señor_Gus](https://github.com/Marvin-Gustavo) | ------ |
 | Job | [@JOB](https://github.com/mamanicondorijobismael) | --------- |
 
@@ -176,6 +152,6 @@ Este proyecto es de uso académico. Todos los derechos reservados © 2026.
 ---
 
 <div align="center">
-  Hecho por 🦖
+  Hecho por C19 | 🚀
 </div>
 

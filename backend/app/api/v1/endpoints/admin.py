@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 from app.api.v1.deps import get_current_admin_user
 from app.core.database import get_db
 from app.models.user import User
-from app.schemas.user import UserResponse, UserUpdate, UserCreateAdmin, RoleUpdate
+from app.schemas.user import UserResponse, UserUpdate, UserCreateAdmin, RoleUpdate, PasswordChange
 from app.schemas.common import PaginatedResponse, MessageResponse
 from app.repositories.user_repository import user_repository
 from app.core.security import hash_password
@@ -265,6 +265,30 @@ def mark_contact_as_read(
             detail="Mensaje de contacto no encontrado",
         )
     return contact_repository.mark_as_read(db, db_obj=contact)
+
+
+@router.patch("/users/{user_id}/password", response_model=MessageResponse)
+def change_user_password(
+    user_id: int,
+    password_data: PasswordChange,
+    db: Session = Depends(get_db),
+    _admin: User = Depends(get_current_admin_user)
+):
+    """
+    Cambia la contraseña de cualquier usuario (solo para administradores).
+    """
+    user = user_repository.get(db, id=user_id)
+    if not user:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Usuario no encontrado",
+        )
+    
+    user.password_hash = hash_password(password_data.new_password)
+    db.add(user)
+    db.commit()
+    return {"message": "Contraseña cambiada exitosamente"}
+
 
 
 

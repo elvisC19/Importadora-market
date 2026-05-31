@@ -27,6 +27,59 @@ const AdminUsersPage = () => {
   const [formError, setFormError] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
+  // Change password modal states
+  const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false);
+  const [passwordUserId, setPasswordUserId] = useState(null);
+  const [passwordUserName, setPasswordUserName] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [passwordSubmitting, setPasswordSubmitting] = useState(false);
+
+  const handleOpenPasswordModal = (user) => {
+    setPasswordUserId(user.id);
+    setPasswordUserName(user.nombre);
+    setNewPassword('');
+    setConfirmPassword('');
+    setPasswordError('');
+    setIsPasswordModalOpen(true);
+  };
+
+  const handleClosePasswordModal = () => {
+    setIsPasswordModalOpen(false);
+    setPasswordUserId(null);
+    setPasswordUserName('');
+    setNewPassword('');
+    setConfirmPassword('');
+    setPasswordError('');
+  };
+
+  const handlePasswordSubmit = async (e) => {
+    e.preventDefault();
+    setPasswordError('');
+
+    if (newPassword.length < 6) {
+      setPasswordError('La contraseña debe tener al menos 6 caracteres.');
+      return;
+    }
+
+    if (newPassword !== confirmPassword) {
+      setPasswordError('Las contraseñas no coinciden.');
+      return;
+    }
+
+    setPasswordSubmitting(true);
+    try {
+      await adminService.changeUserPassword(passwordUserId, newPassword);
+      showAlert('Contraseña cambiada correctamente.', 'success');
+      handleClosePasswordModal();
+    } catch (error) {
+      setPasswordError(error.response?.data?.detail || 'Error al cambiar la contraseña.');
+    } finally {
+      setPasswordSubmitting(false);
+    }
+  };
+
   const fetchUsers = async () => {
     setLoading(true);
     try {
@@ -315,6 +368,13 @@ const AdminUsersPage = () => {
                             <span className="material-symbols-outlined text-[20px]">edit</span>
                           </button>
                           <button 
+                            onClick={() => handleOpenPasswordModal(u)}
+                            className="p-2 rounded-lg transition-colors text-slate-400 hover:text-amber-500 hover:bg-amber-50"
+                            title="Cambiar Contraseña"
+                          >
+                            <span className="material-symbols-outlined text-[20px]">key</span>
+                          </button>
+                          <button 
                             onClick={() => handleDeleteUser(u)}
                             disabled={u.id === currentUser.id}
                             className={`p-2 rounded-lg transition-colors ${u.id === currentUser.id ? 'text-slate-200 cursor-not-allowed' : 'text-slate-400 hover:text-error hover:bg-red-50'}`}
@@ -438,6 +498,75 @@ const AdminUsersPage = () => {
                   className="flex-1 h-11 bg-primary text-white font-bold rounded-lg hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-50"
                 >
                   {submitting ? 'Procesando...' : (modalMode === 'add' ? 'Añadir' : 'Guardar')}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Modal for Change Password */}
+      {isPasswordModalOpen && (
+        <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+          <div className="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden animate-in fade-in zoom-in duration-200">
+            <div className="p-6 border-b border-slate-100 flex justify-between items-center bg-slate-50">
+              <div>
+                <h3 className="text-xl font-bold text-slate-900">Cambiar Contraseña</h3>
+                <p className="text-xs text-slate-500 mt-1">Usuario: {passwordUserName}</p>
+              </div>
+              <button onClick={handleClosePasswordModal} className="text-slate-400 hover:text-slate-600 transition-colors">
+                <span className="material-symbols-outlined">close</span>
+              </button>
+            </div>
+            
+            <form onSubmit={handlePasswordSubmit} className="p-6 space-y-4">
+              {passwordError && (
+                <div className="p-3 bg-red-50 border border-red-200 text-red-600 text-sm rounded-lg flex items-center gap-2">
+                  <span className="material-symbols-outlined text-[18px]">error</span>
+                  {passwordError}
+                </div>
+              )}
+
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider" htmlFor="newPassword">Nueva Contraseña</label>
+                <input 
+                  className="w-full px-4 h-11 bg-slate-50 border border-slate-200 rounded-lg focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-sm font-semibold" 
+                  id="newPassword" 
+                  type="password" 
+                  placeholder="Mínimo 6 caracteres" 
+                  value={newPassword} 
+                  onChange={(e) => setNewPassword(e.target.value)} 
+                  required 
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="text-xs font-bold text-slate-500 uppercase tracking-wider" htmlFor="confirmPassword">Confirmar Nueva Contraseña</label>
+                <input 
+                  className="w-full px-4 h-11 bg-slate-50 border border-slate-200 rounded-lg focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-sm font-semibold" 
+                  id="confirmPassword" 
+                  type="password" 
+                  placeholder="Repite la nueva contraseña" 
+                  value={confirmPassword} 
+                  onChange={(e) => setConfirmPassword(e.target.value)} 
+                  required 
+                />
+              </div>
+
+              <div className="flex gap-3 pt-4">
+                <button 
+                  type="button" 
+                  onClick={handleClosePasswordModal}
+                  className="flex-1 h-11 bg-slate-100 text-slate-700 font-bold rounded-lg hover:bg-slate-200 transition-all"
+                >
+                  Cancelar
+                </button>
+                <button 
+                  type="submit" 
+                  disabled={passwordSubmitting}
+                  className="flex-1 h-11 bg-primary text-white font-bold rounded-lg hover:opacity-90 active:scale-[0.98] transition-all disabled:opacity-50"
+                >
+                  {passwordSubmitting ? 'Cambiando...' : 'Confirmar'}
                 </button>
               </div>
             </form>
