@@ -3,44 +3,24 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  const [items, setItems] = useState(() => {
+  const [cart, setCart] = useState(() => {
+    const stored = localStorage.getItem('cart');
+    if (!stored) return [];
     try {
-      const saved = localStorage.getItem('cart_items');
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed)) {
-          return parsed.map(item => {
-            // Normalization: if stored in old format (i.e. with .product and .cantidad), convert to new format
-            if (item && item.product && item.product.id && item.cantidad !== undefined) {
-              return {
-                ...item.product,
-                quantity: item.cantidad
-              };
-            }
-            return item;
-          }).filter(item => item && item.id);
-        }
-      }
-      // Fallback to old 'cart' key for backward compatibility on first load
-      const oldSaved = localStorage.getItem('cart');
-      if (oldSaved) {
-        const parsed = JSON.parse(oldSaved);
-        if (Array.isArray(parsed)) {
-          return parsed.map(item => {
-            if (item && item.product && item.product.id) {
-              return {
-                ...item.product,
-                quantity: item.cantidad || 1
-              };
-            } else if (item && item.id) {
-              return {
-                ...item,
-                quantity: item.quantity || 1
-              };
-            }
-            return null;
-          }).filter(item => item && item.id);
-        }
+      const parsed = JSON.parse(stored);
+      // Ensure the parsed structure matches [{ product: {...}, cantidad: N }]
+      if (Array.isArray(parsed)) {
+        return parsed.map(item => {
+          // Backward compatibility / robustness: if stored in old format, normalize it
+          if (item && item.id && !item.product) {
+            const { quantity, ...product } = item;
+            return {
+              product,
+              cantidad: quantity || 1
+            };
+          }
+          return item;
+        }).filter(item => item && item.product && item.product.id);
       }
       return [];
     } catch (error) {
@@ -49,76 +29,80 @@ export const CartProvider = ({ children }) => {
     }
   });
 
-  // Sync state with localStorage on any cart modification immediately
+  // Sync state with localStorage on any cart modification
   useEffect(() => {
-    localStorage.setItem('cart_items', JSON.stringify(items));
+    localStorage.setItem('cart', JSON.stringify(cart));
     // Dispatch standard storage event so other non-context elements (like custom toast) are notified
     window.dispatchEvent(new Event('storage'));
-  }, [items]);
+  }, [cart]);
 
-  // Add an item to the cart (optimistic local state update first)
-  const addItem = (product, quantity = 1) => {
+  // Add an item to the cart
+  const addItem = (product, quantity) => {
     if (!product || !product.id) return;
+    const qtyToAdd = Math.max(1, quantity);
 
-    // Actualizar estado local INMEDIATAMENTE
-    setItems(prevItems => {
-      const existing = prevItems.find(item => item.id === product.id)
-      if (existing) {
-        return prevItems.map(item =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
-        )
+    setCart((prevCart) => {
+      const existingIndex = prevCart.findIndex((item) => item.product.id === product.id);
+
+      if (existingIndex > -1) {
+        const newCart = [...prevCart];
+        const newQty = newCart[existingIndex].cantidad + qtyToAdd;
+        // Limit quantity to available stock if available
+        const maxStock = product.stock != null ? product.stock : Infinity;
+        newCart[existingIndex] = {
+          ...newCart[existingIndex],
+          cantidad: Math.min(newQty, maxStock),
+        };
+        return newCart;
+      } else {
+        const maxStock = product.stock != null ? product.stock : Infinity;
+        return [...prevCart, { product, cantidad: Math.min(qtyToAdd, maxStock) }];
       }
-      return [...prevItems, { ...product, quantity }]
-    })
-    // Mostrar feedback visual inmediato (toast o badge)
+    });
   };
 
-  // Remove an item from the cart completely (optimistic local state update first)
+  // Remove an item from the cart completely
   const removeItem = (productId) => {
-    setItems(prevItems => prevItems.filter(item => item.id !== productId))
+    setCart((prevCart) => prevCart.filter((item) => item.product.id !== productId));
   };
 
-  // Update quantity of an item in the cart (optimistic local state update first)
+  // Update quantity of an item in the cart
   const updateQuantity = (productId, quantity) => {
     if (quantity <= 0) {
-      removeItem(productId)
-      return
+      removeItem(productId);
+      return;
     }
-    setItems(prevItems =>
-      prevItems.map(item =>
-        item.id === productId ? { ...item, quantity } : item
-      )
-    )
+
+    setCart((prevCart) =>
+      prevCart.map((item) => {
+        if (item.product.id === productId) {
+          const maxStock = item.product.stock != null ? item.product.stock : Infinity;
+          return {
+            ...item,
+            cantidad: Math.min(quantity, maxStock),
+          };
+        }
+        return item;
+      })
+    );
   };
 
   // Clear the entire cart
   const clearCart = () => {
-    setItems([]);
+    setCart([]);
   };
 
-  // Compatibility layers for components expecting the old cart structure:
-  // Convert `items` (which are `{ ...product, quantity }`) back to `cart` format `[{ product, cantidad }]`
-  const cart = items.map(item => {
-    const { quantity, ...product } = item;
-    return {
-      product,
-      cantidad: quantity
-    };
-  });
+  // Helper selectors
+  const cartItemsCount = cart.reduce((sum, item) => sum + item.cantidad, 0);
 
-  const cartItemsCount = items.reduce((sum, item) => sum + item.quantity, 0);
-
-  const cartTotal = items.reduce((sum, item) => {
-    const price = item.is_offer && item.offer_price != null
-      ? item.offer_price
-      : item.precio;
-    return sum + (price * item.quantity);
+  const cartTotal = cart.reduce((sum, item) => {
+    const price = item.product.is_offer && item.product.offer_price != null
+      ? item.product.offer_price
+      : item.product.precio;
+    return sum + (price * item.cantidad);
   }, 0);
 
   const value = {
-    items,
     cart,
     addItem,
     removeItem,
@@ -138,4 +122,3 @@ export const useCart = () => {
   }
   return context;
 };
-
