@@ -60,8 +60,8 @@ const AdminInventoryPage = () => {
       setCategories(cats);
 
       // 2. Fetch approved products (public) & pending products (admin)
-      const approvedRes = await productService.getProducts({ skip: 0, limit: 200 });
-      const pendingRes = await adminProductService.getPendingProducts(0, 200);
+      const approvedRes = await productService.getProducts({ skip: 0, limit: 100 });
+      const pendingRes = await adminProductService.getPendingProducts(0, 100);
 
       const approvedList = approvedRes.items || [];
       const pendingList = pendingRes || [];

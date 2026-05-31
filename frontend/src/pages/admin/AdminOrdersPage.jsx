@@ -94,7 +94,7 @@ const AdminOrdersPage = () => {
       setOrders(data || []);
 
       // Calculate statistics based on fetched/unfiltered data (fetching all once)
-      const allData = await orderService.getAdminOrders(0, 500, null, null, null);
+      const allData = await orderService.getAdminOrders(0, 100, null, null, null);
       
       const total = allData.length;
       const pending = allData.filter(o => o.status === 'pending').length;
@@ -169,7 +169,7 @@ const AdminOrdersPage = () => {
       }
       
       // Reload stats
-      const allData = await orderService.getAdminOrders(0, 500, null, null, null);
+      const allData = await orderService.getAdminOrders(0, 100, null, null, null);
       const total = allData.length;
       const pending = allData.filter(o => o.status === 'pending').length;
       const cancelled = allData.filter(o => o.status === 'cancelled').length;
