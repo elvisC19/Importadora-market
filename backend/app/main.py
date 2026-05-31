@@ -1,13 +1,13 @@
-"""
-Punto de entrada de la aplicación FastAPI.
-Importadora Market API — Fase I (MVP).
-"""
-
+import os
 import logging
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
+from slowapi import _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from app.core.limiter import limiter
 
 from app.core.config import settings
 from app.core.database import SessionLocal
@@ -50,12 +50,19 @@ async def lifespan(app: FastAPI):
 
 
 # ── Aplicación ────────────────────────────────────────────
+DEBUG = os.getenv("DEBUG", "false").lower() == "true"
+
 app = FastAPI(
     title="Importadora Market API",
     description="API REST para la plataforma web de Importadora Market (Bolivia)",
     version="0.1.0",
     lifespan=lifespan,
+    docs_url="/docs" if DEBUG else None,
+    redoc_url="/redoc" if DEBUG else None,
 )
+
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 # ── Router ────────────────────────────────────────────────
 app.include_router(api_router, prefix="/api/v1")

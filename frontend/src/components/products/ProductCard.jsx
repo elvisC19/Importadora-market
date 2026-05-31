@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const ProductCard = ({ product }) => {
+  const { t } = useTranslation();
   const {
     id,
     nombre,
@@ -34,11 +36,11 @@ const ProductCard = ({ product }) => {
     
     // Show a premium native toast notice
     const toast = document.createElement('div');
-    toast.className = "fixed bottom-5 left-5 z-50 bg-on-background text-white px-6 py-3.5 rounded-xl shadow-2xl flex items-center gap-3 border border-outline/20 animate-bounce";
+    toast.className = "fixed bottom-5 left-5 z-50 bg-brand-deep text-white px-6 py-3.5 rounded-xl shadow-2xl flex items-center gap-3 border border-brand-tech/30 animate-bounce";
     toast.innerHTML = `
       <span class="material-symbols-outlined text-green-400">check_circle</span>
       <div>
-        <p class="text-xs font-bold uppercase tracking-wider text-slate-400">Carrito Actualizado</p>
+        <p class="text-xs font-bold uppercase tracking-wider text-brand-mint/60">${t('product.cartUpdated')}</p>
         <p class="text-sm font-semibold">${nombre.substring(0, 24)}...</p>
       </div>
     `;
@@ -59,7 +61,7 @@ const ProductCard = ({ product }) => {
             alt={nombre} 
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-slate-300">
+          <div className="w-full h-full flex items-center justify-center bg-brand-tech/10 text-brand-tech">
             <span className="material-symbols-outlined text-[48px]">image</span>
           </div>
         )}
@@ -67,20 +69,20 @@ const ProductCard = ({ product }) => {
         {/* Badges Container */}
         <div className="absolute top-stack-md left-stack-md flex flex-col gap-1.5 z-10">
           {is_new && (
-            <span className="px-3 py-1 bg-teal-600 text-white font-label-sm text-label-sm rounded-lg font-bold uppercase tracking-wider shadow-md">
-              NEW
+            <span className="px-3 py-1 bg-brand-tech text-white font-label-sm text-label-sm rounded-lg font-bold uppercase tracking-wider shadow-md">
+              {t('product.new')}
             </span>
           )}
           {is_offer && (
-            <span className="px-3 py-1 bg-red-600 text-white font-label-sm text-label-sm rounded-lg font-bold uppercase tracking-wider shadow-md animate-pulse">
-              -{discount_percentage ? `${Math.round(discount_percentage)}%` : 'OFERTA'}
+            <span className="px-3 py-1 bg-brand-copper text-brand-copper-light font-label-sm text-label-sm rounded-lg font-bold uppercase tracking-wider shadow-md animate-pulse">
+              -{discount_percentage ? `${Math.round(discount_percentage)}%` : t('product.offer')}
             </span>
           )}
         </div>
 
         {/* Featured Star Indicator */}
         {is_featured && (
-          <span className="absolute top-stack-md right-stack-md p-1.5 bg-white/95 rounded-full shadow-sm text-yellow-500 material-symbols-outlined text-[16px] z-10" style={{ fontVariationSettings: "'FILL' 1" }}>
+          <span className="absolute top-stack-md right-stack-md p-1.5 bg-white/95 rounded-full shadow-sm text-amber-500 material-symbols-outlined text-[16px] z-10" style={{ fontVariationSettings: "'FILL' 1" }}>
             star
           </span>
         )}
@@ -88,8 +90,8 @@ const ProductCard = ({ product }) => {
         {stock > 0 && (
           <button 
             onClick={handleAddToCart}
-            className="absolute bottom-stack-md right-stack-md p-2.5 bg-white text-primary rounded-full shadow-lg opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 hover:bg-secondary hover:text-white cursor-pointer z-10"
-            title="Agregar al Carrito"
+            className="absolute bottom-stack-md right-stack-md p-2.5 bg-white text-brand-deep rounded-full shadow-lg opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-300 hover:bg-brand-copper hover:text-brand-copper-light cursor-pointer z-10"
+            title={t('product.addToCart')}
           >
             <span className="material-symbols-outlined text-[20px] block">add_shopping_cart</span>
           </button>
@@ -99,9 +101,9 @@ const ProductCard = ({ product }) => {
       <div className="p-stack-md flex flex-col flex-grow justify-between">
         <div>
           <p className="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider mb-stack-xs font-semibold">
-            {categoria?.nombre || 'General'}
+            {categoria?.nombre || t('product.general')}
           </p>
-          <h3 className="font-body-md text-body-md text-on-surface font-semibold mb-stack-sm line-clamp-2 min-h-[48px] group-hover:text-secondary transition-colors duration-200">
+          <h3 className="font-body-md text-body-md text-on-surface font-semibold mb-stack-sm line-clamp-2 min-h-[48px] group-hover:text-brand-copper transition-colors duration-200">
             {nombre}
           </h3>
         </div>
@@ -110,19 +112,19 @@ const ProductCard = ({ product }) => {
           <div className="flex items-center gap-stack-md">
             {is_offer ? (
               <>
-                <span className="font-data-mono text-data-mono text-red-600 font-extrabold text-base">Bs. {final_price.toFixed(2)}</span>
+                <span className="font-data-mono text-data-mono text-brand-copper font-extrabold text-base">Bs. {final_price.toFixed(2)}</span>
                 <span className="font-data-mono text-data-mono text-outline line-through text-xs">Bs. {precio.toFixed(2)}</span>
               </>
             ) : (
-              <span className="font-data-mono text-data-mono text-primary font-bold text-sm">Bs. {precio.toFixed(2)}</span>
+              <span className="font-data-mono text-data-mono text-brand-deep font-bold text-sm">Bs. {precio.toFixed(2)}</span>
             )}
           </div>
           
           <div>
             {stock === 0 ? (
-              <span className="text-error text-[10px] font-bold uppercase bg-error-container/50 px-2 py-0.5 rounded-full">Agotado</span>
+              <span className="text-error text-[10px] font-bold uppercase bg-error-container/50 px-2 py-0.5 rounded-full">{t('product.outOfStock')}</span>
             ) : (
-              <span className="text-green-600 text-[10px] font-bold uppercase bg-green-50 px-2 py-0.5 rounded-full">{stock} disp.</span>
+              <span className="text-brand-tech text-[10px] font-bold uppercase bg-brand-tech/10 px-2 py-0.5 rounded-full">{stock} {t('product.available')}</span>
             )}
           </div>
         </div>

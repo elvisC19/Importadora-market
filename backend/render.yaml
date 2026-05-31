@@ -20,6 +20,8 @@ services:
         value: https://TU-FRONTEND.onrender.com
       - key: ADMIN_EMAIL
         value: elvishcordova@gmail.com
+      - key: DEBUG
+        value: "false"
 
 databases:
   - name: importadora-market-db

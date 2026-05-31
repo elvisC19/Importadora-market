@@ -1,9 +1,10 @@
-from fastapi import APIRouter, Depends, status, HTTPException
+from fastapi import APIRouter, Depends, status, HTTPException, Request
 from sqlalchemy.orm import Session
 from app.core.database import get_db
 from app.schemas.user import UserCreate, UserResponse, UserLogin, PasswordResetRequest, PasswordResetConfirm
 from app.schemas.common import MessageResponse
 from app.services.auth_service import auth_service
+from app.core.limiter import limiter
 
 router = APIRouter()
 
@@ -26,7 +27,8 @@ def register(user_in: UserCreate, db: Session = Depends(get_db)):
     return auth_service.register_user(db, user_in=user_in)
 
 @router.post("/login")
-def login(user_in: UserLogin, db: Session = Depends(get_db)):
+@limiter.limit("5/minute")
+def login(request: Request, user_in: UserLogin, db: Session = Depends(get_db)):
     """
     Inicia sesión y obtiene un token de acceso.
     """

@@ -7,17 +7,24 @@
 @layer base {
   :root {
     font-family: 'Inter', sans-serif;
+    --brand-deep: #134E4A;
+    --brand-tech: #0F766E;
+    --brand-copper: #B45309;
+    --brand-copper-light: #FEF3C7;
+    --brand-mint: #CCFBF1;
+    --brand-bg: #F0FDF4;
+    --brand-text: #134E4A;
   }
 
   body {
-    @apply bg-background text-on-surface antialiased;
+    @apply bg-brand-bg text-brand-text antialiased;
     font-family: 'Inter', sans-serif;
     font-size: 16px;
     line-height: 24px;
   }
 
   ::selection {
-    @apply bg-secondary-container text-on-secondary-container;
+    @apply bg-brand-copper text-brand-copper-light;
   }
 
   /* Material Symbols baseline */

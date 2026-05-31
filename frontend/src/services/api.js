@@ -22,6 +22,9 @@ api.interceptors.request.use(
 api.interceptors.response.use(
   (response) => response,
   (error) => {
+    if (import.meta.env.DEV) {
+      console.error('API Error:', error);
+    }
     if (error.response && error.response.status === 401) {
       // Evitar bucle si ya estamos en login
       if (!window.location.pathname.includes('/login')) {
