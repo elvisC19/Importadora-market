@@ -2,15 +2,15 @@
 
 <div align="center">
 
-![Version](https://img.shields.io/badge/versión-1.0.0--beta-orange?style=for-the-badge)
-![Status](https://img.shields.io/badge/estado-en%20desarrollo-blue?style=for-the-badge)
+![Version](https://img.shields.io/badge/versión-1.0.0-orange?style=for-the-badge)
+![Status](https://img.shields.io/badge/estado-completado-green?style=for-the-badge)
 ![License](https://img.shields.io/badge/licencia-MIT-green?style=for-the-badge)
 
-**Plataforma web responsive para una importadora boliviana.**
-Centraliza la presencia digital, genera confianza en los clientes
-y gestiona pedidos de forma eficiente.
+**Plataforma web responsive para una importadora boliviana.**  
+Centraliza la presencia digital, potencia la captación de socios comerciales  
+y descentraliza la gestión de pedidos de forma eficiente.
 
-[Ver Demo](#) · [Reportar Bug](https://github.com/elvisC19/Importadora-market/issues) · [Documentación API](http://localhost:8000/docs)
+[Ver Demo en Render](https://importadora-market-frontend.onrender.com) · [Reportar Bug](https://github.com/elvisC19/Importadora-market/issues) · [Documentación API](https://importadora-market-backend.onrender.com/docs)
 
 </div>
 
@@ -21,30 +21,30 @@ y gestiona pedidos de forma eficiente.
 - [Sobre el Proyecto](#-sobre-el-proyecto)
 - [Tecnologías](#-tecnologías)
 - [Arquitectura](#-arquitectura)
-- [Uso](#-uso)
 - [Módulos del Sistema](#-módulos-del-sistema)
-- [API Endpoints](#-api-endpoints)
+- [Estructura de Roles](#-estructura-de-roles)
 - [Equipo](#-equipo)
 
 ---
 
 ## 🚀 Sobre el Proyecto
 
-**Importadora Market** es una plataforma web desarrollada como MVP (Producto Mínimo Viable) para una importadora boliviana. El sistema permite:
+**Importadora Market** es una plataforma web desarrollada como MVP (Producto Mínimo Viable) para el comercio y gestión de importaciones en el contexto boliviano[cite: 1]. El sistema evoluciona el modelo tradicional al integrar tres perfiles de interacción independientes[cite: 1]:
 
-- 🛍️ **Clientes** — explorar catálogo, gestionar carrito y realizar pedidos
-- 🔧 **Administradores** — gestionar productos, ofertas, pedidos y estadísticas
+- 🛍️ **Clientes:** Exploran el catálogo público, gestionan su carrito de compras y realizan solicitudes de pedidos[cite: 1].
+- 🏢 **Importadoras:** Publican inventario de forma directa y gestionan el ciclo de vida de sus pedidos asignados[cite: 1].
+- 🔧 **Administradores:** Supervisan la seguridad del sistema, aprueban de forma selectiva los productos entrantes y analizan las estadísticas globales del negocio[cite: 1].
 
 ### Características principales
 
 | Módulo | Descripción | Estado |
 |--------|-------------|--------|
-| Autenticación | Registro, login, JWT, recuperación de contraseña | ✅ Completo |
-| Catálogo | Productos, filtros, búsqueda, ofertas | ✅ Completo |
-| Carrito | Persistente, gestión de cantidades | ✅ Completo |
-| Pedidos | Creación, seguimiento, historial | ✅ Completo |
-| Panel Admin | Dashboard, estadísticas, exportación CSV | ✅ Completo |
-| Notificaciones | Correos de confirmación y contacto | ✅ Completo |
+| Autenticación | Registro multi-rol, inicio de sesión seguro con JWT y recuperación de acceso[cite: 1] | ✅ Completo |
+| Catálogo | Productos con filtros interactivos de precios y captación de socios comerciales[cite: 1] | ✅ Completo |
+| Carrito | Persistencia local, cálculo automático de subtotales y control de stock[cite: 1] | ✅ Completo |
+| Pedidos | Gestión directa por la Importadora con integración nativa a WhatsApp para pagos[cite: 1] | ✅ Completo |
+| Panel Admin | Dashboard de control de usuarios, auditoría de productos y exportación de reportes[cite: 1] | ✅ Completo |
+| Despliegue SPA | Rutas blindadas contra recargas forzadas (404/Pantallas en negro) en CDN de Render | ✅ Completo |
 
 ---
 
@@ -54,7 +54,7 @@ y gestiona pedidos de forma eficiente.
 ![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=flat-square&logo=python&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-0.100+-009688?style=flat-square&logo=fastapi&logoColor=white)
 ![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-2.0-red?style=flat-square)
-![SQLite](https://img.shields.io/badge/SQLite-dev-003B57?style=flat-square&logo=sqlite&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-15-336791?style=flat-square&logo=postgresql&logoColor=white)
 ![JWT](https://img.shields.io/badge/JWT-auth-black?style=flat-square&logo=jsonwebtokens)
 
 ### Frontend
@@ -94,64 +94,60 @@ importadora-market/
     └── designs/
 ```
 
-
-
 ## 📦 Módulos del Sistema
 
-### Hito 1 — Gestión de Usuarios ✅
-- Registro con validación de teléfono boliviano
-- Login con JWT (expiración configurable)
-- Recuperación de contraseña con token temporal
-- Panel admin: crear, editar, eliminar, cambiar roles
+### Hito 1 — Gestión de Usuarios y Roles ✅
+- Registro unificado de usuarios y validación de prefijos telefónicos bolivianos[cite: 1].
+- Flujo directo de activación para cuentas comerciales de tipo **Importadora**.
+- Login persistente basado en tokens JWT con tiempos de inactividad controlados[cite: 1].
+- Panel administrativo para la supervisión y asignación selectiva de roles en el sistema[cite: 1].
 
-### Hito 2 — Catálogo de Productos ✅
-- Listado con paginación y filtros
-- Búsqueda por nombre/categoría
-- Ofertas y novedades
-- CRUD completo para admin
+### Hito 2 — Catálogo e Interfaz Intuitiva ✅
+- Exploración de productos interactiva con paginación optimizada del lado del servidor[cite: 1].
+- Filtros limpios de rango de precios en bolivianos (Bs.) y visualización dinámica de novedades[cite: 1].
+- **Sección de prospección integrada:** Formulario de captación en la página principal para que nuevas importadoras soliciten sus credenciales oficiales de acceso.
 
-### Hito 3 — Carrito y Pedidos ✅
-- Carrito de compras interactivo y persistente (`localStorage` + sincronización con el estado global)
-- Sincronización de ofertas, cálculo automático de totales y control de stock en tiempo real
-- Formulario de checkout con validación estricta de celular en formato boliviano (`^[67]\d{7}$`)
-- Historial de pedidos personal en formato acordeón dinámico ordenado cronológicamente
-- Gestión y actualización de estados del pedido (`pendiente` → `confirmado` → `entregado` → `cancelado`)
+### Hito 3 — Descentralización de Carrito y Pedidos ✅
+- Carrito persistente (`localStorage`) sincronizado con el estado global de la aplicación[cite: 1].
+- Formulario de checkout adaptado a formatos de telefonía celular nacional (`^[67]\d{7}$`)[cite: 1].
+- **Módulo de la Importadora:** Panel dedicado en `/importadora/pedidos` donde el vendedor aprueba, cancela o actualiza el estado de las compras en tiempo real.
+- **Canal de Cierre Manual:** Inclusión de botones inteligentes vinculados a la API de WhatsApp (`+591 73409757`) dentro del detalle del pedido, permitiendo a la importadora coordinar directamente con el cliente las transferencias bancarias, comprobantes de pago y emisión de facturas.
 
-### Hito 4 — Panel Admin y Estadísticas ✅
-- Dashboard con métricas
-- Gráficos con Chart.js
-- Exportación CSV
+### Hito 4 — Panel de Control y Auditoría ✅
+- Dashboard analítico con gráficos interactivos basados en Chart.js para tendencias de venta[cite: 1].
+- **Seguridad en la publicación:** Herramientas para que el Admin valide, apruebe o rechace de forma individual los productos de las importadoras antes de su salida al catálogo público.
+- Exportación de métricas de órdenes y usuarios en formato CSV estructurado bajo UTF-8[cite: 1].
 
-### Hito 5 — Notificaciones y Contacto ✅
-- Correos automáticos (confirmación, cambio estado)
-- Formulario de contacto
-- Página "Sobre nosotros"
+### Hito 5 — Notificaciones y Soporte de Marca ✅
+- Automatización del envío de correos electrónicos transaccionales mediante SMTP para confirmaciones de compra[cite: 1].
+- Formulario de contacto con persistencia directa en la base de datos PostgreSQL[cite: 1].
+- Botón de asistencia flotante global configurado con canales locales de soporte rápido.
 
-### Hito 6 — Pruebas, Documentación y Despliegue ✅
-- Cobertura de tests ≥ 70%
-- Documentación completa
-- Despliegue en Render con PostgreSQL y HTTPS
+### Hito 6 — Calidad de Software y Despliegue Cloud ✅
+- Cobertura de pruebas automatizadas sobre repositorios y servicios principales con métricas $\ge 70\%$.
+- Despliegue continuo en **Render** mediante configuraciones de reescritura de rutas (*Rewrites*) nativas, mitigando por completo las pantallas en blanco y errores 404 ante recargas del navegador.
+
+---
 
 ## 👥 Equipo
 
-Desarrollado como proyecto académico para la materia **SIS-324**
+Desarrollado como proyecto académico de ingeniería de software para la materia **SIS-324**  
 en la *Universidad Mayor, Real y Pontificia de San Francisco Xavier de Chuquisaca*.
 
-| Nombre | GitHub | Rol |
-|--------|--------|-----|
-| Elvis | [@elvisC19](https://github.com/elvisC19) | Desarrollador |
-| Marvin | [@Señor_Gus](https://github.com/Marvin-Gustavo) | ------ |
-| Job | [@JOB](https://github.com/mamanicondorijobismael) | --------- |
+| Nombre | GitHub | Rol / Responsabilidad |
+|--------|--------|-----------------------|
+| **Elvis Córdova H.** | [@elvisC19](https://github.com/elvisC19) | Líder de Arquitectura Fullstack & DevOps (SDD) |
+| **Marvin Gustavo** | [@Señor_Gus](https://github.com/Marvin-Gustavo) |  |
+| **Job Ismael** | [@JOB](https://github.com/mamanicondorijobismael) |  |
 
 ---
 
 ## 📄 Licencia
 
-Este proyecto es de uso académico. Todos los derechos reservados © 2026.
+Este proyecto es de propiedad y uso estrictamente académico. Todos los derechos reservados © 2026.
 
 ---
 
 <div align="center">
-  Hecho por C19 | 🚀
+  Construído con dedicación por C19 | Sucre - Bolivia 🇧🇴
 </div>
-
