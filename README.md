@@ -67,29 +67,32 @@ y descentraliza la gestión de pedidos de forma eficiente.
 
 ## 🏗 Arquitectura
 
+```
 importadora-market/
 ├── backend/                  # API REST (FastAPI)
 │   ├── app/
-│   │   ├── api/v1/endpoints/ # Controladores REST segregados por rol
-│   │   ├── core/             # Configuración, seguridad JWT y conexión PostgreSQL
+│   │   ├── api/v1/endpoints/ # Controladores REST
+│   │   ├── core/             # Config, seguridad, base de datos
 │   │   ├── models/           # Modelos ORM (SQLAlchemy)
-│   │   ├── schemas/          # Validación estricta Pydantic
-│   │   ├── repositories/     # Capa de persistencia (Patrón Repositorio)
-│   │   └── services/         # Orquestación de lógica de negocio
-│   ├── migrations/           # Migraciones de esquema con Alembic
-│   └── tests/                # Pruebas unitarias y de integración
+│   │   ├── schemas/          # Validación Pydantic
+│   │   ├── repositories/     # Acceso a datos
+│   │   └── services/         # Lógica de negocio
+│   ├── migrations/           # Migraciones Alembic
+│   └── tests/                # Pruebas automatizadas
 │
-├── frontend/                 # Aplicación SPA (React + Vite)
-│   ├── public/               # Recursos estáticos globales y archivo _redirects
+├── frontend/                 # React + Vite
 │   └── src/
-│       ├── components/       # Elementos atómicos y Layouts Unificados por rol
-│       ├── pages/            # Vistas principales y Paneles de Control independientes
-│       ├── contexts/         # Estado global de la aplicación (Auth, Cart)
-│       ├── services/         # Instancias de comunicación HTTP con Axios
-│       └── hooks/            # Abstracción de lógica reactiva reutilizable
-
-
----
+│       ├── components/       # Componentes reutilizables
+│       ├── pages/            # Vistas principales
+│       ├── contexts/         # Estado global (Auth, Cart)
+│       ├── services/         # Comunicación con API
+│       └── hooks/            # Custom hooks
+│
+└── docs/                     # Especificación y diseños
+    ├── spec.md
+    ├── ui-inventory.md
+    └── designs/
+```
 
 ## 📦 Módulos del Sistema
 
