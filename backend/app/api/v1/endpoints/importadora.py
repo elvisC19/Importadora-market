@@ -3,7 +3,7 @@
 from datetime import datetime
 from typing import List, Optional
 
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, status
 from pydantic import BaseModel, ConfigDict
 from sqlalchemy import func
 from sqlalchemy.orm import Session
@@ -14,6 +14,8 @@ from app.models.order import Order
 from app.models.order_item import OrderItem
 from app.models.product import Product
 from app.models.user import User
+from app.schemas.order import OrderStatusUpdate
+from app.services.order_service import order_service
 
 router = APIRouter()
 
@@ -160,4 +162,74 @@ def get_my_stats(
         total_revenue=float(total_revenue),
         pending_orders=pending_orders,
         top_product=top_product,
+    )
+
+
+@router.put("/orders/{order_id}/status", response_model=ImportadoraOrderResponse)
+def update_my_order_status(
+    *,
+    order_id: int,
+    status_in: OrderStatusUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_importadora_user),
+):
+    """
+    Actualiza el estado de un pedido que contiene al menos un producto de la importadora autenticada.
+    Se retorna la orden filtrada mostrando únicamente los productos que le pertenecen.
+    """
+    # 1. Obtener el pedido
+    order = order_service.get_order_by_id(db, order_id=order_id)
+    if not order:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Pedido no encontrado",
+        )
+
+    # 2. Verificar que el pedido contenga al menos un producto de esta importadora
+    has_my_product = (
+        db.query(OrderItem)
+        .join(Product)
+        .filter(
+            OrderItem.order_id == order_id,
+            Product.submitted_by_id == current_user.id,
+        )
+        .first()
+        is not None
+    )
+
+    if not has_my_product and current_user.role != "admin":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="No tienes permiso para modificar este pedido",
+        )
+
+    # 3. Proceder con el cambio de estado usando order_service
+    updated_order = order_service.update_order_status(
+        db, order_id=order_id, new_status=status_in.status.value
+    )
+
+    # 4. Construir y retornar la respuesta filtrando solo sus ítems
+    my_items = []
+    for item in updated_order.items:
+        if item.product and item.product.submitted_by_id == current_user.id:
+            my_items.append(
+                ImportadoraOrderItem(
+                    product_id=item.product_id,
+                    product_name=item.product.nombre,
+                    quantity=item.quantity,
+                    unit_price=item.unit_price,
+                    subtotal=item.subtotal,
+                )
+            )
+
+    my_subtotal = sum(i.subtotal for i in my_items)
+    return ImportadoraOrderResponse(
+        order_id=updated_order.id,
+        order_date=updated_order.order_date,
+        status=updated_order.status,
+        client_phone=updated_order.phone,
+        client_address=updated_order.shipping_address,
+        client_notes=updated_order.notes,
+        my_items=my_items,
+        my_subtotal=my_subtotal,
     )

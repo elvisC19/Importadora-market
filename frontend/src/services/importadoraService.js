@@ -11,6 +11,11 @@ const importadoraService = {
   getMyStats: async () => {
     const response = await api.get('/importadora/orders/stats')
     return response.data
+  },
+
+  updateOrderStatus: async (orderId, status) => {
+    const response = await api.put(`/importadora/orders/${orderId}/status`, { status })
+    return response.data
   }
 }
 
