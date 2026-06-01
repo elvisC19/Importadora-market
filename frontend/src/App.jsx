@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './contexts/AuthContext';
 import { CartProvider } from './contexts/CartContext';
@@ -60,6 +60,7 @@ function App() {
 
               {/* Importadora Routes */}
               <Route element={<ImportadoraRoute />}>
+                <Route path="/importadora" element={<Navigate to="/importadora/productos" replace />} />
                 <Route path="/importadora/productos" element={<MisProductosPage />} />
                 <Route path="/importadora/subir" element={<SubirProductoPage />} />
                 <Route path="/importadora/pedidos" element={<ImportadoraOrdersPage />} />
@@ -73,6 +74,9 @@ function App() {
                 <Route path="/admin/pedidos" element={<AdminOrdersPage />} />
                 <Route path="/admin/contactos" element={<AdminContactsPage />} />
               </Route>
+
+              {/* Catch-all Route for 404/invalid paths */}
+              <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
 
             {/* Global Floating WhatsApp Support Button */}
