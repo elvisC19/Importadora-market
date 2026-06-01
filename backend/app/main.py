@@ -14,8 +14,31 @@ from app.core.database import SessionLocal
 from app.models.user import User
 
 from app.api.v1.router import api_router
+from sqlalchemy import text
 
 logger = logging.getLogger("app.main")
+
+def init_db_columns():
+    db = SessionLocal()
+    try:
+        # Intenta verificar si la columna existe de forma segura
+        db.execute(text("SELECT is_active FROM products LIMIT 1;"))
+    except Exception:
+        db.rollback()
+        try:
+            logger.info("La columna 'is_active' no existe en la base de datos. Creándola de emergencia...")
+            # Inyecta la columna físicamente con valor true por defecto
+            db.execute(text("ALTER TABLE products ADD COLUMN is_active BOOLEAN DEFAULT TRUE NOT NULL;"))
+            db.commit()
+            logger.info("Columna 'is_active' creada con éxito en la base de datos.")
+        except Exception as e:
+            db.rollback()
+            logger.error(f"Error al crear la columna: {e}")
+    finally:
+        db.close()
+
+# Ejecuta la función de inicialización de emergencia
+init_db_columns()
 
 ADMIN_EMAIL = "importadora@market.com"
 
