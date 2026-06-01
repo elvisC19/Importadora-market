@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import adminService from '../../services/adminService';
 import { useAuth } from '../../contexts/AuthContext';
 
@@ -222,24 +223,35 @@ const AdminUsersPage = () => {
   return (
     <div className="flex min-h-screen bg-slate-50">
       {/* Sidebar - Desktop Only */}
-      <aside className="hidden lg:flex flex-col w-64 bg-slate-900 text-white fixed h-full p-6 border-r border-slate-800">
+      <aside className="hidden lg:flex flex-col w-64 bg-slate-900 text-white fixed h-full p-6 border-r border-slate-800 z-30 select-none">
         <div className="mb-10">
-          <h1 className="text-xl font-bold">Importadora Admin</h1>
-          <p className="text-xs text-slate-400">Gestión del Sistema</p>
+          <Link to="/" className="text-xl font-extrabold text-white flex items-center gap-2 hover:opacity-85 transition-opacity">
+            <span className="material-symbols-outlined text-accent text-[28px]">store</span>
+            <span>Importadora</span>
+          </Link>
+          <p className="text-xs text-slate-400 mt-1">Gestión del Sistema</p>
         </div>
         <nav className="flex-1 space-y-2">
-          <div className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 rounded-lg transition-all cursor-pointer">
+          <Link to="/admin" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-lg transition-all">
             <span className="material-symbols-outlined">dashboard</span>
             <span className="text-sm font-semibold">Dashboard</span>
-          </div>
-          <div className="flex items-center gap-3 px-4 py-3 bg-accent text-white rounded-lg shadow-sm">
+          </Link>
+          <Link to="/admin/usuarios" className="flex items-center gap-3 px-4 py-3 bg-primary text-white rounded-lg shadow-sm font-bold animate-in">
             <span className="material-symbols-outlined">group</span>
             <span className="text-sm font-semibold">Usuarios</span>
-          </div>
-          <div className="flex items-center gap-3 px-4 py-3 text-slate-400 opacity-50 cursor-not-allowed rounded-lg" title="Próximamente">
+          </Link>
+          <Link to="/admin/inventario" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-lg transition-all">
             <span className="material-symbols-outlined">inventory_2</span>
-            <span className="text-sm font-semibold">Inventario (Próximamente)</span>
-          </div>
+            <span className="text-sm font-semibold">Inventario</span>
+          </Link>
+          <Link to="/admin/pedidos" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-lg transition-all">
+            <span className="material-symbols-outlined">shopping_cart</span>
+            <span className="text-sm font-semibold">Pedidos</span>
+          </Link>
+          <Link to="/admin/contactos" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-lg transition-all">
+            <span className="material-symbols-outlined">mail</span>
+            <span className="text-sm font-semibold">Contactos</span>
+          </Link>
         </nav>
       </aside>
 

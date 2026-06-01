@@ -9,6 +9,7 @@ const RegisterPage = () => {
     telefono: '',
     password: '',
     confirmPassword: '',
+    role: 'cliente',
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -37,7 +38,7 @@ const RegisterPage = () => {
 
     setLoading(true);
     try {
-      await register(formData.nombre, formData.email, formData.password, formData.telefono);
+      await register(formData.nombre, formData.email, formData.password, formData.telefono, formData.role);
       // Auto login
       await login(formData.email, formData.password);
       navigate('/');
@@ -56,12 +57,12 @@ const RegisterPage = () => {
     <div className="min-h-screen flex flex-col">
       <main className="flex-grow flex">
         {/* Visual Side (Left) - Same as Login */}
-        <section className="hidden lg:flex w-1/2 relative overflow-hidden bg-slate-900">
+        <section className="hidden md:flex md:w-1/2 relative overflow-hidden bg-slate-900">
           <div className="absolute inset-0 z-0">
             <img 
               src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&q=80&w=2000" 
               alt="Logistics" 
-              className="w-full h-full object-cover opacity-50 mix-blend-overlay"
+              className="object-cover w-full h-full opacity-50 mix-blend-overlay"
             />
           </div>
           <div className="relative z-10 p-12 flex flex-col justify-between w-full">
@@ -74,13 +75,13 @@ const RegisterPage = () => {
               </p>
             </div>
             <footer className="text-white/60 text-xs">
-              © 2024 Importadora Market. Todos los derechos reservados.
+              © 2026 Importadora Market. Todos los derechos reservados.
             </footer>
           </div>
         </section>
 
         {/* Form Side (Right) */}
-        <section className="w-full lg:w-1/2 bg-white flex items-center justify-center p-6 md:p-12">
+        <section className="w-full md:w-1/2 bg-white flex items-center justify-center p-6 md:p-12">
           <div className="w-full max-w-md">
             <header className="mb-8">
               <h2 className="text-3xl font-bold text-slate-900">Crear cuenta</h2>
@@ -130,6 +131,20 @@ const RegisterPage = () => {
                   value={formData.telefono}
                   onChange={handleChange}
                 />
+              </div>
+
+              <div className="space-y-2">
+                <label className="text-sm font-semibold text-slate-700" htmlFor="role">Tipo de Cuenta</label>
+                <select 
+                  className="w-full px-4 h-12 bg-slate-50 border border-slate-200 rounded-lg focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-sm cursor-pointer" 
+                  id="role"
+                  value={formData.role}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="cliente">Cliente (Comprador)</option>
+                  <option value="importadora">Importadora (Vendedor)</option>
+                </select>
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

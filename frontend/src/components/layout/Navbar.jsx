@@ -162,7 +162,7 @@ const Navbar = () => {
           <div className="hidden md:flex items-center gap-stack-md">
             {user ? (
               <div className="flex items-center gap-stack-md">
-                {(isImportadora || isAdmin) && (
+                {isImportadora && (
                   <div className="relative" ref={importadoraDropdownRef}>
                     <button 
                       onClick={() => setIsImportadoraDropdownOpen(!isImportadoraDropdownOpen)}
@@ -394,7 +394,7 @@ const Navbar = () => {
               </nav>
 
               {/* Importadora Panel Links */}
-              {user && (isImportadora || isAdmin) && (
+              {user && isImportadora && (
                 <div className="border-t border-brand-tech/20 pt-3 space-y-1">
                   <p className="text-[10px] font-bold text-brand-mint/40 uppercase tracking-wider px-4 pt-1 pb-1">{t('nav.importadoraPanel')}</p>
                   <Link to="/importadora/productos" className={mobileNavLinkClass('/importadora/productos')}>

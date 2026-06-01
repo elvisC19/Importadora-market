@@ -66,7 +66,7 @@ const LoginPage = () => {
               </div>
             </div>
             <footer className="text-white/60 text-xs">
-              © 2024 Importadora Market. Todos los derechos reservados.
+              © 2026 Importadora Market. Todos los derechos reservados.
             </footer>
           </div>
         </section>
@@ -178,7 +178,7 @@ const LoginPage = () => {
       <footer className="w-full py-6 px-12 bg-white border-t border-slate-100 flex flex-col md:flex-row justify-between items-center gap-4">
         <div className="flex flex-col md:flex-row items-center gap-6">
           <span className="text-lg font-bold text-primary">Importadora Market</span>
-          <p className="text-sm text-slate-500">© 2024 Importadora Market. Confiabilidad y Desempeño Institucional.</p>
+          <p className="text-sm text-slate-500">© 2026 Importadora Market. Confiabilidad y Desempeño Institucional.</p>
         </div>
         <div className="flex gap-6">
           <Link className="text-sm text-slate-500 hover:text-primary transition-colors" to="#">Privacidad</Link>

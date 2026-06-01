@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import productService from '../../services/productService';
 import adminProductService from '../../services/adminProductService';
 
@@ -287,45 +288,87 @@ const AdminInventoryPage = () => {
   const filteredProducts = getFilteredProducts();
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-7xl relative">
-      {/* Toast Notification */}
-      {toast.show && (
-        <div className="fixed bottom-8 right-8 z-50 animate-fade-in-up">
-          <div className={`flex items-center gap-3 px-6 py-4 rounded-xl shadow-2xl text-white font-bold text-sm ${
-            toast.type === 'success' ? 'bg-slate-900' : 'bg-red-600'
-          }`}>
-            <span className="material-symbols-outlined">
-              {toast.type === 'success' ? 'done_all' : 'error'}
-            </span>
-            <span>{toast.message}</span>
+    <div className="flex min-h-screen bg-slate-50 text-slate-800">
+      
+      {/* Sidebar - Desktop Only */}
+      <aside className="hidden lg:flex flex-col w-64 bg-slate-900 text-white fixed h-full p-6 border-r border-slate-800 z-30 select-none">
+        <div className="mb-10">
+          <Link to="/" className="text-xl font-extrabold text-white flex items-center gap-2 hover:opacity-85 transition-opacity">
+            <span className="material-symbols-outlined text-accent text-[28px]">store</span>
+            <span>Importadora</span>
+          </Link>
+          <p className="text-xs text-slate-400 mt-1">Gestión del Sistema</p>
+        </div>
+        <nav className="flex-1 space-y-2">
+          <Link to="/admin" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-lg transition-all">
+            <span className="material-symbols-outlined">dashboard</span>
+            <span className="text-sm font-semibold">Dashboard</span>
+          </Link>
+          <Link to="/admin/usuarios" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-lg transition-all">
+            <span className="material-symbols-outlined">group</span>
+            <span className="text-sm font-semibold">Usuarios</span>
+          </Link>
+          <Link to="/admin/inventario" className="flex items-center gap-3 px-4 py-3 bg-primary text-white rounded-lg shadow-sm font-bold">
+            <span className="material-symbols-outlined">inventory_2</span>
+            <span className="text-sm font-semibold">Inventario</span>
+          </Link>
+          <Link to="/admin/pedidos" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-lg transition-all">
+            <span className="material-symbols-outlined">shopping_cart</span>
+            <span className="text-sm font-semibold">Pedidos</span>
+          </Link>
+          <Link to="/admin/contactos" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-lg transition-all">
+            <span className="material-symbols-outlined">mail</span>
+            <span className="text-sm font-semibold">Contactos</span>
+          </Link>
+        </nav>
+      </aside>
+
+      {/* Main Content */}
+      <main className="flex-1 lg:ml-64 p-4 md:p-8 relative min-w-0">
+        
+        {/* Toast Notification */}
+        {toast.show && (
+          <div className="fixed bottom-8 right-8 z-50 animate-fade-in-up">
+            <div className={`flex items-center gap-3 px-6 py-4 rounded-xl shadow-2xl text-white font-bold text-sm ${
+              toast.type === 'success' ? 'bg-slate-900' : 'bg-red-600'
+            }`}>
+              <span className="material-symbols-outlined">
+                {toast.type === 'success' ? 'done_all' : 'error'}
+              </span>
+              <span>{toast.message}</span>
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Header Section */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-        <div>
-          <h1 className="text-3xl font-extrabold text-primary flex items-center gap-2">
-            <span className="material-symbols-outlined text-[32px] text-accent">inventory_2</span>
-            Gestión de Inventario
-          </h1>
-          <p className="text-gray-500 text-sm mt-1">Supervisa, edita, aprueba productos y administra categorías del catálogo.</p>
+        {/* Header Section */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 border-b border-slate-100 pb-6">
+          <div>
+            <div className="flex items-center gap-2 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
+              <span>Admin</span>
+              <span className="material-symbols-outlined text-[12px]">chevron_right</span>
+              <span className="text-primary font-bold">Inventario</span>
+            </div>
+            <h1 className="text-3xl font-extrabold text-slate-900 flex items-center gap-2">
+              <span className="material-symbols-outlined text-[32px] text-accent">inventory_2</span>
+              Gestión de Inventario
+            </h1>
+            <p className="text-gray-500 text-sm mt-1">Supervisa, edita, aprueba productos y administra categorías del catálogo.</p>
+          </div>
+          <button 
+            onClick={openCreateModal}
+            className="flex items-center justify-center gap-2 bg-accent hover:bg-opacity-95 text-white font-bold px-6 py-3 rounded-xl shadow-lg shadow-accent/20 active:scale-[0.98] transition-all self-start md:self-auto"
+          >
+            <span className="material-symbols-outlined">add_circle</span>
+            Nuevo Producto
+          </button>
         </div>
-        <button 
-          onClick={openCreateModal}
-          className="flex items-center justify-center gap-2 bg-accent hover:bg-opacity-95 text-white font-bold px-6 py-3 rounded-xl shadow-lg shadow-accent/20 active:scale-[0.98] transition-all"
-        >
-          <span className="material-symbols-outlined">add_circle</span>
-          Nuevo Producto
-        </button>
-      </div>
 
-      {error && (
-        <div className="bg-red-50 text-red-700 p-4 rounded-xl border border-red-100 flex items-center gap-3 mb-8">
-          <span className="material-symbols-outlined">error</span>
-          <p className="font-semibold text-sm">{error}</p>
-        </div>
-      )}
+        {error && (
+          <div className="bg-red-50 text-red-700 p-4 rounded-xl border border-red-100 flex items-center gap-3 mb-8">
+            <span className="material-symbols-outlined">error</span>
+            <p className="font-semibold text-sm">{error}</p>
+          </div>
+        )}
 
       {/* Statistics Row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
@@ -378,10 +421,10 @@ const AdminInventoryPage = () => {
       </div>
 
       {/* Main Grid: Left is Products Table, Right is Category Management */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         
         {/* Left Side: Product Table Card */}
-        <div className="lg:col-span-2 bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden flex flex-col">
+        <div className="md:col-span-2 bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden flex flex-col min-w-0 w-full">
           {/* Tab Navigation & Search Row */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-6 border-b border-gray-100 gap-4 bg-slate-50/50">
             <div className="flex border border-gray-200 bg-white rounded-xl p-1 shadow-sm">
@@ -581,7 +624,7 @@ const AdminInventoryPage = () => {
         </div>
 
         {/* Right Side: Category Management Card */}
-        <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 flex flex-col self-start">
+        <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 flex flex-col self-start w-full">
           <h2 className="text-xl font-bold text-primary flex items-center gap-2 mb-6 border-b border-gray-100 pb-3">
             <span className="material-symbols-outlined text-accent">category</span>
             Administrar Categorías
@@ -895,6 +938,7 @@ const AdminInventoryPage = () => {
           </div>
         </div>
       )}
+      </main>
     </div>
   );
 };

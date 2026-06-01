@@ -97,29 +97,32 @@ const AdminContactsPage = () => {
     <div className="flex min-h-screen bg-slate-50 text-slate-800">
       
       {/* Sidebar - Desktop Only */}
-      <aside className="hidden lg:flex flex-col w-64 bg-slate-900 text-white fixed h-full p-6 border-r border-slate-800">
+      <aside className="hidden lg:flex flex-col w-64 bg-slate-900 text-white fixed h-full p-6 border-r border-slate-800 z-30 select-none">
         <div className="mb-10">
-          <Link to="/" className="text-xl font-black text-primary font-headline block">Importadora Market</Link>
+          <Link to="/" className="text-xl font-extrabold text-white flex items-center gap-2 hover:opacity-85 transition-opacity">
+            <span className="material-symbols-outlined text-accent text-[28px]">store</span>
+            <span>Importadora</span>
+          </Link>
           <p className="text-xs text-slate-400 mt-1">Gestión del Sistema</p>
         </div>
         <nav className="flex-1 space-y-2">
-          <Link to="/admin" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 rounded-lg transition-all">
+          <Link to="/admin" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-lg transition-all">
             <span className="material-symbols-outlined">dashboard</span>
             <span className="text-sm font-semibold">Dashboard</span>
           </Link>
-          <Link to="/admin/usuarios" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 rounded-lg transition-all">
+          <Link to="/admin/usuarios" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-lg transition-all">
             <span className="material-symbols-outlined">group</span>
             <span className="text-sm font-semibold">Usuarios</span>
           </Link>
-          <Link to="/admin/inventario" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 rounded-lg transition-all">
+          <Link to="/admin/inventario" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-lg transition-all">
             <span className="material-symbols-outlined">inventory_2</span>
             <span className="text-sm font-semibold">Inventario</span>
           </Link>
-          <Link to="/admin/pedidos" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 rounded-lg transition-all">
+          <Link to="/admin/pedidos" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-lg transition-all">
             <span className="material-symbols-outlined">shopping_cart</span>
             <span className="text-sm font-semibold">Pedidos</span>
           </Link>
-          <Link to="/admin/contactos" className="flex items-center gap-3 px-4 py-3 bg-primary text-white rounded-lg shadow-sm">
+          <Link to="/admin/contactos" className="flex items-center gap-3 px-4 py-3 bg-primary text-white rounded-lg shadow-sm font-bold animate-in">
             <span className="material-symbols-outlined">mail</span>
             <span className="text-sm font-semibold">Contactos</span>
           </Link>
@@ -127,48 +130,70 @@ const AdminContactsPage = () => {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 lg:ml-64 p-4 md:p-8">
+      <main className="flex-1 lg:ml-64 p-4 md:p-8 min-w-0">
         
-        {/* Header */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mb-10">
+        {/* Header Block */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 border-b border-slate-100 pb-6">
           <div>
-            <h2 className="text-3xl font-extrabold text-slate-900 font-headline">Buzón de Contacto</h2>
-            <p className="text-slate-500 mt-1">Revisa y responde a las consultas y mensajes de tus clientes.</p>
+            <div className="flex items-center gap-2 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
+              <span>Admin</span>
+              <span className="material-symbols-outlined text-[12px]">chevron_right</span>
+              <span className="text-primary font-bold">Contactos</span>
+            </div>
+            <h1 className="text-3xl font-extrabold text-slate-900 flex items-center gap-2">
+              <span className="material-symbols-outlined text-[32px] text-accent">mail</span>
+              Buzón de Contacto
+            </h1>
+            <p className="text-gray-500 text-sm mt-1">Revisa y responde a las consultas y mensajes de tus clientes.</p>
           </div>
+          
           <Link
             to="/admin"
-            className="flex items-center gap-2 px-4 py-2 border border-slate-200 rounded-xl bg-white hover:bg-slate-50 font-semibold text-slate-700 shadow-sm transition-all"
+            className="flex items-center gap-2 px-5 py-3 border border-slate-205 rounded-xl bg-white hover:bg-slate-50 font-bold text-slate-700 shadow-sm transition-all self-start md:self-auto active:scale-[0.98]"
           >
-            <span className="material-symbols-outlined text-[18px]">arrow_back</span>
+            <span className="material-symbols-outlined text-[20px]">arrow_back</span>
             Volver al Panel
           </Link>
         </div>
 
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-          <div className="bg-white border border-slate-200 rounded-2xl p-6 border-t-4 border-t-slate-800 shadow-sm flex flex-col justify-between">
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Total Mensajes</p>
-            <span className="text-3xl font-black text-slate-900 font-headline">{total}</span>
+          <div className="bg-white border border-slate-100 rounded-xl p-6 border-t-4 border-t-slate-800 shadow-sm flex items-center gap-5">
+            <div className="w-12 h-12 bg-slate-50 text-slate-800 rounded-xl flex items-center justify-center">
+              <span className="material-symbols-outlined text-[28px]">mail</span>
+            </div>
+            <div>
+              <span className="text-slate-400 text-xs font-bold uppercase tracking-wider block">Total Mensajes</span>
+              <span className="text-3xl font-extrabold text-slate-900 block mt-1">{total}</span>
+            </div>
           </div>
           
-          <div className="bg-white border border-slate-200 rounded-2xl p-6 border-t-4 border-t-primary shadow-sm flex flex-col justify-between">
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Mensajes Nuevos (Esta Página)</p>
-            <span className="text-3xl font-black text-slate-950 font-headline flex items-center gap-2">
-              {totalUnread}
+          <div className="bg-white border border-slate-100 rounded-xl p-6 border-t-4 border-t-primary shadow-sm flex items-center gap-5">
+            <div className="w-12 h-12 bg-teal-50 text-primary rounded-xl flex items-center justify-center relative">
+              <span className="material-symbols-outlined text-[28px]">mark_email_unread</span>
               {totalUnread > 0 && (
-                <span className="w-2.5 h-2.5 rounded-full bg-primary animate-ping"></span>
+                <span className="absolute top-2 right-2 w-2.5 h-2.5 rounded-full bg-primary animate-ping"></span>
               )}
-            </span>
+            </div>
+            <div>
+              <span className="text-slate-400 text-xs font-bold uppercase tracking-wider block">Mensajes Nuevos</span>
+              <span className="text-3xl font-extrabold text-slate-900 block mt-1">{totalUnread}</span>
+            </div>
           </div>
 
-          <div className="bg-white border border-slate-200 rounded-2xl p-6 border-t-4 border-t-teal-500 shadow-sm flex flex-col justify-between">
-            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Mensajes Leídos (Esta Página)</p>
-            <span className="text-3xl font-black text-slate-900 font-headline">{contacts.length - totalUnread}</span>
+          <div className="bg-white border border-slate-100 rounded-xl p-6 border-t-4 border-t-teal-500 shadow-sm flex items-center gap-5">
+            <div className="w-12 h-12 bg-teal-50 text-teal-600 rounded-xl flex items-center justify-center">
+              <span className="material-symbols-outlined text-[28px]">mark_email_read</span>
+            </div>
+            <div>
+              <span className="text-slate-400 text-xs font-bold uppercase tracking-wider block">Mensajes Leídos</span>
+              <span className="text-3xl font-extrabold text-slate-900 block mt-1">{contacts.length - totalUnread}</span>
+            </div>
           </div>
         </div>
 
         {/* Table Container */}
-        <div className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+        <div className="bg-white border border-slate-100 rounded-xl overflow-hidden shadow-sm">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[800px] text-left border-collapse">
               <thead>

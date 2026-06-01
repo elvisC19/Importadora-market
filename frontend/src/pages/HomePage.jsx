@@ -242,6 +242,17 @@ const HomePage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [heroImgErrors, setHeroImgErrors] = useState({});
+  const [ctaEmail, setCtaEmail] = useState('');
+  const [ctaSuccess, setCtaSuccess] = useState(false);
+
+  const handleCtaSubmit = (e) => {
+    e.preventDefault();
+    if (!ctaEmail || !ctaEmail.includes('@')) {
+      alert("Por favor, ingresa un correo electrónico válido.");
+      return;
+    }
+    setCtaSuccess(true);
+  };
 
   // Hero carousel banners — configured with local images and texts
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -525,22 +536,40 @@ const HomePage = () => {
             <p className="font-body-lg text-body-lg" style={{ color: '#CCFBF1' }}>
               {t('home.ctaSubtitle')}
             </p>
+            <p className="text-xs text-brand-mint/90 pt-2 border-t border-brand-mint/20 font-medium leading-relaxed">
+              🤝 <strong>¿Eres una importadora y quieres publicar tus productos?</strong> Déjanos tu correo aquí para que nos pongamos en contacto y te proporcionemos tus credenciales oficiales de importadora.
+            </p>
           </div>
           
-          <div className="flex w-full md:w-auto gap-stack-md z-10 relative items-center">
-            <input 
-              className="flex-1 md:w-80 px-4 py-3 rounded-lg text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#B45309] font-body-sm text-body-sm bg-white" 
-              placeholder={t('home.ctaEmailPlaceholder')}
-              type="email"
-            />
-            <button 
-              onClick={() => alert(t('home.ctaThanks'))}
-              className="px-6 py-3 text-brand-copper-light font-label-md text-label-md rounded-lg whitespace-nowrap hover:opacity-90 active:scale-95 transition-all font-bold cursor-pointer"
-              style={{ background: '#B45309' }}
+          {!ctaSuccess ? (
+            <form onSubmit={handleCtaSubmit} className="flex w-full md:w-auto gap-stack-md z-10 relative items-center">
+              <input 
+                className="flex-1 md:w-80 px-4 py-3 rounded-lg text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#B45309] font-body-sm text-body-sm bg-white" 
+                placeholder={t('home.ctaEmailPlaceholder')}
+                type="email"
+                value={ctaEmail}
+                onChange={(e) => setCtaEmail(e.target.value)}
+                required
+              />
+              <button 
+                type="submit"
+                className="px-6 py-3 text-brand-copper-light font-label-md text-label-md rounded-lg whitespace-nowrap hover:opacity-90 active:scale-95 transition-all font-bold cursor-pointer"
+                style={{ background: '#B45309' }}
+              >
+                {t('home.ctaButton')}
+              </button>
+            </form>
+          ) : (
+            <div 
+              className="w-full md:w-auto px-6 py-4 bg-[#0F766E]/30 border border-[#CCFBF1]/30 text-[#CCFBF1] rounded-lg text-sm font-semibold z-10 relative flex items-center gap-3 shadow-md animate-pulse"
             >
-              {t('home.ctaButton')}
-            </button>
-          </div>
+              <span className="material-symbols-outlined text-green-400 text-xl">check_circle</span>
+              <div className="flex flex-col text-left">
+                <span className="text-white font-bold">{t('home.ctaThanks')}</span>
+                <span className="text-xs text-[#CCFBF1]/90 font-medium mt-0.5">Nos pondremos en contacto contigo para proporcionarte tus credenciales oficiales de importadora.</span>
+              </div>
+            </div>
+          )}
           
           {/* Decorative design accent circle */}
           <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-[#B45309] rounded-full opacity-10 blur-xl"></div>

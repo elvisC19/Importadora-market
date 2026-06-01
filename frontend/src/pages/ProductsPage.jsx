@@ -135,7 +135,9 @@ const ProductsPage = () => {
                   <span className="material-symbols-outlined text-secondary text-[24px]">filter_alt</span>
                   Filtros
                 </h2>
-                <span className="text-xs text-slate-400 font-mono">Bs. {total} prod.</span>
+                <span className="text-xs text-secondary bg-secondary/10 px-2.5 py-1 rounded-full font-bold">
+                  {total} art.
+                </span>
               </div>
               
               {/* Search Bar Input */}
@@ -193,6 +195,11 @@ const ProductsPage = () => {
                     min="0"
                   />
                 </div>
+                {(filters.precio_min || filters.precio_max) && (
+                  <p className="text-xs text-secondary font-bold mt-1 bg-secondary/5 px-2 py-1 rounded border border-secondary/15 w-max">
+                    Filtrando: {filters.precio_min ? `Bs. ${filters.precio_min}` : 'Mín.'} - {filters.precio_max ? `Bs. ${filters.precio_max}` : 'Máx.'}
+                  </p>
+                )}
               </div>
 
               {/* Toggle Badges Filters */}
