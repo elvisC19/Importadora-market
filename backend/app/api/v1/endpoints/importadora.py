@@ -37,6 +37,7 @@ class ImportadoraOrderResponse(BaseModel):
     order_id: int
     order_date: datetime
     status: str
+    client_name: str
     client_phone: str
     client_address: str
     client_notes: Optional[str] = None
@@ -99,6 +100,7 @@ def get_my_orders(
                     order_id=order.id,
                     order_date=order.order_date,
                     status=order.status,
+                    client_name=order.user.nombre if order.user else "Desconocido",
                     client_phone=order.phone,
                     client_address=order.shipping_address,
                     client_notes=order.notes,
@@ -227,6 +229,7 @@ def update_my_order_status(
         order_id=updated_order.id,
         order_date=updated_order.order_date,
         status=updated_order.status,
+        client_name=updated_order.user.nombre if updated_order.user else "Desconocido",
         client_phone=updated_order.phone,
         client_address=updated_order.shipping_address,
         client_notes=updated_order.notes,

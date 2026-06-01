@@ -46,6 +46,14 @@ const ImportadoraOrdersPage = () => {
   const [expandedOrderId, setExpandedOrderId] = useState(null);
   const [updatingStatusId, setUpdatingStatusId] = useState(null);
   const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
+  const [activePrintId, setActivePrintId] = useState(null);
+
+  const handlePrint = (orderId) => {
+    setActivePrintId(orderId);
+    setTimeout(() => {
+      window.print();
+    }, 150);
+  };
 
   const showToast = (message, type = 'success') => {
     setToast({ show: true, message, type });
@@ -392,17 +400,21 @@ const ImportadoraOrdersPage = () => {
 
                         {/* Expanded Detail Row */}
                         {isExpanded && (
-                          <tr className="bg-slate-50/80">
+                          <tr className="bg-slate-50/80 animate-in fade-in duration-200">
                             <td colSpan={8} className="px-6 py-5">
                               <div className="max-w-3xl space-y-4">
                                 
-                                {/* Action cards grid */}
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {/* Action cards grid - hidden during print */}
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 no-print">
                                   {/* Client Details and Action */}
                                   <div className="p-4 bg-white rounded-xl border border-slate-100 shadow-sm flex flex-col justify-between gap-3 text-left">
                                     <div>
                                       <span className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Información de Contacto</span>
-                                      <p className="text-sm font-bold text-slate-800">Dirección y Teléfono</p>
+                                      <p className="text-sm font-bold text-slate-800">Dirección y Teléfono del Cliente</p>
+                                      <p className="text-xs text-slate-500 font-medium flex items-center gap-1 mt-1">
+                                        <span className="material-symbols-outlined text-[14px]">person</span>
+                                        {order.client_name || 'Desconocido'}
+                                      </p>
                                       <p className="text-xs text-slate-500 font-mono flex items-center gap-1 mt-1">
                                         <span className="material-symbols-outlined text-[14px]">phone</span>
                                         {order.client_phone}
@@ -413,20 +425,31 @@ const ImportadoraOrdersPage = () => {
                                       </p>
                                     </div>
                                     
-                                    {/* Premium WhatsApp Integration button */}
-                                    <a 
-                                      href={`https://wa.me/591${order.client_phone.replace(/\D/g, '')}?text=${encodeURIComponent(
-                                        `Hola, te escribimos de Importadora Market para coordinar los detalles de pago y facturación de tu pedido #${order.order_id}.`
-                                      )}`}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      className="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba56] text-white text-xs font-bold py-2.5 px-4 rounded-xl transition-all shadow-sm active:scale-[0.98] w-max select-none cursor-pointer"
-                                    >
-                                      <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
-                                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
-                                      </svg>
-                                      Coordinar por WhatsApp
-                                    </a>
+                                    <div className="flex flex-wrap gap-2">
+                                      {/* Premium WhatsApp Integration button */}
+                                      <a 
+                                        href={`https://wa.me/591${order.client_phone.replace(/\D/g, '')}?text=${encodeURIComponent(
+                                          `Hola ${order.client_name || 'Cliente'}, te saludamos de Importadora Market. Estamos procesando tu pedido #${order.order_id}, por favor envíanos el comprobante de transferencia o pago para coordinar la entrega.`
+                                        )}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba56] text-white text-xs font-bold py-2.5 px-4 rounded-xl transition-all shadow-sm active:scale-[0.98] select-none cursor-pointer"
+                                      >
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+                                          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
+                                        </svg>
+                                        WhatsApp
+                                      </a>
+
+                                      {/* Print Invoice button */}
+                                      <button 
+                                        onClick={() => handlePrint(order.order_id)}
+                                        className="flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-white text-xs font-bold py-2.5 px-4 rounded-xl transition-all shadow-sm active:scale-[0.98] select-none cursor-pointer"
+                                      >
+                                        <span className="material-symbols-outlined text-[16px]">print</span>
+                                        Imprimir Nota / Factura
+                                      </button>
+                                    </div>
                                   </div>
 
                                   {/* Status Updater Card */}
@@ -459,50 +482,85 @@ const ImportadoraOrdersPage = () => {
                                   </div>
                                 </div>
 
-                                {/* Client Notes */}
-                                {order.client_notes && (
-                                  <div className="p-4 bg-white rounded-xl border border-slate-100 shadow-sm text-left">
-                                    <span className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Notas del Cliente</span>
-                                    <p className="text-sm text-slate-600 italic">"{order.client_notes}"</p>
+                                {/* Custom Printable Invoice/Note details layout container */}
+                                <div id={`print-invoice-${order.order_id}`} className="bg-white p-6 rounded-xl border border-slate-100 shadow-sm flex flex-col text-left">
+                                  {/* Print-only Invoice Header */}
+                                  <div className="border-b pb-4 mb-4 flex justify-between items-center">
+                                    <div>
+                                      <h2 className="text-lg font-black text-slate-900 tracking-tight">IMPORTADORA MARKET</h2>
+                                      <p className="text-[10px] text-slate-400 font-semibold uppercase tracking-wider mt-0.5">Confiabilidad y Desempeño Institucional</p>
+                                    </div>
+                                    <div className="text-right">
+                                      <h3 className="text-sm font-black text-primary uppercase tracking-wider">Nota de Entrega / Factura</h3>
+                                      <p className="text-xs font-bold text-slate-500 mt-0.5">Pedido #{order.order_id}</p>
+                                    </div>
                                   </div>
-                                )}
 
-                                {/* Items detail table */}
-                                <h4 className="text-xs font-black text-slate-400 uppercase tracking-wider mb-3 text-left">
-                                  Detalle de Mis Productos en este Pedido
-                                </h4>
-                                <div className="border border-slate-200 rounded-xl overflow-hidden bg-white">
-                                  <table className="w-full text-left border-collapse">
-                                    <thead>
-                                      <tr className="bg-slate-50 text-[10px] font-extrabold text-slate-400 uppercase tracking-wider border-b border-slate-100">
-                                        <th className="px-4 py-3">Producto</th>
-                                        <th className="px-4 py-3 text-center">Cantidad</th>
-                                        <th className="px-4 py-3 text-right">Precio Unit.</th>
-                                        <th className="px-4 py-3 text-right">Subtotal</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody className="divide-y divide-slate-100 text-xs font-bold text-slate-700">
-                                      {order.my_items.map((item, idx) => (
-                                        <tr key={idx} className="hover:bg-slate-50/50">
-                                          <td className="px-4 py-3 text-primary">{item.product_name}</td>
-                                          <td className="px-4 py-3 text-center font-bold">{item.quantity}</td>
-                                          <td className="px-4 py-3 text-right text-slate-500">Bs. {item.unit_price.toFixed(2)}</td>
-                                          <td className="px-4 py-3 text-right text-primary font-extrabold">Bs. {item.subtotal.toFixed(2)}</td>
+                                  {/* Print Details Grid */}
+                                  <div className="grid grid-cols-2 gap-6 text-xs mb-6">
+                                    <div>
+                                      <span className="text-[10px] font-black text-slate-400 uppercase block mb-1">Datos de Facturación / Envío:</span>
+                                      <p className="font-bold text-slate-800">{order.client_name || 'Desconocido'}</p>
+                                      <p className="text-slate-500 font-mono mt-0.5">Telf: {order.client_phone}</p>
+                                      <p className="text-slate-600 mt-1 font-medium">{order.client_address}</p>
+                                    </div>
+                                    <div className="text-right">
+                                      <span className="text-[10px] font-black text-slate-400 uppercase block mb-1">Fecha de Emisión:</span>
+                                      <p className="font-bold text-slate-800">{formatDate(order.order_date)}</p>
+                                      <span className="text-[10px] font-black text-slate-400 uppercase block mt-2 mb-1">Estado:</span>
+                                      <span className="inline-flex px-2 py-0.5 bg-slate-100 rounded text-[10px] font-bold text-slate-700 uppercase">
+                                        {STATUS_CONFIG[order.status?.toLowerCase()]?.label || order.status}
+                                      </span>
+                                    </div>
+                                  </div>
+
+                                  {/* Items list */}
+                                  <div className="border border-slate-200 rounded-xl overflow-hidden mb-6">
+                                    <table className="w-full text-left border-collapse text-xs">
+                                      <thead>
+                                        <tr className="bg-slate-50 text-[10px] font-extrabold text-slate-400 uppercase tracking-wider border-b border-slate-200">
+                                          <th className="px-4 py-3">Producto</th>
+                                          <th className="px-4 py-3 text-center">Cantidad</th>
+                                          <th className="px-4 py-3 text-right">Precio Unit.</th>
+                                          <th className="px-4 py-3 text-right">Subtotal</th>
                                         </tr>
-                                      ))}
-                                    </tbody>
-                                    <tfoot>
-                                      <tr className="bg-slate-50 border-t border-slate-200">
-                                        <td colSpan={3} className="px-4 py-3 text-right text-xs font-black text-slate-500 uppercase">
-                                          Mi Subtotal
-                                        </td>
-                                        <td className="px-4 py-3 text-right text-sm font-extrabold text-accent">
-                                          Bs. {order.my_subtotal.toFixed(2)}
-                                        </td>
-                                      </tr>
-                                    </tfoot>
-                                  </table>
+                                      </thead>
+                                      <tbody className="divide-y divide-slate-100 font-bold text-slate-700">
+                                        {order.my_items.map((item, idx) => (
+                                          <tr key={idx} className="hover:bg-slate-50/50">
+                                            <td className="px-4 py-3 text-primary">{item.product_name}</td>
+                                            <td className="px-4 py-3 text-center">{item.quantity}</td>
+                                            <td className="px-4 py-3 text-right text-slate-500">Bs. {item.unit_price.toFixed(2)}</td>
+                                            <td className="px-4 py-3 text-right text-primary font-extrabold">Bs. {item.subtotal.toFixed(2)}</td>
+                                          </tr>
+                                        ))}
+                                      </tbody>
+                                      <tfoot>
+                                        <tr className="bg-slate-50 border-t border-slate-200">
+                                          <td colSpan={3} className="px-4 py-3 text-right font-black text-slate-500 uppercase tracking-wider">
+                                            Total a Pagar (Bolivianos)
+                                          </td>
+                                          <td className="px-4 py-3 text-right font-black text-accent text-sm">
+                                            Bs. {order.my_subtotal.toFixed(2)}
+                                          </td>
+                                        </tr>
+                                      </tfoot>
+                                    </table>
+                                  </div>
+
+                                  {/* Client Notes in invoice preview */}
+                                  {order.client_notes && (
+                                    <div className="p-4 bg-slate-50 rounded-xl border border-slate-100 mb-6 text-xs text-left">
+                                      <span className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Instrucciones Especiales del Comprador</span>
+                                      <p className="text-slate-600 italic">"{order.client_notes}"</p>
+                                    </div>
+                                  )}
+
+                                  <div className="border-t border-dashed pt-4 text-center text-[9px] text-slate-400">
+                                    <p className="font-semibold uppercase tracking-wider">Gracias por preferir Importadora Market</p>
+                                  </div>
                                 </div>
+
                               </div>
                             </td>
                           </tr>
@@ -538,6 +596,37 @@ const ImportadoraOrdersPage = () => {
           )}
         </div>
       </main>
+
+      {/* Dynamic Print Invoice Style Rules Block */}
+      {activePrintId && (
+        <style>{`
+          @media print {
+            /* Hide EVERYTHING by default */
+            body * {
+              visibility: hidden !important;
+            }
+            /* Show ONLY our printable invoice container and its children */
+            #print-invoice-${activePrintId}, #print-invoice-${activePrintId} * {
+              visibility: visible !important;
+            }
+            #print-invoice-${activePrintId} {
+              position: absolute !important;
+              left: 0 !important;
+              top: 0 !important;
+              width: 100% !important;
+              background: white !important;
+              color: black !important;
+              padding: 40px !important;
+              border: none !important;
+              box-shadow: none !important;
+            }
+            /* Hide the WhatsApp integration button, print controls and state updates select in printed invoice */
+            .no-print {
+              display: none !important;
+            }
+          }
+        `}</style>
+      )}
     </div>
   );
 };
