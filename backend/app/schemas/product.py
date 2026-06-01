@@ -109,6 +109,7 @@ class ProductResponse(BaseModel):
     submitted_by_id: Optional[int] = None
     approved_by_id: Optional[int] = None
     approved_at: Optional[datetime] = None
+    submitted_by_phone: Optional[str] = None
     vistas_actuales: int
     created_at: datetime
     updated_at: datetime

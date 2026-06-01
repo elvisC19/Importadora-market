@@ -46,7 +46,7 @@ const MisProductosPage = () => {
   return (
     <div className="flex min-h-screen bg-slate-50 text-slate-800 pt-16 overflow-x-hidden">
       {/* Sidebar - Desktop Only (RESTAURADO) */}
-      <aside className="hidden lg:flex flex-col w-64 bg-slate-900 text-white fixed h-full p-6 border-r border-slate-800 z-30 select-none">
+      <aside className="hidden lg:flex flex-col w-64 bg-slate-900 text-white fixed top-16 bottom-0 left-0 p-6 border-r border-slate-800 z-30 select-none">
         <div className="mb-10 text-left">
           <Link to="/" className="text-xl font-extrabold text-white flex items-center gap-2 hover:opacity-85 transition-opacity">
             <span className="material-symbols-outlined text-amber-500 text-[28px]">store</span>

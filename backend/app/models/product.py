@@ -63,3 +63,7 @@ class Product(Base):
     categoria = relationship("Category", back_populates="products")
     submitted_by = relationship("User", foreign_keys=[submitted_by_id], backref="submitted_products")
     approved_by = relationship("User", foreign_keys=[approved_by_id], backref="approved_products")
+
+    @property
+    def submitted_by_phone(self) -> str:
+        return self.submitted_by.telefono if self.submitted_by else None

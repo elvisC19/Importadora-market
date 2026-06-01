@@ -168,6 +168,10 @@ const OrdersPage = () => {
               
               // Calculate details totals
               const itemsCount = order.items?.reduce((sum, it) => sum + (it.quantity || 0), 0) || 0;
+              const sellerPhone = order.items?.find(it => it.product?.submitted_by_phone)?.product?.submitted_by_phone || '70000000';
+              const whatsappHref = `https://wa.me/591${sellerPhone.replace(/\D/g, '')}?text=${encodeURIComponent(
+                `Hola! Quisiera coordinar el pago de mi pedido #${order.id} realizado en Importadora Market.`
+              )}`;
 
               return (
                 <div 
@@ -289,13 +293,13 @@ const OrdersPage = () => {
                           Pedido Seguro
                         </div>
                         <a 
-                          href={`https://wa.me/59170000000?text=Hola%21%20Quisiera%20consultar%20por%20mi%20pedido%20con%20código%20%23${order.id}`}
+                          href={whatsappHref}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="inline-flex items-center gap-1.5 text-xs font-bold text-green-600 hover:text-green-700 bg-white border border-green-200 px-3.5 py-2 rounded-xl transition-all shadow-sm active:scale-95"
+                          className="inline-flex items-center gap-1.5 text-xs font-bold text-green-600 hover:text-green-700 bg-white border border-green-200 px-3.5 py-2 rounded-xl transition-all shadow-sm active:scale-95 cursor-pointer select-none"
                         >
                           <span className="material-symbols-outlined text-[18px]">chat</span>
-                          Consultar Pedido por WhatsApp
+                          Coordinar Pago por WhatsApp
                         </a>
                       </div>
                     </div>
