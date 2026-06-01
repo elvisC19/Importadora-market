@@ -7,6 +7,7 @@ from sqlalchemy.orm import Session
 from app.models.product import Product
 from app.models.category import Category
 from app.models.user import User
+from app.models.order_item import OrderItem
 from app.repositories.product_repository import product_repository
 from app.repositories.category_repository import category_repository
 from app.schemas.product import ProductCreate, ProductUpdate, ProductFilter, ProductResponse
@@ -118,6 +119,15 @@ class ProductService:
         product = product_repository.get(db, id=product_id)
         if not product:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Producto no encontrado")
+        
+        # Validar integridad referencial con el historial de pedidos
+        has_orders = db.query(OrderItem).filter(OrderItem.product_id == product_id).first() is not None
+        if has_orders:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="No se puede eliminar el producto porque tiene pedidos asociados en el historial de ventas. Considere desactivar su visibilidad."
+            )
+            
         return product_repository.delete(db, id=product_id)
 
     def toggle_featured(self, db: Session, product_id: int) -> Product:
