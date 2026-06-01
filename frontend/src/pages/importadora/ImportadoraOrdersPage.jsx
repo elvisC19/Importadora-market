@@ -116,7 +116,7 @@ const ImportadoraOrdersPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-slate-50 text-slate-800">
+    <div className="min-h-screen bg-slate-50 text-slate-800 pt-24 pb-16 px-4 md:px-margin-desktop select-none">
       {/* Toast Notice */}
       {toast.show && (
         <div className={`fixed bottom-5 right-5 z-50 flex items-center gap-3 px-6 py-4 rounded-xl shadow-2xl border text-sm font-bold animate-in slide-in-from-bottom duration-300 ${
@@ -127,38 +127,7 @@ const ImportadoraOrdersPage = () => {
         </div>
       )}
 
-      {/* Sidebar - Desktop Only */}
-      <aside className="hidden lg:flex flex-col w-64 bg-slate-900 text-white fixed h-full p-6 border-r border-slate-800 z-30 select-none">
-        <div className="mb-10">
-          <Link to="/" className="text-xl font-extrabold text-white flex items-center gap-2 hover:opacity-85 transition-opacity">
-            <span className="material-symbols-outlined text-accent text-[28px]">store</span>
-            <span>Importadora</span>
-          </Link>
-          <p className="text-xs text-slate-400 mt-1">Panel de Control</p>
-        </div>
-        <nav className="flex-1 space-y-2">
-          <Link to="/importadora/productos" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-lg transition-all">
-            <span className="material-symbols-outlined">widgets</span>
-            <span className="text-sm font-semibold">Mis Productos</span>
-          </Link>
-          <Link to="/importadora/subir" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-lg transition-all">
-            <span className="material-symbols-outlined">add_circle</span>
-            <span className="text-sm font-semibold">Subir Producto</span>
-          </Link>
-          <Link to="/importadora/pedidos" className="flex items-center gap-3 px-4 py-3 bg-primary text-white rounded-lg shadow-sm font-bold">
-            <span className="material-symbols-outlined">receipt_long</span>
-            <span className="text-sm font-semibold">Mis Ventas</span>
-          </Link>
-          <hr className="border-slate-800 my-4" />
-          <Link to="/" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-lg transition-all">
-            <span className="material-symbols-outlined">home</span>
-            <span className="text-sm font-semibold">Volver a la Tienda</span>
-          </Link>
-        </nav>
-      </aside>
-
-      {/* Main Content */}
-      <main className="flex-grow lg:ml-64 p-4 md:p-8 relative min-w-0">
+      <div className="px-4 md:px-8 py-6 space-y-6 max-w-7xl mx-auto">
         
         {/* Header Block */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 border-b border-slate-100 pb-6">
@@ -168,9 +137,9 @@ const ImportadoraOrdersPage = () => {
               <span className="material-symbols-outlined text-[12px]">chevron_right</span>
               <span className="text-primary font-bold">Mis Ventas</span>
             </div>
-            <h1 className="text-3xl font-extrabold text-slate-900 flex items-center gap-2">
+            <h1 className="text-3xl font-extrabold text-slate-800 flex items-center gap-2">
               <span className="material-symbols-outlined text-[32px] text-accent">point_of_sale</span>
-              Mis Ventas
+              Gestión de Pedidos Recibidos
             </h1>
             <p className="text-gray-500 text-sm mt-1">Monitorea y actualiza los pedidos que incluyen tus productos importados.</p>
           </div>
@@ -595,7 +564,7 @@ const ImportadoraOrdersPage = () => {
             </div>
           )}
         </div>
-      </main>
+      </div>
 
       {/* Dynamic Print Invoice Style Rules Block */}
       {activePrintId && (
