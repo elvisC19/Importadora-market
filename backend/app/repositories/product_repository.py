@@ -41,6 +41,9 @@ class ProductRepository(CRUDBase[Product, ProductCreate, ProductUpdate]):
             if filters.precio_max is not None:
                 query = query.filter(active_price <= filters.precio_max)
 
+        if hasattr(filters, "is_active") and filters.is_active is not None:
+            query = query.filter(Product.is_active == filters.is_active)
+
         return query
 
     def get_all_filtered(self, db: Session, filters: ProductFilter) -> List[Product]:
@@ -55,7 +58,7 @@ class ProductRepository(CRUDBase[Product, ProductCreate, ProductUpdate]):
         """Obtener ofertas aprobadas."""
         return (
             db.query(Product)
-            .filter(Product.is_approved == True, Product.is_offer == True)
+            .filter(Product.is_approved == True, Product.is_offer == True, Product.is_active == True)
             .offset(skip)
             .limit(limit)
             .all()
@@ -68,7 +71,8 @@ class ProductRepository(CRUDBase[Product, ProductCreate, ProductUpdate]):
             .filter(
                 Product.is_approved == True,
                 Product.is_offer == True,
-                Product.stock > 0
+                Product.stock > 0,
+                Product.is_active == True
             )
             .offset(skip)
             .limit(limit)
@@ -79,7 +83,7 @@ class ProductRepository(CRUDBase[Product, ProductCreate, ProductUpdate]):
         """Obtener novedades aprobadas ordenadas por fecha de creación descendente."""
         return (
             db.query(Product)
-            .filter(Product.is_approved == True, Product.is_new == True)
+            .filter(Product.is_approved == True, Product.is_new == True, Product.is_active == True)
             .order_by(Product.created_at.desc())
             .offset(skip)
             .limit(limit)
@@ -90,7 +94,7 @@ class ProductRepository(CRUDBase[Product, ProductCreate, ProductUpdate]):
         """Obtener destacados aprobados."""
         return (
             db.query(Product)
-            .filter(Product.is_approved == True, Product.is_featured == True)
+            .filter(Product.is_approved == True, Product.is_featured == True, Product.is_active == True)
             .offset(skip)
             .limit(limit)
             .all()

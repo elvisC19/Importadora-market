@@ -32,6 +32,7 @@ class Product(Base):
     video_enlace = Column(String(500), nullable=True)
 
     is_approved = Column(Boolean, default=False, nullable=False)
+    is_active = Column(Boolean, default=True, nullable=False)
 
     @hybrid_property_with_default
     def is_visible(self) -> bool:

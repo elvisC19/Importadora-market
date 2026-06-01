@@ -276,17 +276,24 @@ const MisProductosPage = () => {
                         </span>
                       </td>
                       <td className="px-6 py-4 text-center">
-                        {product.is_approved ? (
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-green-50 text-green-700 rounded-full text-xs font-bold border border-green-200">
-                            <span className="w-1.5 h-1.5 rounded-full bg-green-600"></span>
-                            Aprobado
-                          </span>
-                        ) : (
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 text-amber-700 rounded-full text-xs font-bold border border-amber-200">
-                            <span className="w-1.5 h-1.5 rounded-full bg-amber-600"></span>
-                            Pendiente
-                          </span>
-                        )}
+                        <div className="flex flex-col gap-1 items-center justify-center">
+                          {product.is_approved ? (
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-green-50 text-green-700 rounded-full text-xs font-bold border border-green-200">
+                              <span className="w-1.5 h-1.5 rounded-full bg-green-600"></span>
+                              Aprobado
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-amber-50 text-amber-700 rounded-full text-xs font-bold border border-amber-200">
+                              <span className="w-1.5 h-1.5 rounded-full bg-amber-600"></span>
+                              Pendiente
+                            </span>
+                          )}
+                          {!product.is_active && (
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-red-100 text-red-700 text-[10px] font-extrabold rounded-full border border-red-200 uppercase">
+                              Inactivo
+                            </span>
+                          )}
+                        </div>
                       </td>
                       <td className="px-6 py-4 text-center">
                         <div className="flex items-center justify-center gap-1.5">

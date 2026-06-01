@@ -17,6 +17,7 @@ class ProductService:
     def get_products(self, db: Session, filters: ProductFilter, is_admin: bool = False) -> List[Product]:
         if not is_admin:
             filters.is_approved = True
+            filters.is_active = True
         return product_repository.get_all_filtered(db, filters=filters)
 
     def get_product_detail(self, db: Session, product_id: int, is_admin: bool = False) -> Product:
@@ -24,7 +25,7 @@ class ProductService:
         if not product:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Producto no encontrado")
         
-        if not is_admin and not product.is_approved:
+        if not is_admin and (not product.is_approved or not product.is_active):
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Producto no encontrado")
             
         # Incrementar vistas

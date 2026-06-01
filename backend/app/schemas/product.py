@@ -39,6 +39,7 @@ class ProductCreate(BaseModel):
     is_new: bool = Field(False, description="¿Es novedad/nuevo?")
     is_featured: bool = Field(False, description="¿Es destacado?")
     submitted_by_id: Optional[int] = Field(None, description="ID del usuario que envió el producto")
+    is_active: bool = Field(True, description="¿Está activo el producto?")
 
     @model_validator(mode="after")
     def validate_offer(self) -> "ProductCreate":
@@ -68,6 +69,7 @@ class ProductUpdate(BaseModel):
     submitted_by_id: Optional[int] = Field(None, description="ID del usuario que envió el producto")
     approved_by_id: Optional[int] = Field(None, description="ID del administrador que aprobó el producto")
     approved_at: Optional[datetime] = Field(None, description="Fecha de aprobación")
+    is_active: Optional[bool] = Field(None, description="¿Está activo el producto?")
 
     @model_validator(mode="after")
     def validate_offer_update(self) -> "ProductUpdate":
@@ -102,6 +104,7 @@ class ProductResponse(BaseModel):
     imagen_alternativa_url: Optional[str] = None
     video_enlace: Optional[str] = None
     is_approved: bool
+    is_active: bool
     is_offer: bool
     offer_price: Optional[float] = None
     is_new: bool
@@ -155,6 +158,7 @@ class ProductFilter(BaseModel):
     is_new: Optional[bool] = None
     is_featured: Optional[bool] = None
     is_approved: Optional[bool] = None  # Solo para administradores
+    is_active: Optional[bool] = None
     precio_min: Optional[float] = Field(None, ge=0)
     precio_max: Optional[float] = Field(None, ge=0)
     skip: int = Field(0, ge=0)

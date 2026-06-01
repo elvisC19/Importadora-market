@@ -129,17 +129,35 @@ const AdminInventoryPage = () => {
     }
   };
 
-  const handleDeleteProduct = async (id) => {
-    if (!window.confirm("¿Está seguro de que desea eliminar este producto del inventario? Esta acción es irreversible.")) {
-      return;
-    }
+  const handleDeleteProduct = async (productId) => {
     try {
-      await adminProductService.deleteProduct(id);
-      showToast("Producto eliminado permanentemente.");
+      // Intento 1: Eliminación física en la base de datos (CRUD Tradicional)
+      await adminProductService.deleteProduct(productId);
+      showToast("Producto eliminado físicamente de la base de datos con éxito.");
       await loadDashboardData();
-    } catch (err) {
-      console.error("Error deleting product", err);
-      showToast("Error al eliminar el producto.", "error");
+    } catch (error) {
+      console.error("Error al eliminar producto:", error);
+      
+      // Si el backend responde con un 400 controlado (Tiene ventas asociadas)
+      if (error.response?.status === 400) {
+        const confirmarBaja = window.confirm(
+          "Este producto cuenta con pedidos e historial de ventas registrado, por lo que PostgreSQL impide su borrado físico.\n\n¿Desea DARLO DE BAJA (Borrado Lógico)? Esto lo ocultará inmediatamente del catálogo público para los clientes pero mantendrá el historial de pedidos."
+        );
+        
+        if (confirmarBaja) {
+          try {
+            // Ejecuta la actualización mandando el estado desactivado
+            await adminProductService.updateProduct(productId, { is_active: false });
+            showToast("El producto ha sido dado de baja correctamente y ocultado del catálogo público.");
+            await loadDashboardData();
+          } catch (updateError) {
+            alert("Error al intentar dar de baja el producto: " + (updateError.response?.data?.detail || updateError.message));
+          }
+        }
+      } else {
+        // Cualquier otro error de red o servidor
+        alert("Error inesperado: " + (error.response?.data?.detail || error.message));
+      }
     }
   };
 
@@ -160,6 +178,7 @@ const AdminInventoryPage = () => {
       offer_price: '',
       is_new: false,
       is_featured: false,
+      is_active: true,
     });
     setIsProductModalOpen(true);
   };
@@ -180,6 +199,7 @@ const AdminInventoryPage = () => {
       offer_price: product.offer_price ? product.offer_price.toString() : '',
       is_new: product.is_new,
       is_featured: product.is_featured,
+      is_active: product.is_active !== undefined ? product.is_active : true,
     });
     setIsProductModalOpen(true);
   };
@@ -217,6 +237,7 @@ const AdminInventoryPage = () => {
       offer_price: productForm.is_offer && productForm.offer_price ? parseFloat(productForm.offer_price) : null,
       is_new: productForm.is_new,
       is_featured: productForm.is_featured,
+      is_active: productForm.is_active !== undefined ? productForm.is_active : true,
     };
 
     if (payload.is_offer) {
@@ -541,14 +562,21 @@ const AdminInventoryPage = () => {
 
                       {/* Status */}
                       <td className="px-6 py-4 text-center">
-                        <span className={`inline-flex items-center gap-1 px-2.5 py-1 text-xs font-bold rounded-full ${
-                          p.is_approved 
-                            ? 'bg-green-100 text-green-700' 
-                            : 'bg-orange-100 text-orange-700'
-                        }`}>
-                          <span className={`w-1.5 h-1.5 rounded-full ${p.is_approved ? 'bg-green-500' : 'bg-orange-500'}`}></span>
-                          {p.is_approved ? 'Aprobado' : 'Pendiente'}
-                        </span>
+                        <div className="flex flex-col gap-1 items-center">
+                          <span className={`inline-flex items-center gap-1 px-2.5 py-1 text-xs font-bold rounded-full ${
+                            p.is_approved 
+                              ? 'bg-green-100 text-green-700' 
+                              : 'bg-orange-100 text-orange-700'
+                          }`}>
+                            <span className={`w-1.5 h-1.5 rounded-full ${p.is_approved ? 'bg-green-500' : 'bg-orange-500'}`}></span>
+                            {p.is_approved ? 'Aprobado' : 'Pendiente'}
+                          </span>
+                          {!p.is_active && (
+                            <span className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-red-100 text-red-700 text-[10px] font-extrabold rounded-full border border-red-200 uppercase">
+                              Inactivo
+                            </span>
+                          )}
+                        </div>
                       </td>
 
                       {/* Actions */}
@@ -912,6 +940,17 @@ const AdminInventoryPage = () => {
                       className="w-4 h-4 text-accent rounded border-gray-300 focus:ring-accent" 
                     />
                     <span className="text-sm font-semibold text-gray-700">Marcar como Destacado (Máx. 10)</span>
+                  </label>
+
+                  <label className="flex items-center gap-3 cursor-pointer select-none">
+                    <input 
+                      type="checkbox" 
+                      name="is_active" 
+                      checked={productForm.is_active} 
+                      onChange={handleFormChange} 
+                      className="w-4 h-4 text-accent rounded border-gray-300 focus:ring-accent" 
+                    />
+                    <span className="text-sm font-semibold text-gray-700">Producto Activo (Visible en Catálogo)</span>
                   </label>
                 </div>
 
