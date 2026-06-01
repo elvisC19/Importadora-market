@@ -18,6 +18,8 @@ const SubirProductoPage = () => {
     precio: '',
     stock: '',
     imagen_url: '',
+    imagen_secundaria_url: '',
+    imagen_alternativa_url: '',
     video_enlace: '',
     categoria_id: '',
     is_offer: false,
@@ -106,6 +108,8 @@ const SubirProductoPage = () => {
         precio: parseFloat(form.precio),
         stock: parseInt(form.stock),
         imagen_url: form.imagen_url.trim() || null,
+        imagen_secundaria_url: form.imagen_secundaria_url.trim() || null,
+        imagen_alternativa_url: form.imagen_alternativa_url.trim() || null,
         video_enlace: form.video_enlace.trim() || null,
         categoria_id: parseInt(form.categoria_id),
         is_offer: form.is_offer,
@@ -348,7 +352,7 @@ const SubirProductoPage = () => {
                   {/* Image URL */}
                   <div>
                     <label className="block text-sm font-bold text-slate-700 mb-1.5" htmlFor="imagen_url">
-                      Enlace de la Imagen (URL)
+                      Enlace de la Imagen Principal (URL)
                     </label>
                     <input
                       type="url"
@@ -373,6 +377,38 @@ const SubirProductoPage = () => {
                       value={form.video_enlace}
                       onChange={handleChange}
                       placeholder="https://youtube.com/watch?v=..."
+                      className="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-xl focus:outline-none focus:border-primary font-body-sm text-body-sm"
+                    />
+                  </div>
+
+                  {/* Secondary Image URL */}
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-1.5" htmlFor="imagen_secundaria_url">
+                      Enlace de la Imagen (Ángulo Secundario)
+                    </label>
+                    <input
+                      type="url"
+                      id="imagen_secundaria_url"
+                      name="imagen_secundaria_url"
+                      value={form.imagen_secundaria_url}
+                      onChange={handleChange}
+                      placeholder="https://ejemplo.com/imagen_secundaria.jpg"
+                      className="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-xl focus:outline-none focus:border-primary font-body-sm text-body-sm"
+                    />
+                  </div>
+
+                  {/* Alternative Image URL */}
+                  <div>
+                    <label className="block text-sm font-bold text-slate-700 mb-1.5" htmlFor="imagen_alternativa_url">
+                      Enlace de la Imagen (Ángulo Alternativo)
+                    </label>
+                    <input
+                      type="url"
+                      id="imagen_alternativa_url"
+                      name="imagen_alternativa_url"
+                      value={form.imagen_alternativa_url}
+                      onChange={handleChange}
+                      placeholder="https://ejemplo.com/imagen_alternativa.jpg"
                       className="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-xl focus:outline-none focus:border-primary font-body-sm text-body-sm"
                     />
                   </div>

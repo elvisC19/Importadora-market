@@ -27,6 +27,8 @@ class Product(Base):
     precio = Column(Float, nullable=False)
     stock = Column(Integer, default=0, nullable=False)
     imagen_url = Column(String(500), nullable=True)
+    imagen_secundaria_url = Column(String(500), nullable=True)
+    imagen_alternativa_url = Column(String(500), nullable=True)
     video_enlace = Column(String(500), nullable=True)
 
     is_approved = Column(Boolean, default=False, nullable=False)

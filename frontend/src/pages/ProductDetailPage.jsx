@@ -120,6 +120,8 @@ const ProductDetailPage = () => {
     descripcion,
     stock,
     imagen_url,
+    imagen_secundaria_url,
+    imagen_alternativa_url,
     video_enlace,
     is_offer,
     is_new,
@@ -131,11 +133,11 @@ const ProductDetailPage = () => {
 
   const embedVideoUrl = video_enlace ? getYouTubeEmbedUrl(video_enlace) : null;
 
-  // We mock a few extra image angles using our primary image to create a rich Bento Grid look if no other images exist
+  // We use custom secondary and alternative images from the DB if they exist, falling back to mocked versions if not
   const productImages = [
     imagen_url || "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600",
-    imagen_url ? `${imagen_url}&auto=format&fit=crop&w=400&q=60` : "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600",
-    imagen_url ? `${imagen_url}&auto=format&fit=crop&w=400&q=50` : "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=600",
+    imagen_secundaria_url || (imagen_url ? `${imagen_url}&auto=format&fit=crop&w=400&q=60` : "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600"),
+    imagen_alternativa_url || (imagen_url ? `${imagen_url}&auto=format&fit=crop&w=400&q=50` : "https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=600"),
   ];
 
   return (

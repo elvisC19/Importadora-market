@@ -16,19 +16,11 @@ const AboutPage = () => {
             <span className="text-brand-deep font-bold text-xs uppercase tracking-widest bg-brand-tech/10 px-4 py-2 rounded-full border border-brand-tech/20">
               {t('about.badge')}
             </span>
-            <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '12px' }}>
+            <div className="flex justify-center mb-3">
               <img
                 src="/images/about/escudo-bolivia.jpg"
                 alt="Escudo de Bolivia"
-                style={{
-                  width: '320px',
-                  height: '230px',
-                  objectFit: 'cover',
-                  opacity: 0.85,
-                  borderRadius: '15px',
-                  border: '1.5px solid #CCFBF1',
-                  boxShadow: '0 4px 12px rgba(0,0,0,0.05)'
-                }}
+                className="w-full max-w-[320px] h-[230px] object-cover opacity-85 rounded-2xl border border-[#CCFBF1] shadow-sm"
                 onError={(e) => { e.target.style.display = 'none' }}
               />
             </div>

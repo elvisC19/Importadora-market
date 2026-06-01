@@ -30,6 +30,8 @@ class ProductCreate(BaseModel):
     precio: float = Field(..., gt=0, description="Precio original del producto")
     stock: int = Field(0, ge=0, description="Stock disponible")
     imagen_url: Optional[str] = Field(None, description="URL de la imagen del producto")
+    imagen_secundaria_url: Optional[str] = Field(None, description="URL de la imagen del ángulo secundario")
+    imagen_alternativa_url: Optional[str] = Field(None, description="URL de la imagen del ángulo alternativo")
     video_enlace: Optional[str] = Field(None, description="Enlace del video promocional")
     categoria_id: int = Field(..., description="ID de la categoría asociada")
     is_offer: bool = Field(False, description="¿Está en oferta?")
@@ -54,6 +56,8 @@ class ProductUpdate(BaseModel):
     precio: Optional[float] = Field(None, gt=0, description="Precio original del producto")
     stock: Optional[int] = Field(None, ge=0, description="Stock disponible")
     imagen_url: Optional[str] = Field(None, description="URL de la imagen del producto")
+    imagen_secundaria_url: Optional[str] = Field(None, description="URL de la imagen del ángulo secundario")
+    imagen_alternativa_url: Optional[str] = Field(None, description="URL de la imagen del ángulo alternativo")
     video_enlace: Optional[str] = Field(None, description="Enlace del video promocional")
     categoria_id: Optional[int] = Field(None, description="ID de la categoría asociada")
     is_approved: Optional[bool] = Field(None, description="¿Está aprobado por el administrador?")
@@ -94,6 +98,8 @@ class ProductResponse(BaseModel):
     precio: float
     stock: int
     imagen_url: Optional[str] = None
+    imagen_secundaria_url: Optional[str] = None
+    imagen_alternativa_url: Optional[str] = None
     video_enlace: Optional[str] = None
     is_approved: bool
     is_offer: bool

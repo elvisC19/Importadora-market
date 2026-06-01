@@ -29,6 +29,8 @@ const AdminInventoryPage = () => {
     precio: '',
     stock: '',
     imagen_url: '',
+    imagen_secundaria_url: '',
+    imagen_alternativa_url: '',
     video_enlace: '',
     categoria_id: '',
     is_offer: false,
@@ -149,6 +151,8 @@ const AdminInventoryPage = () => {
       precio: '',
       stock: '0',
       imagen_url: '',
+      imagen_secundaria_url: '',
+      imagen_alternativa_url: '',
       video_enlace: '',
       categoria_id: categories.length > 0 ? categories[0].id.toString() : '',
       is_offer: false,
@@ -167,6 +171,8 @@ const AdminInventoryPage = () => {
       precio: product.precio.toString(),
       stock: product.stock.toString(),
       imagen_url: product.imagen_url || '',
+      imagen_secundaria_url: product.imagen_secundaria_url || '',
+      imagen_alternativa_url: product.imagen_alternativa_url || '',
       video_enlace: product.video_enlace || '',
       categoria_id: product.categoria_id.toString(),
       is_offer: product.is_offer,
@@ -202,6 +208,8 @@ const AdminInventoryPage = () => {
       precio: parseFloat(productForm.precio),
       stock: parseInt(productForm.stock) || 0,
       imagen_url: productForm.imagen_url || null,
+      imagen_secundaria_url: productForm.imagen_secundaria_url || null,
+      imagen_alternativa_url: productForm.imagen_alternativa_url || null,
       video_enlace: productForm.video_enlace || null,
       categoria_id: parseInt(productForm.categoria_id),
       is_offer: productForm.is_offer,
@@ -789,7 +797,7 @@ const AdminInventoryPage = () => {
                 {/* Media Urls (Image & Video) */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                   <div>
-                    <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-2">URL de la Imagen</label>
+                    <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-2">URL de la Imagen Principal</label>
                     <input 
                       type="url" 
                       name="imagen_url"
@@ -808,6 +816,32 @@ const AdminInventoryPage = () => {
                       value={productForm.video_enlace}
                       onChange={handleFormChange}
                       placeholder="https://youtube.com/..."
+                      className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                  <div>
+                    <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-2">URL de la Imagen (Ángulo Secundario)</label>
+                    <input 
+                      type="url" 
+                      name="imagen_secundaria_url"
+                      value={productForm.imagen_secundaria_url}
+                      onChange={handleFormChange}
+                      placeholder="https://..."
+                      className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-gray-600 uppercase tracking-wider mb-2">URL de la Imagen (Ángulo Alternativo)</label>
+                    <input 
+                      type="url" 
+                      name="imagen_alternativa_url"
+                      value={productForm.imagen_alternativa_url}
+                      onChange={handleFormChange}
+                      placeholder="https://..."
                       className="w-full border border-gray-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
                     />
                   </div>

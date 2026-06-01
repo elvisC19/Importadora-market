@@ -184,7 +184,7 @@ const HomeProductCard = ({ product }) => {
 
 // Section separator
 const SectionSeparator = () => (
-  <hr style={{ border: 'none', borderTop: '1px solid #CCFBF1', margin: '0 40px' }} />
+  <hr className="my-8 mx-4 md:mx-10 border-0 border-t border-[#CCFBF1]/40" />
 );
 
 // Map of category design configurations (gradient background and icons)
@@ -514,14 +514,9 @@ const HomePage = () => {
       <SectionSeparator />
 
       {/* 6. NEWSLETTER / CORPORATE CALL TO ACTION - Redesigned layout */}
-      <section style={{ margin: '24px 40px' }}>
+      <section className="my-6 mx-4 md:mx-10">
         <div 
-          className="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-stack-xl overflow-hidden relative"
-          style={{
-            background: '#134E4A',
-            borderRadius: '16px',
-            padding: '28px 32px'
-          }}
+          className="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-stack-xl overflow-hidden relative py-8 px-6 md:py-10 md:px-12 bg-brand-deep rounded-2xl shadow-xl"
         >
           <div className="z-10 relative text-left space-y-2 max-w-xl">
             <h2 className="font-headline-lg text-headline-lg font-bold leading-tight text-white">
