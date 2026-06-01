@@ -137,69 +137,133 @@ const SubirProductoPage = () => {
 
   if (success) {
     return (
-      <div className="min-h-screen bg-surface-container-lowest pt-24 pb-16 flex items-center justify-center px-4">
-        <div className="max-w-md w-full bg-white border border-outline-variant rounded-3xl p-8 text-center shadow-2xl animate-in zoom-in-95 duration-300">
-          <div className="w-20 h-20 bg-green-50 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6 border border-green-150">
-            <span className="material-symbols-outlined text-[48px]">check_circle</span>
-          </div>
-          <h2 className="text-2xl font-bold text-on-surface mb-2">¡Producto Enviado!</h2>
-          <p className="text-on-surface-variant mb-6 text-body-medium">
-            El producto <span className="font-bold text-primary">"{form.nombre}"</span> fue registrado exitosamente y está pendiente de aprobación por el administrador.
-          </p>
-          <div className="flex flex-col gap-3">
-            <Link
-              to="/importadora/productos"
-              className="px-5 py-3 bg-secondary text-on-secondary rounded-xl font-bold hover:opacity-90 transition-all shadow-md"
-            >
-              Ir a mis productos
+      <div className="flex min-h-screen bg-slate-50 text-slate-800 pt-16 overflow-x-hidden">
+        {/* Sidebar - Desktop Only */}
+        <aside className="hidden lg:flex flex-col w-64 bg-slate-900 text-white fixed h-full p-6 border-r border-slate-800 z-30 select-none">
+          <div className="mb-10 text-left">
+            <Link to="/" className="text-xl font-extrabold text-white flex items-center gap-2 hover:opacity-85 transition-opacity">
+              <span className="material-symbols-outlined text-amber-500 text-[28px]">store</span>
+              <span>Importadora</span>
             </Link>
-            <p className="text-xs text-slate-400">Redireccionando automáticamente...</p>
+            <p className="text-xs text-slate-400 mt-1">Panel de Control</p>
           </div>
-        </div>
+          <nav className="flex-1 space-y-2">
+            <Link to="/importadora/productos" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-lg transition-all">
+              <span className="material-symbols-outlined">widgets</span>
+              <span className="text-sm font-semibold">Mis Productos</span>
+            </Link>
+            <Link to="/importadora/subir" className="flex items-center gap-3 px-4 py-3 bg-amber-600 text-white rounded-lg shadow-sm font-bold">
+              <span className="material-symbols-outlined">add_circle</span>
+              <span className="text-sm font-semibold">Subir Producto</span>
+            </Link>
+            <Link to="/importadora/pedidos" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-lg transition-all">
+              <span className="material-symbols-outlined">receipt_long</span>
+              <span className="text-sm font-semibold">Mis Ventas</span>
+            </Link>
+            <hr className="border-slate-800 my-4" />
+            <Link to="/" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-lg transition-all">
+              <span className="material-symbols-outlined">home</span>
+              <span className="text-sm font-semibold">Volver a la Tienda</span>
+            </Link>
+          </nav>
+        </aside>
+
+        {/* Main Content Success */}
+        <main className="flex-grow lg:ml-64 p-4 md:p-8 relative min-w-0 flex items-center justify-center">
+          <div className="max-w-md w-full bg-white border border-slate-100 rounded-3xl p-8 text-center shadow-lg animate-in zoom-in-95 duration-300">
+            <div className="w-20 h-20 bg-green-50 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6 border border-green-200">
+              <span className="material-symbols-outlined text-[48px]">check_circle</span>
+            </div>
+            <h2 className="text-2xl font-bold text-slate-800 mb-2">¡Producto Enviado!</h2>
+            <p className="text-slate-500 mb-6 text-sm">
+              El producto <span className="font-bold text-slate-800">"{form.nombre}"</span> fue registrado exitosamente y está pendiente de aprobación por el administrador.
+            </p>
+            <div className="flex flex-col gap-3">
+              <Link
+                to="/importadora/productos"
+                className="px-5 py-3 bg-slate-800 text-white rounded-xl font-bold hover:opacity-90 transition-all shadow-md text-sm text-center"
+              >
+                Ir a mis productos
+              </Link>
+              <p className="text-xs text-slate-450">Redireccionando automáticamente...</p>
+            </div>
+          </div>
+        </main>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-surface-container-lowest pt-24 pb-16 px-4 md:px-margin-desktop">
-      <div className="max-w-3xl mx-auto">
+    <div className="flex min-h-screen bg-slate-50 text-slate-800 pt-16 overflow-x-hidden">
+      {/* Sidebar - Desktop Only */}
+      <aside className="hidden lg:flex flex-col w-64 bg-slate-900 text-white fixed h-full p-6 border-r border-slate-800 z-30 select-none">
+        <div className="mb-10 text-left">
+          <Link to="/" className="text-xl font-extrabold text-white flex items-center gap-2 hover:opacity-85 transition-opacity">
+            <span className="material-symbols-outlined text-amber-500 text-[28px]">store</span>
+            <span>Importadora</span>
+          </Link>
+          <p className="text-xs text-slate-400 mt-1">Panel de Control</p>
+        </div>
+        <nav className="flex-1 space-y-2">
+          <Link to="/importadora/productos" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-lg transition-all">
+            <span className="material-symbols-outlined">widgets</span>
+            <span className="text-sm font-semibold">Mis Productos</span>
+          </Link>
+          <Link to="/importadora/subir" className="flex items-center gap-3 px-4 py-3 bg-amber-600 text-white rounded-lg shadow-sm font-bold">
+            <span className="material-symbols-outlined">add_circle</span>
+            <span className="text-sm font-semibold">Subir Producto</span>
+          </Link>
+          <Link to="/importadora/pedidos" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-lg transition-all">
+            <span className="material-symbols-outlined">receipt_long</span>
+            <span className="text-sm font-semibold">Mis Ventas</span>
+          </Link>
+          <hr className="border-slate-800 my-4" />
+          <Link to="/" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-lg transition-all">
+            <span className="material-symbols-outlined">home</span>
+            <span className="text-sm font-semibold">Volver a la Tienda</span>
+          </Link>
+        </nav>
+      </aside>
+
+      {/* Main Content (Área de Trabajo Estandarizada) */}
+      <main className="flex-grow lg:ml-64 p-4 md:p-8 relative min-w-0 space-y-6 text-left">
         {/* Navigation Breadcrumb */}
-        <div className="flex items-center gap-2 text-sm text-on-surface-variant mb-6 font-semibold">
-          <Link to="/importadora/productos" className="hover:text-primary transition-colors">
+        <div className="flex items-center gap-2 text-sm text-slate-400 mb-4 font-semibold">
+          <Link to="/importadora/productos" className="hover:text-slate-800 transition-colors">
             Mis Productos
           </Link>
           <span className="material-symbols-outlined text-[16px]">chevron_right</span>
-          <span className="text-on-surface">Subir Producto</span>
+          <span className="text-slate-700">Subir Producto</span>
         </div>
 
         {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-headline font-bold text-on-surface">Enviar Nueva Importación</h1>
-          <p className="text-on-surface-variant mt-1 text-body-medium">
+        <div className="mb-6">
+          <h1 className="text-2xl font-bold text-slate-800">Enviar Nueva Importación</h1>
+          <p className="text-sm text-slate-500 mt-1">
             Completa los detalles de tu producto para enviarlo a la mesa de aprobación del administrador.
           </p>
         </div>
 
         {/* Error Alert */}
         {error && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-700 rounded-2xl flex items-start gap-3 shadow-sm animate-in fade-in duration-200">
+          <div className="p-4 bg-red-50 border border-red-200 text-red-700 rounded-2xl flex items-start gap-3 shadow-sm animate-in fade-in duration-200">
             <span className="material-symbols-outlined text-red-500 flex-shrink-0">error</span>
             <div className="font-semibold text-sm">{error}</div>
           </div>
         )}
 
         {/* Form Card */}
-        <div className="bg-white border border-outline-variant rounded-3xl p-6 md:p-8 shadow-sm">
+        <div className="bg-white border border-slate-100 rounded-3xl p-6 md:p-8 shadow-sm">
           {catsLoading ? (
             <div className="flex flex-col items-center justify-center py-20">
-              <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-primary mb-4"></div>
-              <p className="text-on-surface-variant font-medium">Cargando categorías...</p>
+              <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-slate-800 mb-4"></div>
+              <p className="text-slate-500 font-medium">Cargando categorías...</p>
             </div>
           ) : (
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Basic Info Section */}
               <div>
-                <h3 className="text-lg font-bold text-on-surface mb-4 pb-2 border-b border-outline-variant">
+                <h3 className="text-lg font-bold text-slate-800 mb-4 pb-2 border-b border-slate-100">
                   Información Básica
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -215,7 +279,7 @@ const SubirProductoPage = () => {
                       value={form.nombre}
                       onChange={handleChange}
                       placeholder="Ej. Laptop ASUS ROG Strix G16"
-                      className="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-xl focus:outline-none focus:border-primary font-body-sm text-body-sm"
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-slate-400 font-body-sm text-body-sm text-slate-800"
                       required
                     />
                   </div>
@@ -230,7 +294,7 @@ const SubirProductoPage = () => {
                       name="categoria_id"
                       value={form.categoria_id}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-xl focus:outline-none focus:border-primary font-body-sm text-body-sm font-semibold"
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-slate-400 font-body-sm text-body-sm font-semibold text-slate-800 cursor-pointer"
                       required
                     >
                       {categories.map((cat) => (
@@ -254,7 +318,7 @@ const SubirProductoPage = () => {
                       value={form.stock}
                       onChange={handleChange}
                       placeholder="Ej. 15"
-                      className="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-xl focus:outline-none focus:border-primary font-body-sm text-body-sm"
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-slate-400 font-body-sm text-body-sm text-slate-800"
                       required
                     />
                   </div>
@@ -273,13 +337,13 @@ const SubirProductoPage = () => {
                   value={form.descripcion}
                   onChange={handleChange}
                   placeholder="Detalles sobre especificaciones técnicas, marca, garantía, estado del producto, etc..."
-                  className="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-xl focus:outline-none focus:border-primary font-body-sm text-body-sm resize-none"
+                  className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-slate-400 font-body-sm text-body-sm resize-none text-slate-800"
                 />
               </div>
 
               {/* Prices Section */}
               <div>
-                <h3 className="text-lg font-bold text-on-surface mb-4 pb-2 border-b border-outline-variant">
+                <h3 className="text-lg font-bold text-slate-800 mb-4 pb-2 border-b border-slate-100">
                   Precio y Promociones
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -297,7 +361,7 @@ const SubirProductoPage = () => {
                       value={form.precio}
                       onChange={handleChange}
                       placeholder="Ej. 1299.99"
-                      className="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-xl focus:outline-none focus:border-primary font-body-sm text-body-sm font-bold text-primary"
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-slate-400 font-body-sm text-body-sm font-bold text-slate-800"
                       required
                     />
                   </div>
@@ -310,7 +374,7 @@ const SubirProductoPage = () => {
                       name="is_offer"
                       checked={form.is_offer}
                       onChange={handleChange}
-                      className="w-5 h-5 accent-secondary border-outline-variant rounded focus:ring-secondary cursor-pointer"
+                      className="w-5 h-5 accent-amber-600 border-slate-200 rounded focus:ring-amber-500 cursor-pointer"
                     />
                     <label htmlFor="is_offer" className="text-sm font-bold text-slate-700 cursor-pointer">
                       ¿Este producto está en oferta/descuento?
@@ -345,7 +409,7 @@ const SubirProductoPage = () => {
 
               {/* Multimedia & Badges */}
               <div>
-                <h3 className="text-lg font-bold text-on-surface mb-4 pb-2 border-b border-outline-variant">
+                <h3 className="text-lg font-bold text-slate-800 mb-4 pb-2 border-b border-slate-100">
                   Multimedia y Visualización
                 </h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -361,7 +425,7 @@ const SubirProductoPage = () => {
                       value={form.imagen_url}
                       onChange={handleChange}
                       placeholder="https://ejemplo.com/imagen.jpg"
-                      className="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-xl focus:outline-none focus:border-primary font-body-sm text-body-sm"
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-slate-400 font-body-sm text-body-sm text-slate-800"
                     />
                   </div>
 
@@ -377,7 +441,7 @@ const SubirProductoPage = () => {
                       value={form.video_enlace}
                       onChange={handleChange}
                       placeholder="https://youtube.com/watch?v=..."
-                      className="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-xl focus:outline-none focus:border-primary font-body-sm text-body-sm"
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-slate-400 font-body-sm text-body-sm text-slate-800"
                     />
                   </div>
 
@@ -393,7 +457,7 @@ const SubirProductoPage = () => {
                       value={form.imagen_secundaria_url}
                       onChange={handleChange}
                       placeholder="https://ejemplo.com/imagen_secundaria.jpg"
-                      className="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-xl focus:outline-none focus:border-primary font-body-sm text-body-sm"
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-slate-400 font-body-sm text-body-sm text-slate-800"
                     />
                   </div>
 
@@ -409,12 +473,12 @@ const SubirProductoPage = () => {
                       value={form.imagen_alternativa_url}
                       onChange={handleChange}
                       placeholder="https://ejemplo.com/imagen_alternativa.jpg"
-                      className="w-full px-4 py-3 bg-surface-container-low border border-outline-variant rounded-xl focus:outline-none focus:border-primary font-body-sm text-body-sm"
+                      className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-slate-400 font-body-sm text-body-sm text-slate-800"
                     />
                   </div>
 
                   {/* Tags checkboxes */}
-                  <div className="md:col-span-2 flex flex-col md:flex-row gap-6 bg-slate-50 p-4 rounded-2xl border border-outline-variant">
+                  <div className="md:col-span-2 flex flex-col md:flex-row gap-6 bg-slate-50 p-4 rounded-2xl border border-slate-200">
                     <div className="flex items-center gap-3">
                       <input
                         type="checkbox"
@@ -422,7 +486,7 @@ const SubirProductoPage = () => {
                         name="is_new"
                         checked={form.is_new}
                         onChange={handleChange}
-                        className="w-5 h-5 accent-blue-600 border-outline-variant rounded cursor-pointer"
+                        className="w-5 h-5 accent-blue-600 border-slate-200 rounded cursor-pointer"
                       />
                       <label htmlFor="is_new" className="text-sm font-bold text-slate-700 cursor-pointer">
                         Marcar como "Novedad" / "Recién Llegado"
@@ -436,7 +500,7 @@ const SubirProductoPage = () => {
                         name="is_featured"
                         checked={form.is_featured}
                         onChange={handleChange}
-                        className="w-5 h-5 accent-primary border-outline-variant rounded cursor-pointer"
+                        className="w-5 h-5 accent-amber-600 border-slate-200 rounded cursor-pointer"
                       />
                       <label htmlFor="is_featured" className="text-sm font-bold text-slate-700 cursor-pointer">
                         Solicitar destaque en portada (Destaque principal)
@@ -447,17 +511,17 @@ const SubirProductoPage = () => {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row items-center justify-end gap-4 pt-4 border-t border-outline-variant">
+              <div className="flex flex-col sm:flex-row items-center justify-end gap-4 pt-4 border-t border-slate-100">
                 <Link
                   to="/importadora/productos"
-                  className="w-full sm:w-auto px-6 py-3 border border-outline-variant hover:bg-slate-50 rounded-xl font-bold text-sm text-center transition-colors text-slate-600"
+                  className="w-full sm:w-auto px-6 py-3 border border-slate-200 hover:bg-slate-50 rounded-xl font-bold text-sm text-center transition-colors text-slate-600"
                 >
                   Cancelar
                 </Link>
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full sm:w-auto px-8 py-3 bg-primary text-white rounded-xl font-bold text-sm shadow-lg hover:opacity-90 active:scale-95 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full sm:w-auto px-8 py-3 bg-slate-800 text-white rounded-xl font-bold text-sm shadow-lg hover:opacity-90 active:scale-95 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   {isSubmitting ? (
                     <>
@@ -475,7 +539,7 @@ const SubirProductoPage = () => {
             </form>
           )}
         </div>
-      </div>
+      </main>
     </div>
   );
 };

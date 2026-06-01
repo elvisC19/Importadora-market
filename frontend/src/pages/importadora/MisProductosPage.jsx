@@ -44,72 +44,103 @@ const MisProductosPage = () => {
   const pendingCount = products.filter((p) => !p.is_approved).length;
 
   return (
-    <div className="min-h-screen bg-surface-container-lowest pt-24 pb-16 px-4 md:px-margin-desktop">
-      <div className="max-w-7xl mx-auto">
+    <div className="flex min-h-screen bg-slate-50 text-slate-800 pt-16 overflow-x-hidden">
+      {/* Sidebar - Desktop Only (RESTAURADO) */}
+      <aside className="hidden lg:flex flex-col w-64 bg-slate-900 text-white fixed h-full p-6 border-r border-slate-800 z-30 select-none">
+        <div className="mb-10 text-left">
+          <Link to="/" className="text-xl font-extrabold text-white flex items-center gap-2 hover:opacity-85 transition-opacity">
+            <span className="material-symbols-outlined text-amber-500 text-[28px]">store</span>
+            <span>Importadora</span>
+          </Link>
+          <p className="text-xs text-slate-400 mt-1">Panel de Control</p>
+        </div>
+        <nav className="flex-1 space-y-2">
+          <Link to="/importadora/productos" className="flex items-center gap-3 px-4 py-3 bg-amber-600 text-white rounded-lg shadow-sm font-bold">
+            <span className="material-symbols-outlined">widgets</span>
+            <span className="text-sm font-semibold">Mis Productos</span>
+          </Link>
+          <Link to="/importadora/subir" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-lg transition-all">
+            <span className="material-symbols-outlined">add_circle</span>
+            <span className="text-sm font-semibold">Subir Producto</span>
+          </Link>
+          <Link to="/importadora/pedidos" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-lg transition-all">
+            <span className="material-symbols-outlined">receipt_long</span>
+            <span className="text-sm font-semibold">Mis Ventas</span>
+          </Link>
+          <hr className="border-slate-800 my-4" />
+          <Link to="/" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-lg transition-all">
+            <span className="material-symbols-outlined">home</span>
+            <span className="text-sm font-semibold">Volver a la Tienda</span>
+          </Link>
+        </nav>
+      </aside>
+
+      {/* Main Content (Área de Trabajo Estandarizada) */}
+      <main className="flex-grow lg:ml-64 p-4 md:p-8 relative min-w-0 space-y-6 text-left">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-8">
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
-            <h1 className="text-3xl font-headline font-bold text-on-surface">Mis Productos Subidos</h1>
-            <p className="text-on-surface-variant mt-1 text-body-medium">
+            <h1 className="text-2xl font-bold text-slate-800">Mis Productos Subidos</h1>
+            <p className="text-sm text-slate-500 mt-1">
               Gestiona y realiza seguimiento de las importaciones que has enviado para aprobación.
             </p>
           </div>
           <div className="flex flex-wrap gap-3 self-start md:self-auto">
             <Link
               to="/importadora/pedidos"
-              className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white text-primary border border-gray-200 rounded-xl hover:bg-slate-50 active:scale-95 transition-all font-bold shadow-sm"
+              className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white text-slate-700 border border-slate-200 rounded-xl hover:bg-slate-50 active:scale-95 transition-all font-bold shadow-sm"
             >
-              <span className="material-symbols-outlined text-[20px]">point_of_sale</span>
+              <span className="material-symbols-outlined text-[20px]">receipt_long</span>
               Ver mis ventas
             </Link>
             <Link
               to="/importadora/subir"
-              className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-secondary text-on-secondary rounded-xl hover:opacity-90 active:scale-95 transition-all font-bold shadow-md"
+              className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-slate-800 text-white rounded-xl hover:opacity-90 active:scale-95 transition-all font-bold shadow-md"
             >
-              <span className="material-symbols-outlined text-[20px]">upload_file</span>
+              <span className="material-symbols-outlined text-[20px]">add_circle</span>
               Subir Nuevo Producto
             </Link>
           </div>
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-          <div className="bg-surface border border-outline-variant p-6 rounded-2xl shadow-sm flex items-center gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-white border border-slate-100 p-6 rounded-2xl shadow-sm flex items-center gap-4">
             <div className="p-3 bg-blue-50 text-blue-600 rounded-xl">
               <span className="material-symbols-outlined text-[28px]">inventory_2</span>
             </div>
             <div>
-              <p className="text-sm font-semibold text-on-surface-variant">Total Enviados</p>
-              <h3 className="text-2xl font-bold text-on-surface mt-1">{totalSubmissions}</h3>
+              <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Total Enviados</p>
+              <h3 className="text-2xl font-black text-slate-800 mt-1">{totalSubmissions}</h3>
             </div>
           </div>
 
-          <div className="bg-surface border border-outline-variant p-6 rounded-2xl shadow-sm flex items-center gap-4">
+          <div className="bg-white border border-slate-100 p-6 rounded-2xl shadow-sm flex items-center gap-4">
             <div className="p-3 bg-green-50 text-green-600 rounded-xl">
               <span className="material-symbols-outlined text-[28px]">verified</span>
             </div>
             <div>
-              <p className="text-sm font-semibold text-on-surface-variant">Aprobados y Visibles</p>
-              <h3 className="text-2xl font-bold text-green-600 mt-1">{approvedCount}</h3>
+              <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Aprobados y Visibles</p>
+              <h3 className="text-2xl font-black text-green-600 mt-1">{approvedCount}</h3>
             </div>
           </div>
 
-          <div className="bg-surface border border-outline-variant p-6 rounded-2xl shadow-sm flex items-center gap-4">
+          <div className="bg-white border border-slate-100 p-6 rounded-2xl shadow-sm flex items-center gap-4">
             <div className="p-3 bg-amber-50 text-amber-600 rounded-xl">
               <span className="material-symbols-outlined text-[28px]">pending</span>
             </div>
             <div>
-              <p className="text-sm font-semibold text-on-surface-variant">Pendientes de Aprobación</p>
-              <h3 className="text-2xl font-bold text-amber-600 mt-1">{pendingCount}</h3>
+              <p className="text-xs font-bold uppercase tracking-wider text-slate-400">Pendientes de Aprobación</p>
+              <h3 className="text-2xl font-black text-amber-600 mt-1">{pendingCount}</h3>
             </div>
           </div>
         </div>
 
         {/* Controls Block */}
-        <div className="bg-white border border-outline-variant rounded-2xl p-4 mb-6 flex flex-col md:flex-row gap-4 items-center justify-between shadow-sm">
+        <div className="bg-white border border-slate-100 rounded-2xl p-4 flex flex-col md:flex-row gap-4 items-center justify-between shadow-sm">
           {/* Search bar */}
           <div className="relative w-full md:max-w-md">
-            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[20px]">
+            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">
               search
             </span>
             <input
@@ -117,7 +148,7 @@ const MisProductosPage = () => {
               placeholder="Buscar por nombre o descripción..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2.5 bg-surface-container-low border border-outline-variant rounded-xl focus:outline-none focus:border-primary font-body-sm text-body-sm"
+              className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl focus:outline-none focus:border-slate-400 font-body-sm text-body-sm text-slate-800"
             />
           </div>
 
@@ -126,7 +157,7 @@ const MisProductosPage = () => {
             <button
               onClick={() => setStatusFilter('all')}
               className={`flex-1 md:flex-initial px-4 py-2 rounded-lg text-sm font-bold transition-all ${
-                statusFilter === 'all' ? 'bg-white text-primary shadow-sm' : 'text-slate-500 hover:text-slate-700'
+                statusFilter === 'all' ? 'bg-white text-slate-800 shadow-sm' : 'text-slate-500 hover:text-slate-700'
               }`}
             >
               Todos
@@ -152,9 +183,9 @@ const MisProductosPage = () => {
 
         {/* Content Area */}
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-20 bg-white border border-outline-variant rounded-2xl shadow-sm">
-            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary mb-4"></div>
-            <p className="text-on-surface-variant font-medium">Cargando tus importaciones...</p>
+          <div className="flex flex-col items-center justify-center py-20 bg-white border border-slate-100 rounded-2xl shadow-sm">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-slate-800 mb-4"></div>
+            <p className="text-slate-500 font-medium">Cargando tus importaciones...</p>
           </div>
         ) : error ? (
           <div className="bg-red-50 border border-red-200 text-red-700 p-6 rounded-2xl shadow-sm text-center">
@@ -168,10 +199,10 @@ const MisProductosPage = () => {
             </button>
           </div>
         ) : filteredProducts.length === 0 ? (
-          <div className="bg-white border border-outline-variant rounded-2xl p-12 text-center shadow-sm">
+          <div className="bg-white border border-slate-100 rounded-2xl p-12 text-center shadow-sm">
             <span className="material-symbols-outlined text-[64px] text-slate-300 mb-4">drafts</span>
-            <h3 className="text-xl font-bold text-on-surface mb-2">No se encontraron productos</h3>
-            <p className="text-on-surface-variant max-w-md mx-auto mb-6">
+            <h3 className="text-xl font-bold text-slate-800 mb-2">No se encontraron productos</h3>
+            <p className="text-slate-500 max-w-md mx-auto mb-6">
               {searchTerm || statusFilter !== 'all'
                 ? 'No hay productos que coincidan con los filtros seleccionados actualmente.'
                 : 'Aún no has subido ningún producto. Envía tu primera importación haciendo clic en el botón de abajo.'}
@@ -179,19 +210,19 @@ const MisProductosPage = () => {
             {!searchTerm && statusFilter === 'all' && (
               <Link
                 to="/importadora/subir"
-                className="inline-flex items-center gap-2 px-5 py-3 bg-secondary text-on-secondary rounded-xl hover:opacity-90 active:scale-95 transition-all font-bold shadow-md"
+                className="inline-flex items-center gap-2 px-5 py-3 bg-slate-800 text-white rounded-xl hover:opacity-90 active:scale-95 transition-all font-bold shadow-md"
               >
-                <span className="material-symbols-outlined text-[20px]">upload_file</span>
+                <span className="material-symbols-outlined text-[20px]">add_circle</span>
                 Subir mi primer producto
               </Link>
             )}
           </div>
         ) : (
-          <div className="bg-white border border-outline-variant rounded-2xl overflow-hidden shadow-sm">
+          <div className="bg-white border border-slate-100 rounded-2xl overflow-hidden shadow-sm">
             <div className="overflow-x-auto">
               <table className="w-full min-w-[700px] text-left border-collapse">
                 <thead>
-                  <tr className="bg-slate-50 border-b border-outline-variant">
+                  <tr className="bg-slate-50 border-b border-slate-100">
                     <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase">Producto</th>
                     <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase">Categoría</th>
                     <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase">Precio</th>
@@ -200,12 +231,12 @@ const MisProductosPage = () => {
                     <th className="px-6 py-4 text-xs font-bold text-slate-400 uppercase text-center">Novedad / Oferta</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-outline-variant">
+                <tbody className="divide-y divide-slate-100">
                   {filteredProducts.map((product, index) => (
                     <tr key={`${product.id}-${index}`} className="hover:bg-slate-50/50 transition-colors">
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 rounded-lg bg-slate-100 overflow-hidden flex-shrink-0 flex items-center justify-center border border-outline-variant">
+                          <div className="w-12 h-12 rounded-lg bg-slate-100 overflow-hidden flex-shrink-0 flex items-center justify-center border border-slate-200">
                             {product.imagen_url ? (
                               <img src={product.imagen_url} alt={product.nombre} className="w-full h-full object-cover" />
                             ) : (
@@ -213,25 +244,25 @@ const MisProductosPage = () => {
                             )}
                           </div>
                           <div>
-                            <h4 className="font-bold text-on-surface text-sm">{product.nombre}</h4>
-                            <p className="text-xs text-on-surface-variant mt-0.5 line-clamp-1 max-w-xs md:max-w-md">
+                            <h4 className="font-bold text-slate-800 text-sm">{product.nombre}</h4>
+                            <p className="text-xs text-slate-500 mt-0.5 line-clamp-1 max-w-xs md:max-w-md">
                               {product.descripcion || 'Sin descripción'}
                             </p>
                           </div>
                         </div>
                       </td>
-                      <td className="px-6 py-4 text-sm font-semibold text-on-surface-variant">
+                      <td className="px-6 py-4 text-sm font-semibold text-slate-600">
                         {product.categoria?.nombre || `ID: ${product.categoria_id}`}
                       </td>
                       <td className="px-6 py-4">
                         <div className="flex flex-col">
                           {product.is_offer ? (
                             <>
-                              <span className="text-sm font-bold text-error">{product.offer_price} Bs.</span>
+                              <span className="text-sm font-bold text-red-600">{product.offer_price} Bs.</span>
                               <span className="text-xs text-slate-400 line-through">{product.precio} Bs.</span>
                             </>
                           ) : (
-                            <span className="text-sm font-bold text-on-surface">{product.precio} Bs.</span>
+                            <span className="text-sm font-bold text-slate-800">{product.precio} Bs.</span>
                           )}
                         </div>
                       </td>
@@ -239,7 +270,7 @@ const MisProductosPage = () => {
                         <span className={`text-sm font-semibold px-2.5 py-1 rounded-full ${
                           product.stock <= 5 
                             ? 'bg-red-50 text-red-700 font-bold' 
-                            : 'text-on-surface-variant'
+                            : 'text-slate-600'
                         }`}>
                           {product.stock}
                         </span>
@@ -281,7 +312,7 @@ const MisProductosPage = () => {
             </div>
           </div>
         )}
-      </div>
+      </main>
     </div>
   );
 };
