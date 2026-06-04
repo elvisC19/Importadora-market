@@ -51,7 +51,7 @@ const ImportadoraOrdersPage = () => {
     setToast({ show: true, message, type });
     setTimeout(() => {
       setToast({ show: false, message: '', type });
-    }, 4000);
+    }, 3000);
   };
 
   const handlePrint = (orderId) => {
@@ -65,7 +65,7 @@ const ImportadoraOrdersPage = () => {
     setUpdatingStatusId(orderId);
     try {
       await importadoraService.updateOrderStatus(orderId, newStatus);
-      showToast(`El pedido #${orderId} se actualizó a '${STATUS_CONFIG[newStatus].label}' con éxito.`);
+      showToast("¡Estado del pedido actualizado con éxito!", "success");
       
       // Reload both orders list and stats
       loadData();
@@ -118,7 +118,7 @@ const ImportadoraOrdersPage = () => {
     <div className="flex min-h-screen bg-slate-50 text-slate-800 pt-16 overflow-x-hidden">
       {/* Toast Notice */}
       {toast.show && (
-        <div className={`fixed bottom-5 right-5 z-50 flex items-center gap-3 px-6 py-4 rounded-xl shadow-2xl border text-sm font-bold animate-in slide-in-from-bottom duration-300 ${
+        <div className={`fixed top-20 right-5 md:right-1/2 md:translate-x-1/2 z-50 flex items-center gap-3 px-6 py-4 rounded-xl shadow-2xl border text-sm font-bold animate-in slide-in-from-top duration-300 ${
           toast.type === 'success' ? 'bg-emerald-50 text-emerald-800 border-emerald-200' : 'bg-red-50 text-red-800 border-red-200'
         }`}>
           <span className="material-symbols-outlined text-[20px]">{toast.type === 'success' ? 'check_circle' : 'error'}</span>
@@ -426,117 +426,114 @@ const ImportadoraOrdersPage = () => {
           return (
             <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-300">
               {/* Selected Order Details Card */}
-              <div className="bg-white p-6 rounded-xl border border-slate-100 shadow-sm grid grid-cols-1 md:grid-cols-2 gap-6 no-print">
-                {/* Client Details and Action */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-white rounded-xl border border-slate-100 shadow-sm mb-6 no-print">
+                
+                {/* Columna Izquierda: Información de Contacto */}
                 <div className="flex flex-col justify-between gap-4 text-left">
                   <div>
                     <span className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Información de Contacto</span>
-                    <h3 className="text-lg font-bold text-slate-800 mb-2">Pedido #{order.order_id} - Detalles del Cliente</h3>
+                    <h3 className="text-lg font-bold text-slate-800 mb-2">Pedido #{order.order_id}</h3>
                     
-                    <div className="space-y-2 mt-3">
-                      <p className="text-sm text-slate-600 font-semibold flex items-center gap-2">
+                    <div className="space-y-2 mt-3 text-sm text-slate-600 font-semibold font-sans">
+                      <p className="flex items-center gap-2">
                         <span className="material-symbols-outlined text-slate-400 text-[18px]">person</span>
                         <span>Comprador: <strong className="text-slate-800">{order.client_name || 'Desconocido'}</strong></span>
                       </p>
-                      <p className="text-sm text-slate-600 flex items-center gap-2">
+                      <p className="flex items-center gap-2">
                         <span className="material-symbols-outlined text-slate-400 text-[18px]">phone</span>
                         <span>Teléfono: <strong className="text-slate-800 font-mono">{order.client_phone}</strong></span>
                       </p>
-                      <p className="text-sm text-slate-600 flex items-center gap-2">
+                      <p className="flex items-center gap-2">
                         <span className="material-symbols-outlined text-slate-400 text-[18px]">local_shipping</span>
                         <span>Dirección: <strong className="text-slate-800">{order.client_address}</strong></span>
                       </p>
                       {order.client_notes && (
-                        <div className="mt-3 p-3 bg-slate-50 rounded-lg border border-slate-100">
+                        <div className="mt-3 p-3 bg-slate-50 rounded-lg border border-slate-100 font-normal">
                           <span className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Instrucciones Especiales</span>
-                          <p className="text-xs text-slate-600 italic">"{order.client_notes}"</p>
+                          <p className="text-xs text-slate-600 italic font-medium">"{order.client_notes}"</p>
                         </div>
                       )}
                     </div>
                   </div>
                   
-                  <div className="flex flex-wrap gap-3 mt-4">
-                    {/* Premium WhatsApp Integration button */}
+                  {/* WhatsApp button expanded */}
+                  <div className="mt-4 w-full">
                     <a 
                       href={`https://wa.me/591${order.client_phone.replace(/\D/g, '')}?text=${encodeURIComponent(
                         `Hola ${order.client_name || 'Cliente'}, te saludamos de Importadora Market. Estamos procesando tu pedido #${order.order_id}, por favor envíanos el comprobante de transferencia o pago para coordinar la entrega.`
                       )}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba56] text-white text-sm font-bold py-3 px-5 rounded-xl transition-all shadow-sm active:scale-[0.98] select-none cursor-pointer"
+                      className="w-full flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba56] text-white text-sm font-bold py-3.5 px-5 rounded-xl transition-all shadow-sm active:scale-[0.98] select-none cursor-pointer"
                     >
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="white">
                         <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/>
                       </svg>
-                      <span>WhatsApp Empresarial</span>
+                      <span>💬 WhatsApp Empresarial</span>
                     </a>
-
-                    {/* Print Invoice button */}
-                    <button 
-                      onClick={() => handlePrint(order.order_id)}
-                      className="flex items-center justify-center gap-2 bg-slate-800 hover:bg-slate-700 text-white text-sm font-bold py-3 px-5 rounded-xl transition-all shadow-sm active:scale-[0.98] select-none cursor-pointer"
-                    >
-                      <span className="material-symbols-outlined text-[18px]">print</span>
-                      <span>Imprimir Nota / Factura</span>
-                    </button>
                   </div>
                 </div>
 
-                {/* Status Updater Card */}
-                <div className="p-4 bg-slate-50 rounded-xl border border-slate-200 flex flex-col justify-between gap-4 text-left">
+                {/* Columna Derecha: Estado de la Entrega y Acciones */}
+                <div className="flex flex-col gap-4 text-left justify-between">
                   <div>
                     <span className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Estado de la Entrega</span>
-                    <p className="text-sm font-bold text-slate-800">Actualizar Estado</p>
-                    <p className="text-xs text-slate-400 block mt-0.5">El cliente recibirá la notificación de cambio de estado.</p>
-                    
-                    <div className="mt-4 flex items-center gap-3">
-                      <span className="text-xs font-bold text-slate-500">Estado Actual:</span>
+                    <div className="flex items-center gap-2 mt-2">
+                      <span className="text-sm font-bold text-slate-800">Estado Actual:</span>
                       <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border ${config.badgeClass}`}>
                         <span className={`w-1.5 h-1.5 rounded-full ${config.dotClass}`}></span>
                         {config.label}
                       </span>
                     </div>
                   </div>
-                  
-                  <div>
+
+                  <div className="mt-4 space-y-2">
+                    <label className="text-xs font-bold text-slate-500 block">Acciones y Cambio de Estado:</label>
                     {updatingStatusId === order.order_id ? (
                       <div className="flex items-center gap-2 py-2">
                         <span className="animate-spin rounded-full h-5 w-5 border-b-2 border-accent"></span>
                         <span className="text-xs text-slate-500 font-semibold">Actualizando estado...</span>
                       </div>
                     ) : (
-                      <div className="flex flex-col gap-2">
-                        <label className="text-xs font-bold text-slate-500">Cambiar Estado:</label>
-                        <div className="flex flex-wrap items-center gap-2">
-                          <select
-                            value={order.status}
-                            onChange={(e) => handleStatusChange(order.order_id, e.target.value)}
-                            className="w-full max-w-[200px] bg-white hover:bg-slate-50 border border-slate-300 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-700 focus:outline-none cursor-pointer"
+                      <div className="flex flex-wrap items-center gap-2">
+                        <select
+                          value={order.status}
+                          onChange={(e) => handleStatusChange(order.order_id, e.target.value)}
+                          className="bg-white hover:bg-slate-50 border border-slate-300 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-700 focus:outline-none cursor-pointer h-[38px] flex items-center"
+                        >
+                          <option value="pending">Pendiente</option>
+                          <option value="confirmed">Confirmado</option>
+                          <option value="processing">En Proceso</option>
+                          <option value="shipped">Enviado</option>
+                          <option value="delivered">Entregado</option>
+                          <option value="cancelled">Cancelado</option>
+                        </select>
+
+                        {/* Print Invoice button aligned next to selector */}
+                        <button 
+                          onClick={() => handlePrint(order.order_id)}
+                          className="flex items-center justify-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-200 text-xs font-bold py-2.5 px-4 rounded-xl transition-all shadow-sm active:scale-[0.98] select-none cursor-pointer h-[38px]"
+                        >
+                          <span>🖨️ Imprimir Nota / Factura</span>
+                        </button>
+
+                        {/* Coordinar Pago con Cliente (Hito 3) */}
+                        {order.status === 'confirmed' && (
+                          <a
+                            href={`https://wa.me/${(() => {
+                              const cleanPhone = order.client_phone.replace(/\D/g, '');
+                              return cleanPhone.startsWith('591') || cleanPhone.length > 8 ? cleanPhone : '591' + cleanPhone;
+                            })()}?text=${encodeURIComponent(
+                              `Hola ${order.client_name || ''}, hemos verificado y confirmado tu pedido número #${order.order_id} en Importadora Market. Procedamos con la coordinación del pago por QR/transferencia y los detalles de tu factura.`
+                            )}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-3 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-xl text-xs font-bold transition-all active:scale-95 flex items-center gap-1 select-none cursor-pointer h-[38px]"
                           >
-                            <option value="pending">Pendiente</option>
-                            <option value="confirmed">Confirmado</option>
-                            <option value="processing">En Proceso</option>
-                            <option value="shipped">Enviado</option>
-                            <option value="delivered">Entregado</option>
-                            <option value="cancelled">Cancelado</option>
-                          </select>
-                          {order.status === 'confirmed' && (
-                            <a
-                              href={`https://wa.me/${(() => {
-                                const cleanPhone = order.client_phone.replace(/\D/g, '');
-                                return cleanPhone.startsWith('591') || cleanPhone.length > 8 ? cleanPhone : '591' + cleanPhone;
-                              })()}?text=${encodeURIComponent(
-                                `Hola ${order.client_name || ''}, hemos verificado y confirmado tu pedido número #${order.order_id} en Importadora Market. Procedamos con la coordinación del pago por QR/transferencia y los detalles de tu factura.`
-                              )}`}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="px-3 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-xl text-xs font-bold transition-all active:scale-95 flex items-center gap-1 select-none cursor-pointer"
-                            >
-                              <span className="material-symbols-outlined text-[16px]">chat</span>
-                              Coordinar Pago con Cliente
-                            </a>
-                          )}
-                        </div>
+                            <span className="material-symbols-outlined text-[16px]">chat</span>
+                            Coordinar Pago con Cliente
+                          </a>
+                        )}
                       </div>
                     )}
                   </div>
