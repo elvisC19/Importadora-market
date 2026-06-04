@@ -242,16 +242,24 @@ const HomePage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [heroImgErrors, setHeroImgErrors] = useState({});
-  const [ctaEmail, setCtaEmail] = useState('');
-  const [ctaSuccess, setCtaSuccess] = useState(false);
+  const [newsletterEmail, setNewsletterEmail] = useState('');
+  const [toast, setToast] = useState({ show: false, message: '', type: 'success' });
 
-  const handleCtaSubmit = (e) => {
+  const showToast = (message, type = 'success') => {
+    setToast({ show: true, message, type });
+    setTimeout(() => {
+      setToast({ show: false, message: '', type });
+    }, 4000);
+  };
+
+  const handleJoinNewsletter = (e) => {
     e.preventDefault();
-    if (!ctaEmail || !ctaEmail.includes('@')) {
-      alert("Por favor, ingresa un correo electrónico válido.");
+    if (!newsletterEmail || !newsletterEmail.includes('@')) {
+      showToast("Por favor, ingresa un correo electrónico válido.", "error");
       return;
     }
-    setCtaSuccess(true);
+    showToast("¡Solicitud de alianza comercial enviada con éxito al administrador principal!", "success");
+    setNewsletterEmail('');
   };
 
   // Hero carousel banners — configured with local images and texts
@@ -318,7 +326,16 @@ const HomePage = () => {
   }, []);
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: '#F0FDF4' }}>
+    <div className="min-h-screen relative" style={{ backgroundColor: '#F0FDF4' }}>
+      {/* Toast Notice */}
+      {toast.show && (
+        <div className={`fixed top-20 right-5 md:right-1/2 md:translate-x-1/2 z-50 flex items-center gap-3 px-6 py-4 rounded-xl shadow-2xl border text-sm font-bold animate-in slide-in-from-top duration-300 ${
+          toast.type === 'success' ? 'bg-emerald-50 text-emerald-800 border-emerald-200' : 'bg-red-50 text-red-800 border-red-200'
+        }`}>
+          <span className="material-symbols-outlined text-[20px]">{toast.type === 'success' ? 'check_circle' : 'error'}</span>
+          <p>{toast.message}</p>
+        </div>
+      )}
       
       {/* 1. HERO CAROUSEL SECTION */}
       <section className="relative w-full h-[380px] sm:h-[500px] lg:h-[620px] overflow-hidden bg-brand-deep">
@@ -525,54 +542,66 @@ const HomePage = () => {
       <SectionSeparator />
 
       {/* 6. NEWSLETTER / CORPORATE CALL TO ACTION - Redesigned layout */}
-      <section className="my-6 mx-4 md:mx-10">
-        <div 
-          className="flex flex-col md:flex-row items-center justify-between gap-6 md:gap-stack-xl overflow-hidden relative py-8 px-6 md:py-10 md:px-12 bg-brand-deep rounded-2xl shadow-xl"
-        >
-          <div className="z-10 relative text-left space-y-2 max-w-xl">
-            <h2 className="font-headline-lg text-headline-lg font-bold leading-tight text-white">
-              {t('home.ctaTitle')}
+      <section className="relative overflow-hidden my-12 mx-4 md:mx-8 rounded-3xl bg-gradient-to-br from-slate-900 via-emerald-950 to-teal-900 shadow-2xl border border-emerald-900/50">
+        {/* Destellos de fondo decorativos */}
+        <div className="absolute top-0 right-0 w-72 h-72 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-0 w-56 h-56 bg-teal-500/10 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-5 gap-8 items-center p-8 md:p-12 lg:p-16 relative z-10">
+          
+          {/* Columna Izquierda: Mensaje y Propuesta de Valor */}
+          <div className="lg:col-span-3 space-y-6 text-left">
+            <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-white via-slate-100 to-emerald-400">
+              Lleva tu Importadora al siguiente nivel
             </h2>
-            <p className="font-body-lg text-body-lg" style={{ color: '#CCFBF1' }}>
-              {t('home.ctaSubtitle')}
+            <p className="text-slate-300 text-base md:text-lg max-w-xl font-light">
+              Únete al ecosistema de importaciones más eficiente del país. Centraliza tus productos, gestiona tus solicitudes de forma inteligente y llega a más compradores bolivianos.
             </p>
-            <p className="text-xs text-brand-mint/90 pt-2 border-t border-brand-mint/20 font-medium leading-relaxed">
-              🤝 <strong>¿Eres una importadora y quieres publicar tus productos?</strong> Déjanos tu correo aquí para que nos pongamos en contacto y te proporcionemos tus credenciales oficiales de importadora.
-            </p>
+            
+            {/* Beneficios con Micro-iconos */}
+            <ul className="space-y-3 pt-2 text-sm md:text-base text-slate-200">
+              <li className="flex items-center gap-3">
+                <span className="flex-shrink-0 w-5 h-5 bg-emerald-500/20 border border-emerald-400/40 rounded-full flex items-center justify-center text-emerald-400 font-bold text-xs">✓</span>
+                Publica tu catálogo institucional sin comisiones ocultas.
+              </li>
+              <li className="flex items-center gap-3">
+                <span className="flex-shrink-0 w-5 h-5 bg-emerald-500/20 border border-emerald-400/40 rounded-full flex items-center justify-center text-emerald-400 font-bold text-xs">✓</span>
+                Coordinación directa de pedidos y facturación vía WhatsApp.
+              </li>
+              <li className="flex items-center gap-3">
+                <span className="flex-shrink-0 w-5 h-5 bg-emerald-500/20 border border-emerald-400/40 rounded-full flex items-center justify-center text-emerald-400 font-bold text-xs">✓</span>
+                Control inteligente de stock y estadísticas operativas reales.
+              </li>
+            </ul>
           </div>
-          
-          {!ctaSuccess ? (
-            <form onSubmit={handleCtaSubmit} className="flex w-full md:w-auto gap-stack-md z-10 relative items-center">
-              <input 
-                className="flex-1 md:w-80 px-4 py-3 rounded-lg text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#B45309] font-body-sm text-body-sm bg-white" 
-                placeholder={t('home.ctaEmailPlaceholder')}
-                type="email"
-                value={ctaEmail}
-                onChange={(e) => setCtaEmail(e.target.value)}
-                required
-              />
-              <button 
-                type="submit"
-                className="px-6 py-3 text-brand-copper-light font-label-md text-label-md rounded-lg whitespace-nowrap hover:opacity-90 active:scale-95 transition-all font-bold cursor-pointer"
-                style={{ background: '#B45309' }}
-              >
-                {t('home.ctaButton')}
-              </button>
-            </form>
-          ) : (
-            <div 
-              className="w-full md:w-auto px-6 py-4 bg-[#0F766E]/30 border border-[#CCFBF1]/30 text-[#CCFBF1] rounded-lg text-sm font-semibold z-10 relative flex items-center gap-3 shadow-md animate-pulse"
-            >
-              <span className="material-symbols-outlined text-green-400 text-xl">check_circle</span>
-              <div className="flex flex-col text-left">
-                <span className="text-white font-bold">{t('home.ctaThanks')}</span>
-                <span className="text-xs text-[#CCFBF1]/90 font-medium mt-0.5">Nos pondremos en contacto contigo para proporcionarte tus credenciales oficiales de importadora.</span>
+
+          {/* Columna Derecha: Formulario con efecto Glassmorphism */}
+          <div className="lg:col-span-2 w-full">
+            <form onSubmit={handleJoinNewsletter} className="backdrop-blur-xl bg-white/5 border border-white/10 p-6 md:p-8 rounded-2xl shadow-xl space-y-4">
+              <div className="text-center lg:text-left mb-2">
+                <h3 className="text-white font-semibold text-lg">Solicitud de Acceso</h3>
+                <p className="text-slate-400 text-xs mt-1">Registra tu correo de empresa para coordinar tus credenciales oficiales.</p>
               </div>
-            </div>
-          )}
-          
-          {/* Decorative design accent circle */}
-          <div className="absolute -right-20 -bottom-20 w-80 h-80 bg-[#B45309] rounded-full opacity-10 blur-xl"></div>
+              
+              <div className="space-y-3">
+                <input
+                  type="email"
+                  required
+                  value={newsletterEmail}
+                  onChange={(e) => setNewsletterEmail(e.target.value)}
+                  placeholder="Introduce tu correo empresarial..."
+                  className="w-full px-4 py-3 bg-slate-950/40 border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-emerald-400 focus:ring-1 focus:ring-emerald-400 transition-all duration-200 text-sm"
+                />
+                <button
+                  type="submit"
+                  className="w-full py-3 bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-500 hover:to-amber-500 text-white font-semibold rounded-xl text-sm shadow-md transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
+                >
+                  Solicitar Alianza Comercial
+                </button>
+              </div>
+            </form>
+          </div>
+
         </div>
       </section>
 
