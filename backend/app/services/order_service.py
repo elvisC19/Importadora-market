@@ -26,70 +26,100 @@ class OrderService:
     def create_order_from_cart(
         self, db: Session, *, order_in: OrderCreate, user_id: int
     ) -> Order:
-        calculated_items = []
-        total_general = 0.0
+        grouped_items = {}  # seller_id -> list of (product, quantity, unit_price, subtotal)
 
-        # 1. Verify all items and prepare stock updates
-        for item in order_in.items:
-            product = product_repository.get(db, id=item.product_id)
-            if not product:
-                raise HTTPException(
-                    status_code=status.HTTP_404_NOT_FOUND,
-                    detail=f"Producto con ID {item.product_id} no encontrado",
+        try:
+            # 1. Verify all items and prepare stock updates
+            for item in order_in.items:
+                product = product_repository.get(db, id=item.product_id)
+                if not product:
+                    raise HTTPException(
+                        status_code=status.HTTP_404_NOT_FOUND,
+                        detail=f"Producto con ID {item.product_id} no encontrado",
+                    )
+
+                if product.stock < item.quantity:
+                    raise HTTPException(
+                        status_code=status.HTTP_400_BAD_REQUEST,
+                        detail=f"Stock insuficiente para el producto '{product.nombre}'. "
+                        f"Disponible: {product.stock}, solicitado: {item.quantity}",
+                    )
+
+                # Calculate price taking active offer into account
+                unit_price = (
+                    product.offer_price
+                    if (product.is_offer and product.offer_price is not None)
+                    else product.precio
                 )
+                subtotal = unit_price * item.quantity
 
-            if product.stock < item.quantity:
+                # Deduct stock
+                product.stock -= item.quantity
+                db.add(product)
+
+                # Determine seller_id (fallback to 1 if None)
+                seller_id = product.submitted_by_id if product.submitted_by_id is not None else 1
+
+                if seller_id not in grouped_items:
+                    grouped_items[seller_id] = []
+                grouped_items[seller_id].append((product, item.quantity, unit_price, subtotal))
+
+            created_orders = []
+
+            # 2. Persist orders and items in a single transaction
+            for seller_id, items_info in grouped_items.items():
+                total_amount = sum(info[3] for info in items_info)
+                
+                db_order = Order(
+                    user_id=user_id,
+                    shipping_address=order_in.shipping_address,
+                    phone=order_in.phone,
+                    notes=order_in.notes,
+                    total_amount=total_amount,
+                    status="pending",
+                )
+                
+                order_items = []
+                for product, qty, unit_price, subtotal in items_info:
+                    db_item = OrderItem(
+                        product_id=product.id,
+                        quantity=qty,
+                        unit_price=unit_price,
+                        subtotal=subtotal,
+                    )
+                    order_items.append(db_item)
+                
+                db_order.items = order_items
+                db.add(db_order)
+                created_orders.append(db_order)
+
+            # Commit the transaction
+            db.commit()
+
+            # Refresh and send email notifications
+            for db_order in created_orders:
+                db.refresh(db_order)
+                try:
+                    from app.services.email_service import email_service
+                    email_service.send_order_confirmation(db_order)
+                except Exception as email_err:
+                    import logging
+                    logging.getLogger(__name__).warning(
+                        f"Error al enviar confirmación por correo para pedido #{db_order.id}: {str(email_err)}"
+                    )
+
+            if created_orders:
+                return created_orders[0]
+            else:
                 raise HTTPException(
                     status_code=status.HTTP_400_BAD_REQUEST,
-                    detail=f"Stock insuficiente para el producto '{product.nombre}'. "
-                    f"Disponible: {product.stock}, solicitado: {item.quantity}",
+                    detail="No se crearon pedidos a partir del carrito.",
                 )
 
-            # Calculate price taking active offer into account
-            unit_price = (
-                product.offer_price
-                if (product.is_offer and product.offer_price is not None)
-                else product.precio
-            )
-            subtotal = unit_price * item.quantity
-
-            # Deduct stock
-            product.stock -= item.quantity
-            db.add(product)
-
-            # Create OrderItem object
-            db_item = OrderItem(
-                product_id=product.id,
-                quantity=item.quantity,
-                unit_price=unit_price,
-                subtotal=subtotal,
-            )
-            calculated_items.append(db_item)
-            total_general += subtotal
-
-        # 2. Persist order and items in a single transaction
-        try:
-            db_order = order_repository.create_order(
-                db,
-                order_in=order_in,
-                user_id=user_id,
-                total_amount=total_general,
-                items=calculated_items,
-            )
-            
-            # Enviar correo de confirmación de pedido
-            try:
-                from app.services.email_service import email_service
-                email_service.send_order_confirmation(db_order)
-            except Exception as email_err:
-                import logging
-                logging.getLogger(__name__).warning(
-                    f"Error al enviar confirmación por correo para pedido #{db_order.id}: {str(email_err)}"
-                )
-
-            return db_order
         except Exception as e:
             db.rollback()
+            if isinstance(e, HTTPException):
+                raise e
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail=f"Error al procesar el pedido en la base de datos: {str(e)}",

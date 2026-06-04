@@ -664,6 +664,22 @@ const AdminOrdersPage = () => {
 
               {/* Status transitions control */}
               <div className="flex items-center gap-3 w-full sm:w-auto justify-end">
+                {selectedOrder.status === 'confirmed' && (
+                  <a
+                    href={`https://wa.me/${(() => {
+                      const cleanPhone = selectedOrder.phone.replace(/\D/g, '');
+                      return cleanPhone.startsWith('591') || cleanPhone.length > 8 ? cleanPhone : '591' + cleanPhone;
+                    })()}?text=${encodeURIComponent(
+                      `Hola ${selectedOrder.user?.nombre || ''}, hemos verificado y confirmado tu pedido número #${selectedOrder.id} en Importadora Market. Procedamos con la coordinación del pago por QR/transferencia y los detalles de tu factura.`
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white rounded-lg text-xs font-bold transition-all active:scale-95 flex items-center gap-1 select-none"
+                  >
+                    <span className="material-symbols-outlined text-[16px]">chat</span>
+                    Coordinar Pago con Cliente
+                  </a>
+                )}
                 {ALLOWED_TRANSITIONS[selectedOrder.status]?.length > 0 ? (
                   <div className="flex items-center gap-2">
                     <span className="text-xs text-slate-400 font-bold">Actualizar estado:</span>

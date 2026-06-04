@@ -113,6 +113,9 @@ class ProductResponse(BaseModel):
     approved_by_id: Optional[int] = None
     approved_at: Optional[datetime] = None
     submitted_by_phone: Optional[str] = None
+    seller_name: Optional[str] = None
+    seller_phone: Optional[str] = None
+    codigo_interno: Optional[str] = None
     vistas_actuales: int
     created_at: datetime
     updated_at: datetime

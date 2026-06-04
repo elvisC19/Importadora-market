@@ -62,9 +62,43 @@ class Product(Base):
 
     # Relaciones
     categoria = relationship("Category", back_populates="products")
-    submitted_by = relationship("User", foreign_keys=[submitted_by_id], backref="submitted_products")
+    seller = relationship("User", back_populates="products", foreign_keys=[submitted_by_id])
     approved_by = relationship("User", foreign_keys=[approved_by_id], backref="approved_products")
 
     @property
+    def submitted_by(self):
+        return self.seller
+
+    @property
     def submitted_by_phone(self) -> str:
-        return self.submitted_by.telefono if self.submitted_by else None
+        return self.seller.telefono if self.seller else None
+
+    @property
+    def seller_name(self) -> str:
+        if self.seller:
+            return self.seller.nombre
+        from sqlalchemy.orm import object_session
+        from app.models.user import User
+        session = object_session(self)
+        if session:
+            admin = session.query(User).filter(User.id == 1).first()
+            if admin:
+                return admin.nombre
+        return "Administrador Market"
+
+    @property
+    def seller_phone(self) -> str:
+        if self.seller and self.seller.telefono:
+            return self.seller.telefono
+        from sqlalchemy.orm import object_session
+        from app.models.user import User
+        session = object_session(self)
+        if session:
+            admin = session.query(User).filter(User.id == 1).first()
+            if admin:
+                return admin.telefono
+        return "70000000"
+
+    @property
+    def codigo_interno(self) -> str:
+        return f"IMP-0026-0{self.id}"

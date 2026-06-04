@@ -507,18 +507,36 @@ const ImportadoraOrdersPage = () => {
                     ) : (
                       <div className="flex flex-col gap-2">
                         <label className="text-xs font-bold text-slate-500">Cambiar Estado:</label>
-                        <select
-                          value={order.status}
-                          onChange={(e) => handleStatusChange(order.order_id, e.target.value)}
-                          className="w-full max-w-[200px] bg-white hover:bg-slate-50 border border-slate-300 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-700 focus:outline-none cursor-pointer"
-                        >
-                          <option value="pending">Pendiente</option>
-                          <option value="confirmed">Confirmado</option>
-                          <option value="processing">En Proceso</option>
-                          <option value="shipped">Enviado</option>
-                          <option value="delivered">Entregado</option>
-                          <option value="cancelled">Cancelado</option>
-                        </select>
+                        <div className="flex flex-wrap items-center gap-2">
+                          <select
+                            value={order.status}
+                            onChange={(e) => handleStatusChange(order.order_id, e.target.value)}
+                            className="w-full max-w-[200px] bg-white hover:bg-slate-50 border border-slate-300 px-3 py-2.5 rounded-xl text-xs font-semibold text-slate-700 focus:outline-none cursor-pointer"
+                          >
+                            <option value="pending">Pendiente</option>
+                            <option value="confirmed">Confirmado</option>
+                            <option value="processing">En Proceso</option>
+                            <option value="shipped">Enviado</option>
+                            <option value="delivered">Entregado</option>
+                            <option value="cancelled">Cancelado</option>
+                          </select>
+                          {order.status === 'confirmed' && (
+                            <a
+                              href={`https://wa.me/${(() => {
+                                const cleanPhone = order.client_phone.replace(/\D/g, '');
+                                return cleanPhone.startsWith('591') || cleanPhone.length > 8 ? cleanPhone : '591' + cleanPhone;
+                              })()}?text=${encodeURIComponent(
+                                `Hola ${order.client_name || ''}, hemos verificado y confirmado tu pedido número #${order.order_id} en Importadora Market. Procedamos con la coordinación del pago por QR/transferencia y los detalles de tu factura.`
+                              )}`}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="px-3 py-2.5 bg-green-600 hover:bg-green-700 text-white rounded-xl text-xs font-bold transition-all active:scale-95 flex items-center gap-1 select-none cursor-pointer"
+                            >
+                              <span className="material-symbols-outlined text-[16px]">chat</span>
+                              Coordinar Pago con Cliente
+                            </a>
+                          )}
+                        </div>
                       </div>
                     )}
                   </div>

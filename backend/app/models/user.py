@@ -4,6 +4,7 @@ from datetime import datetime, timezone
 
 from sqlalchemy import Boolean, Column, DateTime, Integer, String
 from sqlalchemy.ext.hybrid import hybrid_property
+from sqlalchemy.orm import relationship
 
 from app.core.database import Base
 
@@ -22,6 +23,9 @@ class User(Base):
     reset_token = Column(String(255), nullable=True)
     reset_token_expires = Column(DateTime, nullable=True)
     created_at = Column(DateTime, default=lambda: datetime.now(timezone.utc))
+
+    # Relaciones
+    products = relationship("Product", back_populates="seller", foreign_keys="Product.submitted_by_id")
 
     @hybrid_property
     def is_admin(self) -> bool:

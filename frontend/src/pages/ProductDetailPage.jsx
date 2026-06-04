@@ -85,6 +85,16 @@ const ProductDetailPage = () => {
     window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');
   };
 
+  // Consultar a la Importadora por WhatsApp (Hito 3)
+  const handleConsultarImportadora = () => {
+    if (!product) return;
+    const sellerPhone = product.seller_phone || '70000000';
+    const cleanPhone = sellerPhone.replace(/\D/g, '');
+    const waPhone = cleanPhone.startsWith('591') || cleanPhone.length > 8 ? cleanPhone : '591' + cleanPhone;
+    const message = `Hola, estoy interesado en el producto: ${product.nombre} (Código Interno: ${product.codigo_interno || `IMP-0026-0${product.id}`}) visto en la plataforma. ¿Tienen disponibilidad inmediata?`;
+    window.open(`https://wa.me/${waPhone}?text=${encodeURIComponent(message)}`, '_blank');
+  };
+
   if (loading) {
     return (
       <div className="min-h-[70vh] flex justify-center items-center bg-background">
@@ -398,6 +408,14 @@ const ProductDetailPage = () => {
                         <path d="M12.5 2C6.701 2 2 6.701 2 12.5c0 1.956.541 3.785 1.479 5.354L2 23.5l5.807-1.524A10.457 10.457 0 0 0 12.5 23c5.799 0 10.5-4.701 10.5-10.5S18.299 2 12.5 2zm0 19c-1.733 0-3.358-.48-4.742-1.314l-.34-.204-3.522.924.94-3.434-.224-.356A8.455 8.455 0 0 1 4 12.5C4 7.813 7.813 4 12.5 4 17.187 4 21 7.813 21 12.5 21 17.187 17.187 21 12.5 21z" />
                       </svg>
                       COMPRAR AHORA (WHATSAPP)
+                    </button>
+
+                    {/* Consultar a la Importadora por WhatsApp (Hito 3) */}
+                    <button 
+                      onClick={handleConsultarImportadora}
+                      className="w-full h-14 bg-green-600 hover:bg-green-700 text-white font-bold rounded-lg flex items-center justify-center gap-stack-sm shadow-md active:scale-95 transition-all cursor-pointer font-sans tracking-wide"
+                    >
+                      💬 Consultar a la Importadora por WhatsApp
                     </button>
                   </div>
                 </div>

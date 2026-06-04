@@ -168,9 +168,11 @@ const OrdersPage = () => {
               
               // Calculate details totals
               const itemsCount = order.items?.reduce((sum, it) => sum + (it.quantity || 0), 0) || 0;
-              const sellerPhone = order.items?.find(it => it.product?.submitted_by_phone)?.product?.submitted_by_phone || '70000000';
-              const whatsappHref = `https://wa.me/591${sellerPhone.replace(/\D/g, '')}?text=${encodeURIComponent(
-                `Hola! Quisiera coordinar el pago de mi pedido #${order.id} realizado en Importadora Market.`
+              const sellerPhone = order.items?.find(it => it.product?.seller_phone)?.product?.seller_phone || order.items?.find(it => it.product?.submitted_by_phone)?.product?.submitted_by_phone || '70000000';
+              const cleanSellerPhone = sellerPhone.replace(/\D/g, '');
+              const waSellerPhone = cleanSellerPhone.startsWith('591') || cleanSellerPhone.length > 8 ? cleanSellerPhone : '591' + cleanSellerPhone;
+              const whatsappHref = `https://wa.me/${waSellerPhone}?text=${encodeURIComponent(
+                `Hola Importadora Market, mi pedido #${order.id} ya fue aceptado. Quiero coordinar el método de pago manual y el envío de mis datos de facturación.`
               )}`;
 
               return (
@@ -285,6 +287,13 @@ const OrdersPage = () => {
                           })}
                         </div>
                       </div>
+
+                      {order.status === 'confirmed' && (
+                        <div className="bg-green-50 text-green-800 border border-green-200 p-4 rounded-xl text-sm font-semibold flex items-center gap-3">
+                          <span className="material-symbols-outlined text-green-600">check_circle</span>
+                          <span>¡Tu pedido fue aceptado! Por favor, ponte en contacto con la importadora para enviar tu comprobante de pago y coordinar los datos de tu factura.</span>
+                        </div>
+                      )}
 
                       {/* Footer CTA */}
                       <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-outline-variant/60 pt-5 bg-slate-50 -mx-5 -mb-5 px-5 py-4 rounded-b-2xl">
