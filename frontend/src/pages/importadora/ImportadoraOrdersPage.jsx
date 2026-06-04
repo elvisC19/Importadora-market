@@ -110,6 +110,23 @@ const ImportadoraOrdersPage = () => {
     }
   };
 
+  const parseNotes = (notesStr) => {
+    if (!notesStr) return { razon_social: '', nit_ci: '', customer_notes: '' };
+    try {
+      const parsed = JSON.parse(notesStr);
+      if (parsed && typeof parsed === 'object') {
+        return {
+          razon_social: parsed.razon_social || '',
+          nit_ci: parsed.nit_ci || '',
+          customer_notes: parsed.customer_notes || ''
+        };
+      }
+    } catch (e) {
+      // ignore
+    }
+    return { razon_social: '', nit_ci: '', customer_notes: notesStr };
+  };
+
   const toggleExpand = (orderId) => {
     setExpandedOrderId(expandedOrderId === orderId ? null : orderId);
   };
@@ -454,12 +471,26 @@ const ImportadoraOrdersPage = () => {
                         <span className="material-symbols-outlined text-slate-400 text-[18px]">local_shipping</span>
                         <span>Dirección: <strong className="text-slate-800">{order.client_address}</strong></span>
                       </p>
-                      {order.client_notes && (
-                        <div className="mt-3 p-3 bg-slate-50 rounded-lg border border-slate-100 font-normal">
-                          <span className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Instrucciones Especiales</span>
-                          <p className="text-xs text-slate-600 italic font-medium">"{order.client_notes}"</p>
-                        </div>
-                      )}
+                      {(() => {
+                        const billing = parseNotes(order.client_notes);
+                        return (
+                          <>
+                            {(billing.razon_social || billing.nit_ci) && (
+                              <div className="mt-3 p-3 bg-slate-50 rounded-lg border border-slate-100 font-normal text-xs text-slate-600 space-y-1">
+                                <span className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Datos de Facturación</span>
+                                <p><strong>Razón Social:</strong> {billing.razon_social}</p>
+                                <p><strong>CI / NIT:</strong> {billing.nit_ci}</p>
+                              </div>
+                            )}
+                            {billing.customer_notes && (
+                              <div className="mt-3 p-3 bg-slate-50 rounded-lg border border-slate-100 font-normal">
+                                <span className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Instrucciones Especiales</span>
+                                <p className="text-xs text-slate-600 italic font-medium">"{billing.customer_notes}"</p>
+                              </div>
+                            )}
+                          </>
+                        );
+                      })()}
                     </div>
                   </div>
                   
@@ -548,7 +579,7 @@ const ImportadoraOrdersPage = () => {
               </div>
 
               {/* Custom Printable Invoice/Note details layout container */}
-              <div id={`print-invoice-${order.order_id}`} className="bg-white p-6 rounded-xl border border-slate-100 shadow-sm flex flex-col text-left">
+              <div id={`print-invoice-${order.order_id}`} className="print-container bg-white p-6 rounded-xl border border-slate-100 shadow-sm flex flex-col text-left">
                 {/* Print-only Invoice Header */}
                 <div className="border-b pb-4 mb-4 flex justify-between items-center">
                   <div>
@@ -568,6 +599,15 @@ const ImportadoraOrdersPage = () => {
                     <p className="font-bold text-slate-800">{order.client_name || 'Desconocido'}</p>
                     <p className="text-slate-500 font-mono mt-0.5">Telf: {order.client_phone}</p>
                     <p className="text-slate-600 mt-1 font-medium">{order.client_address}</p>
+                    {(() => {
+                      const billing = parseNotes(order.client_notes);
+                      return (
+                        <div className="mt-2 text-xs border-t border-slate-100 pt-1.5 space-y-0.5">
+                          <p className="text-slate-500"><strong className="text-slate-700">RAZÓN SOCIAL:</strong> {billing.razon_social || 'N/A'}</p>
+                          <p className="text-slate-500"><strong className="text-slate-700">CI / NIT:</strong> {billing.nit_ci || 'N/A'}</p>
+                        </div>
+                      );
+                    })()}
                   </div>
                   <div className="text-right">
                     <span className="text-[10px] font-black text-slate-400 uppercase block mb-1">Fecha de Emisión:</span>
@@ -634,29 +674,37 @@ const ImportadoraOrdersPage = () => {
       {activePrintId && (
         <style>{`
           @media print {
+            html, body {
+              height: auto !important;
+              margin: 0 !important;
+              padding: 0 !important;
+              overflow: hidden;
+            }
             /* Hide EVERYTHING by default */
             body * {
               visibility: hidden !important;
             }
             /* Show ONLY our printable invoice container and its children */
-            #print-invoice-${activePrintId}, #print-invoice-${activePrintId} * {
+            .print-container, .print-container * {
               visibility: visible !important;
             }
-            #print-invoice-${activePrintId} {
+            .print-container {
               position: absolute !important;
               left: 0 !important;
               top: 0 !important;
               width: 100% !important;
               background: white !important;
               color: black !important;
-              padding: 40px !important;
+              max-height: 99vh;
+              page-break-inside: avoid;
+              margin: 0 !important;
+              padding: 10mm !important;
               border: none !important;
               box-shadow: none !important;
               visibility: visible !important;
             }
-            /* Hide the WhatsApp integration button, print controls and state updates select in printed invoice */
-            .no-print {
-              display: none !important;
+            footer, .no-print, button, nav {
+              display: none !important; /* Asegura ocultar cualquier flotante o botón */
             }
           }
         `}</style>

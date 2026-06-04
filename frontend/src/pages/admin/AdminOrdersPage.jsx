@@ -201,6 +201,23 @@ const AdminOrdersPage = () => {
     }
   };
 
+  const parseNotes = (notesStr) => {
+    if (!notesStr) return { razon_social: '', nit_ci: '', customer_notes: '' };
+    try {
+      const parsed = JSON.parse(notesStr);
+      if (parsed && typeof parsed === 'object') {
+        return {
+          razon_social: parsed.razon_social || '',
+          nit_ci: parsed.nit_ci || '',
+          customer_notes: parsed.customer_notes || ''
+        };
+      }
+    } catch (e) {
+      // ignore
+    }
+    return { razon_social: '', nit_ci: '', customer_notes: notesStr };
+  };
+
   return (
     <div className="flex min-h-screen bg-slate-50 text-slate-800">
       {/* Toast Notice */}
@@ -581,15 +598,31 @@ const AdminOrdersPage = () => {
                     Datos de Entrega
                   </h4>
                   <p className="text-sm font-semibold text-primary">{selectedOrder.shipping_address}</p>
-                  {selectedOrder.notes && (
-                    <div className="mt-2 pt-2 border-t border-slate-200">
-                      <span className="text-[10px] font-bold text-slate-400 uppercase block">Notas Adicionales:</span>
-                      <p className="text-xs text-slate-600 font-medium italic mt-0.5 bg-white p-2 rounded-lg border border-slate-100">
-                        {selectedOrder.notes}
-                      </p>
-                    </div>
-                  )}
-                </div>
+                   {(() => {
+                     const billing = parseNotes(selectedOrder.notes);
+                     return (
+                       <>
+                         {(billing.razon_social || billing.nit_ci) && (
+                           <div className="mt-2 pt-2 border-t border-slate-200">
+                             <span className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Datos de Facturación:</span>
+                             <div className="bg-white p-2.5 rounded-lg border border-slate-100 text-xs text-slate-600 space-y-1">
+                               <p><strong>Razón Social:</strong> {billing.razon_social || 'N/A'}</p>
+                               <p><strong>CI / NIT:</strong> {billing.nit_ci || 'N/A'}</p>
+                             </div>
+                           </div>
+                         )}
+                         {billing.customer_notes && (
+                           <div className="mt-2 pt-2 border-t border-slate-200">
+                             <span className="text-[10px] font-bold text-slate-400 uppercase block mb-1">Notas Adicionales:</span>
+                             <p className="text-xs text-slate-600 font-medium italic mt-0.5 bg-white p-2 rounded-lg border border-slate-100">
+                               {billing.customer_notes}
+                             </p>
+                           </div>
+                         )}
+                       </>
+                     );
+                   })()}
+                 </div>
               </div>
 
               {/* Section 2: Order Items list with Images */}
@@ -676,8 +709,7 @@ const AdminOrdersPage = () => {
                     rel="noopener noreferrer"
                     className="px-3 py-1.5 bg-green-600 hover:bg-green-700 text-white rounded-lg text-xs font-bold transition-all active:scale-95 flex items-center gap-1 select-none"
                   >
-                    <span className="material-symbols-outlined text-[16px]">chat</span>
-                    Coordinar Pago con Cliente
+                    <span>💬 Contactar con el cliente</span>
                   </a>
                 )}
                 {ALLOWED_TRANSITIONS[selectedOrder.status]?.length > 0 ? (

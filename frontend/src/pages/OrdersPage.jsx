@@ -52,6 +52,23 @@ const OrdersPage = () => {
     }
   };
 
+  const parseNotes = (notesStr) => {
+    if (!notesStr) return { razon_social: '', nit_ci: '', customer_notes: '' };
+    try {
+      const parsed = JSON.parse(notesStr);
+      if (parsed && typeof parsed === 'object') {
+        return {
+          razon_social: parsed.razon_social || '',
+          nit_ci: parsed.nit_ci || '',
+          customer_notes: parsed.customer_notes || ''
+        };
+      }
+    } catch (e) {
+      // ignore
+    }
+    return { razon_social: '', nit_ci: '', customer_notes: notesStr };
+  };
+
   // Helper to style status badges — Hito 3 statuses
   const getStatusBadge = (status) => {
     const cleanStatus = status?.toLowerCase() || 'pending';
@@ -244,14 +261,37 @@ const OrdersPage = () => {
                       </div>
 
                       {/* Notes section (if present) */}
-                      {order.notes && (
-                        <div className="border-b border-outline-variant/60 pb-5">
-                          <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-1">Notas</p>
-                          <p className="text-on-surface bg-white p-3 rounded-xl border border-outline-variant/40 text-sm font-medium leading-relaxed">
-                            {order.notes}
-                          </p>
-                        </div>
-                      )}
+                      {order.notes && (() => {
+                        const billing = parseNotes(order.notes);
+                        return (
+                          <div className="border-b border-outline-variant/60 pb-5 space-y-4">
+                            {(billing.razon_social || billing.nit_ci) && (
+                              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                  <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-1">Razón Social de Facturación</p>
+                                  <p className="text-on-surface bg-white p-3 rounded-xl border border-outline-variant/40 text-sm font-semibold">
+                                    {billing.razon_social || 'N/A'}
+                                  </p>
+                                </div>
+                                <div>
+                                  <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-1">CI / NIT</p>
+                                  <p className="text-on-surface bg-white p-3 rounded-xl border border-outline-variant/40 text-sm font-semibold">
+                                    {billing.nit_ci || 'N/A'}
+                                  </p>
+                                </div>
+                              </div>
+                            )}
+                            {billing.customer_notes && (
+                              <div>
+                                <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider mb-1">Notas del Comprador</p>
+                                <p className="text-on-surface bg-white p-3 rounded-xl border border-outline-variant/40 text-sm font-medium leading-relaxed">
+                                  {billing.customer_notes}
+                                </p>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })()}
 
                       {/* Items list breakdown */}
                       <div className="space-y-4">

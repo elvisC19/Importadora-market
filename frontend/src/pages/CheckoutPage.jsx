@@ -18,12 +18,16 @@ const CheckoutPage = () => {
           message: 'Debes iniciar sesión para completar tu compra' 
         } 
       });
+    } else {
+      setRazonSocial(user.nombre || '');
     }
   }, [user, navigate]);
 
   // Form states
   const [shippingAddress, setShippingAddress] = useState('');
   const [phone, setPhone] = useState('');
+  const [razonSocial, setRazonSocial] = useState('');
+  const [nitCi, setNitCi] = useState('');
   const [notes, setNotes] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -56,6 +60,16 @@ const CheckoutPage = () => {
       return;
     }
 
+    if (!razonSocial.trim()) {
+      setError('Por favor ingresa el Nombre / Razón Social para la factura.');
+      return;
+    }
+
+    if (!nitCi.trim()) {
+      setError('Por favor ingresa el CI / NIT para la factura.');
+      return;
+    }
+
     if (cart.length === 0) {
       setError('Tu carrito de compras está vacío.');
       return;
@@ -73,7 +87,11 @@ const CheckoutPage = () => {
       const orderData = {
         shipping_address: shippingAddress.trim(),
         phone: cleanPhone,
-        notes: notes.trim() || null,
+        notes: JSON.stringify({
+          razon_social: razonSocial.trim(),
+          nit_ci: nitCi.trim(),
+          customer_notes: notes.trim()
+        }),
         items: payloadItems,
       };
 
@@ -84,8 +102,8 @@ const CheckoutPage = () => {
     } catch (err) {
       console.error('Error placing order:', err);
       setError(
-        err.response?.data?.detail || 
-        'Hubo un problema al procesar tu pedido. Por favor intenta nuevamente.'
+         err.response?.data?.detail || 
+         'Hubo un problema al procesar tu pedido. Por favor intenta nuevamente.'
       );
     } finally {
       setLoading(false);
@@ -122,6 +140,28 @@ const CheckoutPage = () => {
                 <p className="text-xs text-slate-400 font-medium">Dirección de Destino</p>
                 <p className="text-on-surface mt-0.5 line-clamp-1">{createdOrder.shipping_address}</p>
               </div>
+              {(() => {
+                try {
+                  const parsed = JSON.parse(createdOrder.notes);
+                  if (parsed && typeof parsed === 'object') {
+                    return (
+                      <>
+                        <div>
+                          <p className="text-xs text-slate-400 font-medium">Razón Social</p>
+                          <p className="text-on-surface mt-0.5 font-bold">{parsed.razon_social}</p>
+                        </div>
+                        <div>
+                          <p className="text-xs text-slate-400 font-medium">CI / NIT</p>
+                          <p className="text-on-surface mt-0.5 font-bold">{parsed.nit_ci}</p>
+                        </div>
+                      </>
+                    );
+                  }
+                } catch (e) {
+                  // ignore
+                }
+                return null;
+              })()}
               <div>
                 <p className="text-xs text-slate-400 font-medium">Estado</p>
                 <p className="text-amber-600 mt-0.5 capitalize font-bold">{createdOrder.status}</p>
@@ -272,6 +312,48 @@ const CheckoutPage = () => {
                   <p className="text-[10px] font-semibold text-slate-400 mt-1.5">
                     Ingresa un número de teléfono válido para contacto.
                   </p>
+                </div>
+
+                {/* Razón Social para la Factura */}
+                <div>
+                  <label htmlFor="razonSocial" className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">
+                    Nombre / Razón Social para la Factura *
+                  </label>
+                  <div className="relative">
+                    <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[20px] text-slate-400">
+                      badge
+                    </span>
+                    <input
+                      id="razonSocial"
+                      type="text"
+                      value={razonSocial}
+                      onChange={(e) => setRazonSocial(e.target.value)}
+                      placeholder="Ej. Juan Pérez o Importadora S.A."
+                      className="w-full pl-10 pr-4 py-3 border border-outline-variant rounded-xl focus:outline-none focus:border-primary text-sm font-medium bg-slate-50/50"
+                      required
+                    />
+                  </div>
+                </div>
+
+                {/* CI / NIT */}
+                <div>
+                  <label htmlFor="nitCi" className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-1">
+                    CI / NIT *
+                  </label>
+                  <div className="relative">
+                    <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[20px] text-slate-400">
+                      fingerprint
+                    </span>
+                    <input
+                      id="nitCi"
+                      type="text"
+                      value={nitCi}
+                      onChange={(e) => setNitCi(e.target.value)}
+                      placeholder="Ej. 1234567 LP"
+                      className="w-full pl-10 pr-4 py-3 border border-outline-variant rounded-xl focus:outline-none focus:border-primary text-sm font-medium bg-slate-50/50"
+                      required
+                    />
+                  </div>
                 </div>
 
                 {/* Notes (optional) */}

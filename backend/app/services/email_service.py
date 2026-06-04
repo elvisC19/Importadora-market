@@ -356,5 +356,65 @@ class EmailService:
         """
         return self._send_email_html(to_email, subject, html_content)
 
+    def send_password_reset_email(self, email: str, token: str, nombre: str) -> bool:
+        """
+        Envía un correo con el enlace de restablecimiento de contraseña.
+        """
+        subject = "Restablece tu contraseña - Importadora Market"
+        reset_url = f"{settings.FRONTEND_URL}/restablecer-password?token={token}"
+        
+        html_content = f"""
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Restablecer Contraseña</title>
+        </head>
+        <body style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8f9ff; margin: 0; padding: 0;">
+            <div style="max-width: 600px; margin: 20px auto; background-color: #ffffff; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); border: 1px solid #e2e8f0;">
+                <!-- Header -->
+                <div style="background-color: #0f172a; padding: 32px 24px; text-align: center; border-bottom: 4px solid #f97316;">
+                    <h1 style="color: #ffffff; margin: 0; font-size: 24px; font-weight: 800;">IMPORTADORA MARKET</h1>
+                    <p style="color: #cbd5e1; margin: 8px 0 0 0; font-size: 14px;">Recuperación de Contraseña</p>
+                </div>
+                
+                <!-- Body -->
+                <div style="padding: 32px 24px; text-align: left;">
+                    <p style="font-size: 16px; color: #0f172a; margin-top: 0;">
+                        Hola <strong>{nombre}</strong>,
+                    </p>
+                    <p style="font-size: 15px; color: #334155; line-height: 1.6;">
+                        Hemos recibido una solicitud para restablecer la contraseña de tu cuenta. Para continuar, por favor haz clic en el siguiente botón:
+                    </p>
+                    
+                    <div style="text-align: center; margin: 32px 0;">
+                        <a href="{reset_url}" style="background-color: #f97316; color: #ffffff; text-decoration: none; padding: 12px 28px; border-radius: 8px; font-size: 14px; font-weight: bold; display: inline-block; box-shadow: 0 4px 6px -1px rgba(249, 115, 22, 0.2);">
+                            Restablecer mi Contraseña
+                        </a>
+                    </div>
+                    
+                    <p style="font-size: 13px; color: #64748b; line-height: 1.6;">
+                        Este enlace de recuperación es válido por <strong>30 minutos</strong>. Si no solicitaste este cambio, puedes ignorar este correo de forma segura.
+                    </p>
+                    
+                    <hr style="border: 0; border-top: 1px solid #e2e8f0; margin: 24px 0;" />
+                    
+                    <p style="font-size: 11px; color: #94a3b8; word-break: break-all;">
+                        Si el botón no funciona, copia y pega la siguiente URL en tu navegador:<br />
+                        <a href="{reset_url}" style="color: #f97316; text-decoration: none;">{reset_url}</a>
+                    </p>
+                </div>
+                
+                <!-- Footer -->
+                <div style="background-color: #f8fafc; padding: 24px; text-align: center; border-top: 1px solid #e2e8f0; font-size: 12px; color: #64748b;">
+                    <p style="margin: 0; font-weight: bold;">© 2026 Importadora Market. Todos los derechos reservados.</p>
+                </div>
+            </div>
+        </body>
+        </html>
+        """
+        return self._send_email_html(email, subject, html_content)
+
 
 email_service = EmailService()

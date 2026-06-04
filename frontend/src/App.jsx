@@ -8,6 +8,7 @@ import ImportadoraRoute from './components/layout/ImportadoraRoute';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 import ProfilePage from './pages/ProfilePage';
 import ProductsPage from './pages/ProductsPage';
 import ProductDetailPage from './pages/ProductDetailPage';
@@ -47,6 +48,7 @@ function App() {
               <Route path="/login" element={<LoginPage />} />
               <Route path="/registro" element={<RegisterPage />} />
               <Route path="/recuperar-contrasena" element={<ForgotPasswordPage />} />
+              <Route path="/restablecer-password" element={<ResetPasswordPage />} />
               <Route path="/carrito" element={<CartPage />} />
               <Route path="/contacto" element={<ContactPage />} />
               <Route path="/nosotros" element={<AboutPage />} />

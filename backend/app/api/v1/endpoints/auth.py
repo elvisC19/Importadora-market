@@ -5,6 +5,8 @@ from app.schemas.user import UserCreate, UserResponse, UserLogin, PasswordResetR
 from app.schemas.common import MessageResponse
 from app.services.auth_service import auth_service
 from app.core.limiter import limiter
+from app.services.email_service import email_service
+from app.repositories.user_repository import user_repository
 
 router = APIRouter()
 
@@ -42,9 +44,12 @@ def forgot_password(request: PasswordResetRequest, db: Session = Depends(get_db)
     Siempre retorna 200 por seguridad.
     """
     try:
-        auth_service.request_reset_token(db, email=request.email)
-    except HTTPException:
-        # User not found? No problem, return 200 to avoid enumeration.
+        user = user_repository.get_by_email(db, email=request.email)
+        if user:
+            token = auth_service.request_reset_token(db, email=request.email)
+            email_service.send_password_reset_email(email=request.email, token=token, nombre=user.nombre)
+    except Exception:
+        # Silently catch any exception (user not found, SMTP issues) to avoid enumeration
         pass
     
     return {"message": "Si el correo está registrado, recibirás un enlace para restablecer tu contraseña."}
