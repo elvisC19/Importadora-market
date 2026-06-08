@@ -137,7 +137,7 @@ en la *Universidad Mayor, Real y Pontificia de San Francisco Xavier de Chuquisac
 | Nombre | GitHub | Rol / Responsabilidad |
 |--------|--------|-----------------------|
 | **Elvis Córdova H.** | [@elvisC19](https://github.com/elvisC19) | Líder de Arquitectura Fullstack & DevOps (SDD) |
-| **Marvin Gustavo** | [@Señor_Gus](https://github.com/Marvin-Gustavo) |  |
+| **Marvin Gustavo** | [@Marvin](https://github.com/Marvin-Gustavo) | Scrum Master & Tech Lead  |
 | **Job Ismael** | [@JOB](https://github.com/mamanicondorijobismael) |  |
 
 ---
