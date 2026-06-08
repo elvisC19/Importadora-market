@@ -5,6 +5,7 @@ from app.models.product import Product
 from app.models.order import Order
 from app.models.order_item import OrderItem
 from app.models.contact_message import ContactMessage
+from app.models.review import ProductReview
 
-__all__ = ["User", "Category", "Product", "Order", "OrderItem", "ContactMessage"]
+__all__ = ["User", "Category", "Product", "Order", "OrderItem", "ContactMessage", "ProductReview"]
 

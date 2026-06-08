@@ -147,6 +147,109 @@ def submit_product(
     return product_service.create_product(db, product_in=product_in, current_user=current_user)
 
 
+# ── Reseñas de Productos (cliente autenticado) ────────────
+
+from app.models.review import ProductReview
+from app.models.order import Order
+from app.models.order_item import OrderItem
+from app.schemas.review import ReviewCreate, ReviewResponse
+from typing import List as TypingList
+
+
+@router.post(
+    "/products/{product_id}/reviews",
+    response_model=ReviewResponse,
+    status_code=status.HTTP_201_CREATED,
+)
+def create_product_review(
+    product_id: int,
+    review_in: ReviewCreate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user),
+):
+    """
+    Crea una reseña para un producto. Requiere que el usuario tenga
+    al menos un pedido entregado que contenga ese producto.
+    El comentario es completamente opcional (puede ser vacío o nulo).
+    """
+    # Verificar que el producto existe
+    product = product_repository.get(db, id=product_id)
+    if not product:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Producto no encontrado",
+        )
+
+    # Verificar que el usuario compró y recibió el producto
+    delivered_purchase = (
+        db.query(OrderItem)
+        .join(Order, Order.id == OrderItem.order_id)
+        .filter(
+            Order.user_id == current_user.id,
+            Order.status == "delivered",
+            OrderItem.product_id == product_id,
+        )
+        .first()
+    )
+    if not delivered_purchase:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Solo puedes reseñar productos de pedidos entregados.",
+        )
+
+    # Verificar que no haya dejado una reseña previa para este producto
+    existing_review = (
+        db.query(ProductReview)
+        .filter(
+            ProductReview.user_id == current_user.id,
+            ProductReview.product_id == product_id,
+        )
+        .first()
+    )
+    if existing_review:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Ya dejaste una reseña para este producto.",
+        )
+
+    # Crear la reseña
+    new_review = ProductReview(
+        user_id=current_user.id,
+        product_id=product_id,
+        rating=review_in.rating,
+        comment=review_in.comment,
+    )
+    db.add(new_review)
+    db.commit()
+    db.refresh(new_review)
+    return new_review
+
+
+@router.get("/products/{product_id}/reviews", response_model=TypingList[ReviewResponse])
+def list_product_reviews(
+    product_id: int,
+    db: Session = Depends(get_db),
+):
+    """
+    Lista todas las reseñas de un producto ordenadas de la más reciente a la más antigua.
+    Endpoint público (no requiere autenticación).
+    """
+    product = product_repository.get(db, id=product_id)
+    if not product:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Producto no encontrado",
+        )
+
+    reviews = (
+        db.query(ProductReview)
+        .filter(ProductReview.product_id == product_id)
+        .order_by(ProductReview.created_at.desc())
+        .all()
+    )
+    return reviews
+
+
 # ══════════════════════════════════════════════════════════════
 # ENDPOINTS PROTEGIDOS — IMPORTADORA
 # ══════════════════════════════════════════════════════════════

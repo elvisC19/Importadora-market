@@ -25,15 +25,13 @@ def get_dashboard_stats(db: Session) -> dict:
 def get_orders_chart_data(db: Session, days: int = 7) -> List[dict]:
     """
     Retorna el listado ordenado cronológicamente de pedidos por día,
-    rellenando los días vacíos con 0.
+    rellenando los días vacíos con 0 de forma segura.
     """
-    # Obtener datos brutos del repositorio
     raw_data = stats_repository.count_orders_by_day(db, days=days)
     
-    # Crear un diccionario para búsqueda rápida
-    data_map = {item["date"]: item["count"] for item in raw_data}
+    # CORRECCIÓN DE TIPOS: Convertir explícitamente la llave a string (str)
+    data_map = {str(item["date"]): item["count"] for item in raw_data}
     
-    # Generar todos los días en el rango de los últimos N días
     chart_data = []
     today = datetime.now(timezone.utc).date()
     for i in range(days - 1, -1, -1):

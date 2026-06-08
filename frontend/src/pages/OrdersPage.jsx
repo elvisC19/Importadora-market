@@ -1,12 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import orderService from '../services/orderService';
+import reviewService from '../services/reviewService';
 
 const OrdersPage = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [expandedOrderId, setExpandedOrderId] = useState(null);
+
+  // ── Estado del modal de reseña ──
+  const [reviewModal, setReviewModal] = useState({ open: false, productId: null, productName: '' });
+  const [reviewRating, setReviewRating] = useState(0);
+  const [reviewHover, setReviewHover] = useState(0);
+  const [reviewComment, setReviewComment] = useState('');
+  const [reviewSubmitting, setReviewSubmitting] = useState(false);
+  const [reviewToast, setReviewToast] = useState({ show: false, message: '', type: 'success' });
+  const [reviewedProducts, setReviewedProducts] = useState(new Set());
 
   const fetchOrders = async () => {
     setLoading(true);
@@ -115,6 +125,45 @@ const OrdersPage = () => {
         {config.label}
       </span>
     );
+  };
+
+  // ── Helpers del Modal de Reseña ──
+  const showReviewToast = (message, type = 'success') => {
+    setReviewToast({ show: true, message, type });
+    setTimeout(() => setReviewToast({ show: false, message: '', type }), 4000);
+  };
+
+  const openReviewModal = (productId, productName) => {
+    setReviewModal({ open: true, productId, productName });
+    setReviewRating(0);
+    setReviewHover(0);
+    setReviewComment('');
+  };
+
+  const closeReviewModal = () => {
+    setReviewModal({ open: false, productId: null, productName: '' });
+    setReviewRating(0);
+    setReviewHover(0);
+    setReviewComment('');
+  };
+
+  const handleSubmitReview = async () => {
+    if (reviewRating === 0) return;
+    setReviewSubmitting(true);
+    try {
+      await reviewService.createReview(reviewModal.productId, {
+        rating: reviewRating,
+        comment: reviewComment.trim() || null,
+      });
+      setReviewedProducts((prev) => new Set([...prev, reviewModal.productId]));
+      showReviewToast('¡Reseña enviada exitosamente! Gracias por tu opinión.');
+      closeReviewModal();
+    } catch (err) {
+      const detail = err.response?.data?.detail || 'Error al enviar la reseña.';
+      showReviewToast(detail, 'error');
+    } finally {
+      setReviewSubmitting(false);
+    }
   };
 
   if (loading) {
@@ -299,6 +348,8 @@ const OrdersPage = () => {
                         <div className="divide-y divide-outline-variant/50">
                           {order.items?.map((item) => {
                             const prod = item.product || {};
+                            const canReview = order.status === 'delivered' && prod.id && !reviewedProducts.has(prod.id);
+                            const alreadyReviewed = order.status === 'delivered' && prod.id && reviewedProducts.has(prod.id);
                             return (
                               <div key={item.id} className="py-3.5 flex items-center justify-between gap-4 first:pt-0 last:pb-0">
                                 <div className="flex items-center gap-3.5 min-w-0">
@@ -319,9 +370,29 @@ const OrdersPage = () => {
                                   </div>
                                 </div>
                                 
-                                <span className="text-sm font-bold text-on-surface whitespace-nowrap">
-                                  {item.subtotal?.toFixed(2)} Bs.
-                                </span>
+                                <div className="flex items-center gap-3">
+                                  {canReview && (
+                                    <button
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        openReviewModal(prod.id, prod.nombre || 'Producto');
+                                      }}
+                                      className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-600 hover:text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 px-2.5 py-1.5 rounded-lg transition-all active:scale-95 whitespace-nowrap"
+                                    >
+                                      <span className="material-symbols-outlined text-[14px]">star</span>
+                                      Reseñar
+                                    </button>
+                                  )}
+                                  {alreadyReviewed && (
+                                    <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-600 bg-emerald-50 border border-emerald-200 px-2.5 py-1.5 rounded-lg whitespace-nowrap">
+                                      <span className="material-symbols-outlined text-[14px]">check</span>
+                                      Reseñado
+                                    </span>
+                                  )}
+                                  <span className="text-sm font-bold text-on-surface whitespace-nowrap">
+                                    {item.subtotal?.toFixed(2)} Bs.
+                                  </span>
+                                </div>
                               </div>
                             );
                           })}
@@ -359,6 +430,100 @@ const OrdersPage = () => {
           </div>
         )}
       </div>
+      {/* Toast de Reseña */}
+      {reviewToast.show && (
+        <div className={`fixed bottom-5 right-5 z-[60] flex items-center gap-3 px-6 py-4 rounded-xl shadow-2xl border text-sm font-bold ${
+          reviewToast.type === 'success' ? 'bg-emerald-50 text-emerald-800 border-emerald-200' : 'bg-red-50 text-red-800 border-red-200'
+        }`}>
+          <span className="material-symbols-outlined text-[20px]">{reviewToast.type === 'success' ? 'check_circle' : 'error'}</span>
+          <p>{reviewToast.message}</p>
+        </div>
+      )}
+
+      {/* Modal de Reseña */}
+      {reviewModal.open && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4" onClick={closeReviewModal}>
+          <div
+            className="bg-white rounded-2xl shadow-2xl border border-gray-100 w-full max-w-md p-6 relative"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button
+              onClick={closeReviewModal}
+              className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 transition-colors"
+            >
+              <span className="material-symbols-outlined text-[22px]">close</span>
+            </button>
+
+            <div className="text-center mb-6">
+              <div className="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center mx-auto mb-3">
+                <span className="material-symbols-outlined text-amber-500 text-[28px]">rate_review</span>
+              </div>
+              <h3 className="text-lg font-bold text-on-surface">Dejar Reseña</h3>
+              <p className="text-sm text-slate-400 mt-1 truncate px-4" title={reviewModal.productName}>
+                {reviewModal.productName}
+              </p>
+            </div>
+
+            {/* Estrellas interactivas */}
+            <div className="flex justify-center gap-1 mb-5">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <button
+                  key={star}
+                  type="button"
+                  onClick={() => setReviewRating(star)}
+                  onMouseEnter={() => setReviewHover(star)}
+                  onMouseLeave={() => setReviewHover(0)}
+                  className="transition-transform hover:scale-110 active:scale-95 focus:outline-none"
+                >
+                  <span
+                    className={`material-symbols-outlined text-[36px] transition-colors ${
+                      star <= (reviewHover || reviewRating)
+                        ? 'text-amber-400'
+                        : 'text-slate-200'
+                    }`}
+                    style={{ fontVariationSettings: star <= (reviewHover || reviewRating) ? "'FILL' 1" : "'FILL' 0" }}
+                  >
+                    star
+                  </span>
+                </button>
+              ))}
+            </div>
+            {reviewRating > 0 && (
+              <p className="text-center text-xs font-semibold text-amber-600 mb-4">
+                {['', 'Muy malo', 'Malo', 'Regular', 'Bueno', 'Excelente'][reviewRating]}
+              </p>
+            )}
+
+            {/* Comentario opcional */}
+            <textarea
+              value={reviewComment}
+              onChange={(e) => setReviewComment(e.target.value)}
+              placeholder="Escribe un comentario (opcional)..."
+              maxLength={1000}
+              rows={3}
+              className="w-full border border-gray-200 rounded-xl px-4 py-3 text-sm text-on-surface placeholder:text-slate-300 focus:border-amber-300 focus:ring-2 focus:ring-amber-100 outline-none resize-none transition-all mb-5"
+            />
+
+            <button
+              onClick={handleSubmitReview}
+              disabled={reviewRating === 0 || reviewSubmitting}
+              className="w-full flex items-center justify-center gap-2 bg-amber-500 hover:bg-amber-600 disabled:bg-slate-200 disabled:text-slate-400 text-white font-bold py-3 rounded-xl transition-all active:scale-[0.98] shadow-sm"
+            >
+              {reviewSubmitting ? (
+                <>
+                  <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+                  Enviando...
+                </>
+              ) : (
+                <>
+                  <span className="material-symbols-outlined text-[20px]">send</span>
+                  Enviar Reseña
+                </>
+              )}
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
