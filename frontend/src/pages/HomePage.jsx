@@ -15,16 +15,16 @@ const ImageFallback = ({ label, className = '' }) => (
 // SectionHeader component for reuse and styling consistency
 const SectionHeader = ({ title, subtitle, viewAllLink, viewAllText }) => {
   return (
-    <div className="flex justify-between items-start mb-stack-lg border-b border-[#CCFBF1]/30 pb-4">
-      <div className="flex items-start gap-3">
+    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-stack-lg border-b border-[#CCFBF1]/30 pb-4">
+      <div className="flex items-start gap-3 w-full sm:w-auto">
         {/* Vertical copper bar */}
         <div className="w-[4px] h-[22px] bg-[#B45309] rounded-full mt-1.5 shrink-0" />
-        <div className="text-left">
-          <h2 className="font-headline-md text-headline-sm md:text-headline-md text-[#134E4A] font-extrabold tracking-tight">
+        <div className="text-left flex-1 min-w-0">
+          <h2 className="font-headline-md text-headline-sm md:text-headline-md text-[#134E4A] font-extrabold tracking-tight break-words">
             {title}
           </h2>
           {subtitle && (
-            <p className="text-[13px] text-[#0F766E] mt-1 font-semibold">
+            <p className="text-[13px] text-[#0F766E] mt-1 font-semibold break-words">
               {subtitle}
             </p>
           )}
@@ -33,7 +33,7 @@ const SectionHeader = ({ title, subtitle, viewAllLink, viewAllText }) => {
       {viewAllLink && (
         <Link 
           to={viewAllLink} 
-          className="text-xs md:text-sm font-bold flex items-center hover:bg-[#B45309] hover:text-white transition-all cursor-pointer select-none"
+          className="text-xs md:text-sm font-bold flex items-center hover:bg-[#B45309] hover:text-white transition-all cursor-pointer select-none whitespace-nowrap self-start sm:self-auto shrink-0"
           style={{
             border: '1px solid #B45309',
             color: '#B45309',
@@ -301,7 +301,7 @@ const HomePage = () => {
       try {
         setLoading(true);
         const [cats, featured, offers, newArrivals] = await Promise.all([
-          productService.getCategories(),
+          productService.getCategories({ only_with_products: true }),
           productService.getFeatured(0, 4),
           productService.getOffers(0, 4),
           productService.getNewArrivals(0, 4)

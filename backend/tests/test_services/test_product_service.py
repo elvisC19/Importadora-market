@@ -112,6 +112,7 @@ def test_get_new_arrivals(db, category):
     prod1 = product_repository.create(db, obj_in=ProductCreate(
         nombre="Old New Arrival",
         precio=100.0,
+        stock=10,
         categoria_id=category.id,
         is_new=True
     ))
@@ -123,6 +124,7 @@ def test_get_new_arrivals(db, category):
     prod2 = product_repository.create(db, obj_in=ProductCreate(
         nombre="Fresh New Arrival",
         precio=120.0,
+        stock=10,
         categoria_id=category.id,
         is_new=True
     ))
@@ -134,6 +136,7 @@ def test_get_new_arrivals(db, category):
     prod3 = product_repository.create(db, obj_in=ProductCreate(
         nombre="Unapproved New Arrival",
         precio=130.0,
+        stock=10,
         categoria_id=category.id,
         is_new=True
     ))

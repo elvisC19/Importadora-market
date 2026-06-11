@@ -26,8 +26,8 @@ const productService = {
     return response.data;
   },
 
-  getCategories: async () => {
-    const response = await api.get('/categories');
+  getCategories: async (params = {}) => {
+    const response = await api.get('/categories', { params });
     return response.data;
   },
 

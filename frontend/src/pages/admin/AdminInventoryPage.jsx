@@ -309,7 +309,10 @@ const AdminInventoryPage = () => {
   const filteredProducts = getFilteredProducts();
 
   return (
-    <div className="min-h-screen bg-slate-50/50 pt-24 pb-16 px-4 md:px-margin-desktop select-none">
+    <div className="max-w-[1400px] mx-auto px-4 md:px-8 py-8 md:py-12 select-none">
+      
+      {/* Main Content */}
+      <main className="w-full">
       
       {/* Toast Notification */}
       {toast.show && (
@@ -324,8 +327,6 @@ const AdminInventoryPage = () => {
           </div>
         </div>
       )}
-
-      <div className="max-w-7xl mx-auto">
 
         {/* Header Section */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
@@ -725,7 +726,7 @@ const AdminInventoryPage = () => {
             </div>
           </div>
         </div>
-      </div>
+      </main>
 
       {/* ========================================== */}
       {/* PRODUCT CREATE/EDIT MODAL                  */}

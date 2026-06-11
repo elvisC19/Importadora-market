@@ -122,11 +122,14 @@ def get_product(
 
 
 @router.get("/categories", response_model=List[CategoryResponse])
-def list_categories(db: Session = Depends(get_db)):
+def list_categories(
+    db: Session = Depends(get_db),
+    only_with_products: bool = Query(False, description="Filtrar solo categorías con productos activos y con stock > 0"),
+):
     """
     Lista todas las categorías disponibles.
     """
-    return product_service.get_categories(db)
+    return product_service.get_categories(db, only_with_products=only_with_products)
 
 
 # ══════════════════════════════════════════════════════════════

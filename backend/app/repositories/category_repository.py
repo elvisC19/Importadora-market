@@ -16,5 +16,21 @@ class CategoryRepository(CRUDBase[Category, CategoryCreate, CategoryCreate]):
         """Obtener todas las categorías sin paginación."""
         return db.query(Category).all()
 
+    def get_only_with_active_products(self, db: Session) -> List[Category]:
+        """Obtener solo las categorías que tienen al menos un producto activo, aprobado y con stock > 0."""
+        from app.models.product import Product
+        return (
+            db.query(Category)
+            .join(Category.products)
+            .filter(
+                Product.is_approved == True,
+                Product.is_active == True,
+                Product.stock > 0
+            )
+            .distinct()
+            .all()
+        )
+
 
 category_repository = CategoryRepository(Category)
+

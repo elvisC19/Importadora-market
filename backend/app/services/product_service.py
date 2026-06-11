@@ -161,7 +161,9 @@ class ProductService:
         products = product_repository.get_new_arrivals(db, skip=skip, limit=limit)
         return [ProductResponse.model_validate(p) for p in products]
 
-    def get_categories(self, db: Session) -> List[Category]:
+    def get_categories(self, db: Session, only_with_products: bool = False) -> List[Category]:
+        if only_with_products:
+            return category_repository.get_only_with_active_products(db)
         return category_repository.get_all(db)
 
 

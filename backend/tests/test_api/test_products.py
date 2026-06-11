@@ -67,6 +67,7 @@ def test_list_new_arrivals_endpoint(client: TestClient, db: Session, category):
     prod1 = product_repository.create(db, obj_in=ProductCreate(
         nombre="Old New Arrival",
         precio=100.0,
+        stock=10,
         categoria_id=category.id,
         is_new=True
     ))
@@ -78,6 +79,7 @@ def test_list_new_arrivals_endpoint(client: TestClient, db: Session, category):
     prod2 = product_repository.create(db, obj_in=ProductCreate(
         nombre="Fresh New Arrival",
         precio=120.0,
+        stock=10,
         categoria_id=category.id,
         is_new=True
     ))
@@ -200,4 +202,52 @@ def test_submit_product_endpoint(client: TestClient, db: Session, admin_token_he
     data = response.json()
     assert data["nombre"] == "Test Submitted Product"
     assert data["submitted_by_id"] is not None
+
+
+def test_list_categories_filter_empty(client: TestClient, db: Session, category):
+    # 1. We have one category from the fixture (e.g. "Electrodomésticos") which has no products yet.
+    # Create another category that will have an active product
+    other_cat_in = CategoryCreate(nombre="Active Category", descripcion="Has products")
+    other_cat = category_repository.create(db, obj_in=other_cat_in)
+    
+    # Create an approved active product under other_cat
+    prod = product_repository.create(db, obj_in=ProductCreate(
+        nombre="Active Prod",
+        precio=50.0,
+        stock=5,
+        categoria_id=other_cat.id
+    ))
+    prod.is_approved = True
+    prod.is_active = True
+    db.add(prod)
+    
+    # Create a product under the first category but make it out of stock
+    prod_out = product_repository.create(db, obj_in=ProductCreate(
+        nombre="Out of stock Prod",
+        precio=50.0,
+        stock=0,
+        categoria_id=category.id
+    ))
+    prod_out.is_approved = True
+    prod_out.is_active = True
+    db.add(prod_out)
+    
+    db.commit()
+    
+    # Request categories default (should return both)
+    response_all = client.get("/api/v1/categories")
+    assert response_all.status_code == 200
+    all_cats = response_all.json()
+    assert len(all_cats) >= 2
+    
+    # Request categories with only_with_products=true
+    response_filtered = client.get("/api/v1/categories?only_with_products=true")
+    assert response_filtered.status_code == 200
+    filtered_cats = response_filtered.json()
+    
+    # Only "Active Category" should be returned, "Electrodomésticos" has no in-stock products
+    cat_names = [c["nombre"] for c in filtered_cats]
+    assert "Active Category" in cat_names
+    assert "Electrodomésticos" not in cat_names
+
 
