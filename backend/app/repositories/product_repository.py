@@ -80,10 +80,15 @@ class ProductRepository(CRUDBase[Product, ProductCreate, ProductUpdate]):
         )
 
     def get_new_arrivals(self, db: Session, *, skip: int = 0, limit: int = 20) -> List[Product]:
-        """Obtener novedades aprobadas ordenadas por fecha de creación descendente."""
+        """Obtener novedades aprobadas y con stock > 0 ordenadas por fecha de creación descendente."""
         return (
             db.query(Product)
-            .filter(Product.is_approved == True, Product.is_new == True, Product.is_active == True)
+            .filter(
+                Product.is_approved == True, 
+                Product.is_new == True, 
+                Product.is_active == True,
+                Product.stock > 0
+            )
             .order_by(Product.created_at.desc())
             .offset(skip)
             .limit(limit)
@@ -91,10 +96,15 @@ class ProductRepository(CRUDBase[Product, ProductCreate, ProductUpdate]):
         )
 
     def get_featured(self, db: Session, *, skip: int = 0, limit: int = 20) -> List[Product]:
-        """Obtener destacados aprobados."""
+        """Obtener destacados aprobados y con stock > 0."""
         return (
             db.query(Product)
-            .filter(Product.is_approved == True, Product.is_featured == True, Product.is_active == True)
+            .filter(
+                Product.is_approved == True, 
+                Product.is_featured == True, 
+                Product.is_active == True,
+                Product.stock > 0
+            )
             .offset(skip)
             .limit(limit)
             .all()

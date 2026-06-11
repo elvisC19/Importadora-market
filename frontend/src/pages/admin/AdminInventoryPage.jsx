@@ -309,60 +309,26 @@ const AdminInventoryPage = () => {
   const filteredProducts = getFilteredProducts();
 
   return (
-    <div className="flex min-h-screen bg-slate-50 text-slate-800">
+    <div className="min-h-screen bg-slate-50/50 pt-24 pb-16 px-4 md:px-margin-desktop select-none">
       
-      {/* Sidebar - Desktop Only */}
-      <aside className="hidden lg:flex flex-col w-64 bg-slate-900 text-white fixed h-full p-6 border-r border-slate-800 z-30 select-none">
-        <div className="mb-10">
-          <Link to="/" className="text-xl font-extrabold text-white flex items-center gap-2 hover:opacity-85 transition-opacity">
-            <span className="material-symbols-outlined text-accent text-[28px]">store</span>
-            <span>Importadora</span>
-          </Link>
-          <p className="text-xs text-slate-400 mt-1">Gestión del Sistema</p>
-        </div>
-        <nav className="flex-1 space-y-2">
-          <Link to="/admin" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-lg transition-all">
-            <span className="material-symbols-outlined">dashboard</span>
-            <span className="text-sm font-semibold">Dashboard</span>
-          </Link>
-          <Link to="/admin/usuarios" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-lg transition-all">
-            <span className="material-symbols-outlined">group</span>
-            <span className="text-sm font-semibold">Usuarios</span>
-          </Link>
-          <Link to="/admin/inventario" className="flex items-center gap-3 px-4 py-3 bg-primary text-white rounded-lg shadow-sm font-bold">
-            <span className="material-symbols-outlined">inventory_2</span>
-            <span className="text-sm font-semibold">Inventario</span>
-          </Link>
-          <Link to="/admin/pedidos" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-lg transition-all">
-            <span className="material-symbols-outlined">shopping_cart</span>
-            <span className="text-sm font-semibold">Pedidos</span>
-          </Link>
-          <Link to="/admin/contactos" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-lg transition-all">
-            <span className="material-symbols-outlined">mail</span>
-            <span className="text-sm font-semibold">Contactos</span>
-          </Link>
-        </nav>
-      </aside>
-
-      {/* Main Content */}
-      <main className="flex-1 lg:ml-64 p-4 md:p-8 relative min-w-0">
-        
-        {/* Toast Notification */}
-        {toast.show && (
-          <div className="fixed bottom-8 right-8 z-50 animate-fade-in-up">
-            <div className={`flex items-center gap-3 px-6 py-4 rounded-xl shadow-2xl text-white font-bold text-sm ${
-              toast.type === 'success' ? 'bg-slate-900' : 'bg-red-600'
-            }`}>
-              <span className="material-symbols-outlined">
-                {toast.type === 'success' ? 'done_all' : 'error'}
-              </span>
-              <span>{toast.message}</span>
-            </div>
+      {/* Toast Notification */}
+      {toast.show && (
+        <div className="fixed bottom-8 right-8 z-50 animate-fade-in-up">
+          <div className={`flex items-center gap-3 px-6 py-4 rounded-xl shadow-2xl text-white font-bold text-sm ${
+            toast.type === 'success' ? 'bg-slate-900' : 'bg-red-600'
+          }`}>
+            <span className="material-symbols-outlined">
+              {toast.type === 'success' ? 'done_all' : 'error'}
+            </span>
+            <span>{toast.message}</span>
           </div>
-        )}
+        </div>
+      )}
+
+      <div className="max-w-7xl mx-auto">
 
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 border-b border-slate-100 pb-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
           <div>
             <div className="flex items-center gap-2 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2">
               <span>Admin</span>
@@ -391,95 +357,98 @@ const AdminInventoryPage = () => {
           </div>
         )}
 
-      {/* Statistics Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-        {/* Total Products */}
-        <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-5">
-          <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center">
-            <span className="material-symbols-outlined text-[28px]">widgets</span>
-          </div>
-          <div>
-            <span className="text-gray-400 text-xs font-bold uppercase tracking-wider block">Total Productos</span>
-            <span className="text-3xl font-extrabold text-primary block mt-1">{loading ? '...' : stats.total}</span>
-          </div>
-        </div>
-
-        {/* Pending Products */}
-        <div 
-          onClick={() => setActiveTab('pending')}
-          className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-5 cursor-pointer hover:shadow-md hover:border-orange-200 transition-all group"
-        >
-          <div className="w-12 h-12 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
-            <span className="material-symbols-outlined text-[28px]">pending_actions</span>
-          </div>
-          <div>
-            <span className="text-gray-400 text-xs font-bold uppercase tracking-wider block">Pendientes Aprob.</span>
-            <span className="text-3xl font-extrabold text-primary block mt-1">{loading ? '...' : stats.pending}</span>
-          </div>
-        </div>
-
-        {/* Low Stock Products */}
-        <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-5">
-          <div className="w-12 h-12 bg-red-50 text-red-600 rounded-xl flex items-center justify-center">
-            <span className="material-symbols-outlined text-[28px]">warning</span>
-          </div>
-          <div>
-            <span className="text-gray-400 text-xs font-bold uppercase tracking-wider block">Stock Crítico (≤5)</span>
-            <span className="text-3xl font-extrabold text-primary block mt-1">{loading ? '...' : stats.lowStock}</span>
-          </div>
-        </div>
-
-        {/* Active Offers */}
-        <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-5">
-          <div className="w-12 h-12 bg-green-50 text-green-600 rounded-xl flex items-center justify-center">
-            <span className="material-symbols-outlined text-[28px]">sell</span>
-          </div>
-          <div>
-            <span className="text-gray-400 text-xs font-bold uppercase tracking-wider block">Ofertas Activas</span>
-            <span className="text-3xl font-extrabold text-primary block mt-1">{loading ? '...' : stats.activeOffers}</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Main Grid: Left is Products Table, Right is Category Management */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        
-        {/* Left Side: Product Table Card */}
-        <div className="md:col-span-2 bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden flex flex-col min-w-0 w-full">
-          {/* Tab Navigation & Search Row */}
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-6 border-b border-gray-100 gap-4 bg-slate-50/50">
-            <div className="flex border border-gray-200 bg-white rounded-xl p-1 shadow-sm">
-              <button 
-                onClick={() => setActiveTab('all')}
-                className={`px-4 py-2 text-xs font-bold rounded-lg transition-colors ${
-                  activeTab === 'all' ? 'bg-primary text-white' : 'text-gray-500 hover:text-primary'
-                }`}
-              >
-                Todos
-              </button>
-              <button 
-                onClick={() => setActiveTab('pending')}
-                className={`px-4 py-2 text-xs font-bold rounded-lg transition-colors flex items-center gap-1.5 ${
-                  activeTab === 'pending' ? 'bg-primary text-white' : 'text-gray-500 hover:text-primary'
-                }`}
-              >
-                Pendientes
-                {stats.pending > 0 && (
-                  <span className="w-2 h-2 rounded-full bg-orange-500 block"></span>
-                )}
-              </button>
-              <button 
-                onClick={() => setActiveTab('visible')}
-                className={`px-4 py-2 text-xs font-bold rounded-lg transition-colors ${
-                  activeTab === 'visible' ? 'bg-primary text-white' : 'text-gray-500 hover:text-primary'
-                }`}
-              >
-                Visibles
-              </button>
+        {/* ═══════════ SECTION 1: Statistics Cards ═══════════ */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+          {/* Total Products */}
+          <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-5">
+            <div className="w-12 h-12 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center">
+              <span className="material-symbols-outlined text-[28px]">widgets</span>
             </div>
-            
-            <div className="text-xs text-gray-500 font-semibold uppercase tracking-wider">
-              {filteredProducts.length} producto{filteredProducts.length !== 1 ? 's' : ''} en lista
+            <div>
+              <span className="text-gray-400 text-xs font-bold uppercase tracking-wider block">Total Productos</span>
+              <span className="text-3xl font-extrabold text-primary block mt-1">{loading ? '...' : stats.total}</span>
+            </div>
+          </div>
+
+          {/* Pending Products */}
+          <div 
+            onClick={() => setActiveTab('pending')}
+            className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-5 cursor-pointer hover:shadow-md hover:border-orange-200 transition-all group"
+          >
+            <div className="w-12 h-12 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+              <span className="material-symbols-outlined text-[28px]">pending_actions</span>
+            </div>
+            <div>
+              <span className="text-gray-400 text-xs font-bold uppercase tracking-wider block">Pendientes Aprob.</span>
+              <span className="text-3xl font-extrabold text-primary block mt-1">{loading ? '...' : stats.pending}</span>
+            </div>
+          </div>
+
+          {/* Low Stock Products */}
+          <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-5">
+            <div className="w-12 h-12 bg-red-50 text-red-600 rounded-xl flex items-center justify-center">
+              <span className="material-symbols-outlined text-[28px]">warning</span>
+            </div>
+            <div>
+              <span className="text-gray-400 text-xs font-bold uppercase tracking-wider block">Stock Crítico (≤5)</span>
+              <span className="text-3xl font-extrabold text-primary block mt-1">{loading ? '...' : stats.lowStock}</span>
+            </div>
+          </div>
+
+          {/* Active Offers */}
+          <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-5">
+            <div className="w-12 h-12 bg-green-50 text-green-600 rounded-xl flex items-center justify-center">
+              <span className="material-symbols-outlined text-[28px]">sell</span>
+            </div>
+            <div>
+              <span className="text-gray-400 text-xs font-bold uppercase tracking-wider block">Ofertas Activas</span>
+              <span className="text-3xl font-extrabold text-primary block mt-1">{loading ? '...' : stats.activeOffers}</span>
+            </div>
+          </div>
+        </div>
+
+        {/* ═══════════ SECTION 2: Products Table (Full Width) ═══════════ */}
+        <div className="bg-white rounded-3xl border border-gray-100 shadow-sm overflow-hidden mb-10">
+          {/* Tab Navigation & Counter */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-6 border-b border-gray-100 gap-4 bg-slate-50/50">
+            <div className="flex items-center gap-3">
+              <span className="material-symbols-outlined text-accent text-[24px]">inventory_2</span>
+              <h2 className="text-lg font-extrabold text-primary">Catálogo de Productos</h2>
+            </div>
+            <div className="flex items-center gap-4">
+              <div className="flex border border-gray-200 bg-white rounded-xl p-1 shadow-sm">
+                <button 
+                  onClick={() => setActiveTab('all')}
+                  className={`px-4 py-2 text-xs font-bold rounded-lg transition-colors ${
+                    activeTab === 'all' ? 'bg-primary text-white' : 'text-gray-500 hover:text-primary'
+                  }`}
+                >
+                  Todos
+                </button>
+                <button 
+                  onClick={() => setActiveTab('pending')}
+                  className={`px-4 py-2 text-xs font-bold rounded-lg transition-colors flex items-center gap-1.5 ${
+                    activeTab === 'pending' ? 'bg-primary text-white' : 'text-gray-500 hover:text-primary'
+                  }`}
+                >
+                  Pendientes
+                  {stats.pending > 0 && (
+                    <span className="w-2 h-2 rounded-full bg-orange-500 block"></span>
+                  )}
+                </button>
+                <button 
+                  onClick={() => setActiveTab('visible')}
+                  className={`px-4 py-2 text-xs font-bold rounded-lg transition-colors ${
+                    activeTab === 'visible' ? 'bg-primary text-white' : 'text-gray-500 hover:text-primary'
+                  }`}
+                >
+                  Visibles
+                </button>
+              </div>
+              
+              <div className="text-xs text-gray-500 font-semibold uppercase tracking-wider hidden sm:block">
+                {filteredProducts.length} producto{filteredProducts.length !== 1 ? 's' : ''}
+              </div>
             </div>
           </div>
 
@@ -490,7 +459,7 @@ const AdminInventoryPage = () => {
             </div>
           ) : filteredProducts.length > 0 ? (
             <div className="overflow-x-auto">
-              <table className="w-full min-w-[800px] text-left border-collapse">
+              <table className="w-full text-left border-collapse">
                 <thead>
                   <tr className="bg-slate-50 text-slate-400 uppercase text-[10px] font-extrabold tracking-wider border-b border-gray-100">
                     <th className="px-6 py-4">Imagen</th>
@@ -507,7 +476,7 @@ const AdminInventoryPage = () => {
                     <tr key={p.id} className="hover:bg-slate-50/50 transition-colors">
                       {/* Product Thumbnail */}
                       <td className="px-6 py-4">
-                        <div className="w-12 h-12 rounded-xl bg-slate-100 border border-gray-100 overflow-hidden flex items-center justify-center">
+                        <div className="w-14 h-14 rounded-xl bg-slate-100 border border-gray-100 overflow-hidden flex items-center justify-center">
                           {p.imagen_url ? (
                             <img src={p.imagen_url} alt={p.nombre} className="w-full h-full object-cover" />
                           ) : (
@@ -517,18 +486,20 @@ const AdminInventoryPage = () => {
                       </td>
 
                       {/* Product details */}
-                      <td className="px-6 py-4 max-w-[200px]">
-                        <h4 className="font-bold text-primary truncate" title={p.nombre}>{p.nombre}</h4>
-                        {p.submitted_by_id && (
-                          <div className="text-[11px] text-gray-500 font-semibold mt-0.5 flex items-center gap-1">
-                            <span className="material-symbols-outlined text-[12px]">person</span>
-                            Enviado por: ID {p.submitted_by_id}
+                      <td className="px-6 py-4">
+                        <div className="max-w-xs">
+                          <h4 className="font-bold text-primary truncate" title={p.nombre}>{p.nombre}</h4>
+                          {p.submitted_by_id && (
+                            <div className="text-[11px] text-gray-500 font-semibold mt-0.5 flex items-center gap-1">
+                              <span className="material-symbols-outlined text-[12px]">person</span>
+                              Enviado por: ID {p.submitted_by_id}
+                            </div>
+                          )}
+                          <div className="flex gap-1.5 mt-1.5">
+                            {p.is_new && <span className="text-[9px] bg-green-50 text-green-600 border border-green-200 px-1.5 py-0.5 rounded font-bold uppercase">Nuevo</span>}
+                            {p.is_offer && <span className="text-[9px] bg-orange-50 text-orange-600 border border-orange-200 px-1.5 py-0.5 rounded font-bold uppercase">Oferta</span>}
+                            {p.is_featured && <span className="text-[9px] bg-yellow-50 text-yellow-600 border border-yellow-200 px-1.5 py-0.5 rounded font-bold uppercase">Destacado</span>}
                           </div>
-                        )}
-                        <div className="flex gap-1.5 mt-1">
-                          {p.is_new && <span className="text-[9px] bg-green-50 text-green-600 border border-green-200 px-1 rounded font-bold uppercase">Nuevo</span>}
-                          {p.is_offer && <span className="text-[9px] bg-orange-50 text-orange-600 border border-orange-200 px-1 rounded font-bold uppercase">Oferta</span>}
-                          {p.is_featured && <span className="text-[9px] bg-yellow-50 text-yellow-600 border border-yellow-200 px-1 rounded font-bold uppercase">Destacado</span>}
                         </div>
                       </td>
 
@@ -553,7 +524,7 @@ const AdminInventoryPage = () => {
 
                       {/* Stock details */}
                       <td className="px-6 py-4">
-                        <span className={`px-2 py-0.5 rounded-lg text-xs font-bold ${
+                        <span className={`px-2.5 py-1 rounded-lg text-xs font-bold ${
                           p.stock > 5 ? 'text-green-600 bg-green-50' : p.stock > 0 ? 'text-yellow-600 bg-yellow-50' : 'text-red-600 bg-red-50'
                         }`}>
                           {p.stock} disp.
@@ -651,84 +622,109 @@ const AdminInventoryPage = () => {
           )}
         </div>
 
-        {/* Right Side: Category Management Card */}
-        <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-6 flex flex-col self-start w-full">
-          <h2 className="text-xl font-bold text-primary flex items-center gap-2 mb-6 border-b border-gray-100 pb-3">
-            <span className="material-symbols-outlined text-accent">category</span>
-            Administrar Categorías
-          </h2>
-
-          {/* Create Category Form */}
-          <form onSubmit={handleCreateCategory} className="mb-8 space-y-4 bg-slate-50/50 p-4 rounded-2xl border border-slate-100">
-            <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">Nueva Categoría</span>
-            
+        {/* ═══════════ SECTION 3: Category Management (Full Width) ═══════════ */}
+        <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-8">
+          <div className="flex items-center gap-3 mb-8 pb-4 border-b border-gray-100">
+            <span className="material-symbols-outlined text-accent text-[28px]">category</span>
             <div>
-              <label className="block text-xs font-bold text-gray-600 mb-1">Nombre</label>
-              <input 
-                type="text" 
-                placeholder="Ej. Accesorios, Audífonos..."
-                value={newCategoryName}
-                onChange={(e) => setNewCategoryName(e.target.value)}
-                className="w-full border border-gray-200 bg-white rounded-xl px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
-              />
+              <h2 className="text-xl font-extrabold text-primary">Administrar Categorías</h2>
+              <p className="text-gray-400 text-xs mt-0.5">Crea, visualiza y elimina las categorías del catálogo de productos.</p>
             </div>
-            
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Left: Create Category Form */}
             <div>
-              <label className="block text-xs font-bold text-gray-600 mb-1">Descripción</label>
-              <textarea 
-                placeholder="Ej. Artículos y repuestos..."
-                rows="2"
-                value={newCategoryDesc}
-                onChange={(e) => setNewCategoryDesc(e.target.value)}
-                className="w-full border border-gray-200 bg-white rounded-xl px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all resize-none"
-              />
+              <form onSubmit={handleCreateCategory} className="space-y-5 bg-slate-50/80 p-6 rounded-2xl border border-slate-100">
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="material-symbols-outlined text-primary text-[20px]">add_box</span>
+                  <span className="text-sm font-bold text-primary uppercase tracking-wider">Nueva Categoría</span>
+                </div>
+                
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-1.5">Nombre de la Categoría *</label>
+                  <input 
+                    type="text" 
+                    placeholder="Ej. Accesorios, Audífonos, Electrónica..."
+                    value={newCategoryName}
+                    onChange={(e) => setNewCategoryName(e.target.value)}
+                    className="w-full border border-gray-200 bg-white rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-xs font-bold text-gray-600 mb-1.5">Descripción (Opcional)</label>
+                  <textarea 
+                    placeholder="Ej. Artículos y repuestos tecnológicos..."
+                    rows="3"
+                    value={newCategoryDesc}
+                    onChange={(e) => setNewCategoryDesc(e.target.value)}
+                    className="w-full border border-gray-200 bg-white rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-accent focus:border-accent transition-all resize-none"
+                  />
+                </div>
+
+                <button 
+                  type="submit"
+                  className="w-full py-3 bg-primary text-white text-sm font-bold rounded-xl hover:bg-opacity-95 active:scale-[0.98] transition-all shadow-sm flex items-center justify-center gap-2"
+                >
+                  <span className="material-symbols-outlined text-[18px]">add_box</span>
+                  Añadir Categoría
+                </button>
+              </form>
             </div>
 
-            <button 
-              type="submit"
-              className="w-full py-2.5 bg-primary text-white text-xs font-bold rounded-xl hover:bg-opacity-95 active:scale-[0.98] transition-all shadow-sm flex items-center justify-center gap-1.5"
-            >
-              <span className="material-symbols-outlined text-[16px]">add_box</span>
-              Añadir Categoría
-            </button>
-          </form>
+            {/* Right: Categories List */}
+            <div>
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center gap-2">
+                  <span className="material-symbols-outlined text-slate-400 text-[20px]">list</span>
+                  <span className="text-sm font-bold text-slate-500 uppercase tracking-wider">Categorías Registradas</span>
+                </div>
+                <span className="text-xs text-gray-400 font-bold bg-slate-100 px-2.5 py-1 rounded-lg">
+                  {categories.length} total
+                </span>
+              </div>
 
-          {/* Categories List */}
-          <div className="space-y-3">
-            <span className="text-xs font-bold text-slate-500 uppercase tracking-wider block">Categorías Registradas</span>
-            {loading ? (
-              <div className="text-center py-4 text-xs text-gray-400">Cargando categorías...</div>
-            ) : categories.length > 0 ? (
-              <div className="max-h-[300px] overflow-y-auto space-y-2 pr-1">
-                {categories.map(cat => (
-                  <div 
-                    key={cat.id} 
-                    className="flex items-center justify-between p-3 rounded-xl border border-gray-100 hover:border-gray-200 hover:bg-slate-50/30 transition-all text-sm"
-                  >
-                    <div>
-                      <span className="font-bold text-primary">{cat.nombre}</span>
-                      {cat.descripcion && (
-                        <p className="text-[11px] text-gray-400 font-medium truncate max-w-[160px]">{cat.descripcion}</p>
-                      )}
-                    </div>
-                    <button 
-                      onClick={() => handleDeleteCategory(cat.id)}
-                      className="p-1 hover:bg-red-50 text-red-500 rounded-lg transition-colors"
-                      title="Eliminar Categoría"
+              {loading ? (
+                <div className="text-center py-8 text-xs text-gray-400">Cargando categorías...</div>
+              ) : categories.length > 0 ? (
+                <div className="space-y-3 max-h-[400px] overflow-y-auto pr-1">
+                  {categories.map(cat => (
+                    <div 
+                      key={cat.id} 
+                      className="flex items-center justify-between p-4 rounded-2xl border border-gray-100 hover:border-gray-200 hover:bg-slate-50/30 transition-all group"
                     >
-                      <span className="material-symbols-outlined text-[20px]">delete_forever</span>
-                    </button>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-4 text-xs text-gray-400 bg-slate-50 rounded-xl border border-dashed">
-                No hay categorías registradas.
-              </div>
-            )}
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center">
+                          <span className="material-symbols-outlined text-slate-500 text-[20px]">folder</span>
+                        </div>
+                        <div>
+                          <span className="font-bold text-primary text-sm block">{cat.nombre}</span>
+                          {cat.descripcion && (
+                            <p className="text-[11px] text-gray-400 font-medium truncate max-w-xs">{cat.descripcion}</p>
+                          )}
+                        </div>
+                      </div>
+                      <button 
+                        onClick={() => handleDeleteCategory(cat.id)}
+                        className="p-2 hover:bg-red-50 text-red-400 hover:text-red-600 rounded-xl transition-all opacity-0 group-hover:opacity-100"
+                        title="Eliminar Categoría"
+                      >
+                        <span className="material-symbols-outlined text-[20px]">delete_forever</span>
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="text-center py-12 bg-slate-50/50 rounded-2xl border border-dashed border-gray-200">
+                  <span className="material-symbols-outlined text-[36px] text-gray-200 mb-2 block">category</span>
+                  <p className="text-xs text-gray-400 font-bold">No hay categorías registradas.</p>
+                  <p className="text-[11px] text-gray-300 mt-1">Crea una desde el formulario de la izquierda.</p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
-
       </div>
 
       {/* ========================================== */}
@@ -977,7 +973,6 @@ const AdminInventoryPage = () => {
           </div>
         </div>
       )}
-      </main>
     </div>
   );
 };

@@ -20,11 +20,13 @@ def register(user_in: UserCreate, db: Session = Depends(get_db)):
         user_in.role = "admin"
     else:
         # Para cualquier otro correo, se mantiene la seguridad estricta
-        if user_in.role == "admin":
+        if user_in.role in ("admin", "importadora"):
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail="No se permite la autoregistración como administrador.",
+                detail="No se permite la autoregistración con ese rol. Solo se permite el registro como cliente.",
             )
+        # Forzar rol de cliente para registros públicos
+        user_in.role = "cliente"
             
     return auth_service.register_user(db, user_in=user_in)
 

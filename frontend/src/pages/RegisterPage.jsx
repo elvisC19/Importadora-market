@@ -9,7 +9,6 @@ const RegisterPage = () => {
     telefono: '',
     password: '',
     confirmPassword: '',
-    role: 'cliente',
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -38,7 +37,7 @@ const RegisterPage = () => {
 
     setLoading(true);
     try {
-      await register(formData.nombre, formData.email, formData.password, formData.telefono, formData.role);
+      await register(formData.nombre, formData.email, formData.password, formData.telefono, 'cliente');
       // Auto login
       await login(formData.email, formData.password);
       navigate('/');
@@ -133,19 +132,7 @@ const RegisterPage = () => {
                 />
               </div>
 
-              <div className="space-y-2">
-                <label className="text-sm font-semibold text-slate-700" htmlFor="role">Tipo de Cuenta</label>
-                <select 
-                  className="w-full px-4 h-12 bg-slate-50 border border-slate-200 rounded-lg focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-sm cursor-pointer" 
-                  id="role"
-                  value={formData.role}
-                  onChange={handleChange}
-                  required
-                >
-                  <option value="cliente">Cliente (Comprador)</option>
-                  <option value="importadora">Importadora (Vendedor)</option>
-                </select>
-              </div>
+
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">

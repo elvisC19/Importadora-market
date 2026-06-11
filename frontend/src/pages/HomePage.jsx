@@ -191,28 +191,23 @@ const SectionSeparator = () => (
 const categoryConfigs = {
   tecnologia: {
     gradient: 'linear-gradient(135deg, #B45309, #92400E)',
-    icon: 'devices',
-    mockCount: '24'
+    icon: 'devices'
   },
   relojeria: {
     gradient: 'linear-gradient(135deg, #134E4A, #0F766E)',
-    icon: 'watch',
-    mockCount: '12'
+    icon: 'watch'
   },
   moda: {
     gradient: 'linear-gradient(135deg, #1E3A5F, #2563EB)',
-    icon: 'apparel',
-    mockCount: '18'
+    icon: 'apparel'
   },
   hogar: {
     gradient: 'linear-gradient(135deg, #4C1D95, #7C3AED)',
-    icon: 'home',
-    mockCount: '15'
+    icon: 'home'
   },
   default: {
     gradient: 'linear-gradient(135deg, #134E4A, #0F766E)',
-    icon: 'grid_view',
-    mockCount: '10'
+    icon: 'grid_view'
   }
 };
 
@@ -432,7 +427,7 @@ const HomePage = () => {
                       {category.nombre}
                     </span>
                     <span className="text-[11px] text-white/95 font-semibold bg-white/10 px-2 py-0.5 rounded-full w-max mt-1">
-                      {config.mockCount} productos
+                      Explorar catálogo &rarr;
                     </span>
                   </div>
                 </Link>

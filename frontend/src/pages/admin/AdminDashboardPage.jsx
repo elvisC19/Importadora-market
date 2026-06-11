@@ -282,48 +282,55 @@ const AdminDashboardPage = () => {
                 </div>
                 
                 <div className="w-full h-80 min-h-[300px]">
-                  <ResponsiveContainer width="100%" height="100%">
-                    <LineChart
-                      data={chartData}
-                      margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-                    >
-                      <defs>
-                        <linearGradient id="colorCount" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="5%" stopColor="#2dd4bf" stopOpacity={0.8}/>
-                          <stop offset="95%" stopColor="#2dd4bf" stopOpacity={0}/>
-                        </linearGradient>
-                      </defs>
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
-                      <XAxis 
-                        dataKey="displayName" 
-                        stroke="#94a3b8" 
-                        fontSize={11} 
-                        fontWeight={700}
-                        tickLine={false} 
-                        axisLine={false}
-                        dy={10}
-                      />
-                      <YAxis 
-                        stroke="#94a3b8" 
-                        fontSize={11} 
-                        fontWeight={700}
-                        tickLine={false} 
-                        axisLine={false} 
-                        allowDecimals={false}
-                        dx={-10}
-                      />
-                      <Tooltip content={<CustomTooltip />} />
-                      <Line 
-                        type="monotone" 
-                        dataKey="count" 
-                        name="Pedidos"
-                        stroke="#2dd4bf" 
-                        strokeWidth={3}
-                        dot={{ r: 4, stroke: '#2dd4bf', strokeWidth: 2, fill: '#fff' }}
-                        activeDot={{ r: 6, stroke: '#2dd4bf', strokeWidth: 2, fill: '#2dd4bf' }}
-                      />
-                    </LineChart>
-                  </ResponsiveContainer>
+                  {chartData.length > 0 ? (
+                    <ResponsiveContainer width="100%" height="100%">
+                      <LineChart
+                        data={chartData}
+                        margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+                      >
+                        <defs>
+                          <linearGradient id="colorCount" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="5%" stopColor="#2dd4bf" stopOpacity={0.8}/>
+                            <stop offset="95%" stopColor="#2dd4bf" stopOpacity={0}/>
+                          </linearGradient>
+                        </defs>
+                        <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                        <XAxis 
+                          dataKey="displayName" 
+                          stroke="#94a3b8" 
+                          fontSize={11} 
+                          fontWeight={700}
+                          tickLine={false} 
+                          axisLine={false}
+                          dy={10}
+                        />
+                        <YAxis 
+                          stroke="#94a3b8" 
+                          fontSize={11} 
+                          fontWeight={700}
+                          tickLine={false} 
+                          axisLine={false} 
+                          allowDecimals={false}
+                          dx={-10}
+                        />
+                        <Tooltip content={<CustomTooltip />} />
+                        <Line 
+                          type="monotone" 
+                          dataKey="count" 
+                          name="Pedidos"
+                          stroke="#2dd4bf" 
+                          strokeWidth={3}
+                          dot={{ r: 4, stroke: '#2dd4bf', strokeWidth: 2, fill: '#fff' }}
+                          activeDot={{ r: 6, stroke: '#2dd4bf', strokeWidth: 2, fill: '#2dd4bf' }}
+                        />
+                      </LineChart>
+                    </ResponsiveContainer>
+                  ) : (
+                    <div className="flex flex-col justify-center items-center h-full bg-slate-50/50 rounded-2xl border border-dashed border-gray-200">
+                      <span className="material-symbols-outlined text-[40px] text-slate-300 mb-2">show_chart</span>
+                      <p className="text-slate-400 font-bold text-sm">No hay datos de pedidos en los últimos 7 días.</p>
+                    </div>
+                  )}
                 </div>
               </div>
 
