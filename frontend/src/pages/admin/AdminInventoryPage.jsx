@@ -309,10 +309,43 @@ const AdminInventoryPage = () => {
   const filteredProducts = getFilteredProducts();
 
   return (
-    <div className="max-w-[1400px] mx-auto px-4 md:px-8 py-8 md:py-12 select-none">
+    <div className="flex min-h-screen bg-slate-50 text-slate-800 select-none">
       
+      {/* Sidebar - Desktop Only */}
+      <aside className="hidden lg:flex flex-col w-64 bg-slate-900 text-white fixed h-full p-6 border-r border-slate-800 z-30 select-none">
+        <div className="mb-10">
+          <Link to="/" className="text-xl font-extrabold text-white flex items-center gap-2 hover:opacity-85 transition-opacity">
+            <span className="material-symbols-outlined text-accent text-[28px]">store</span>
+            <span>Importadora</span>
+          </Link>
+          <p className="text-xs text-slate-400 mt-1">Gestión del Sistema</p>
+        </div>
+        <nav className="flex-1 space-y-2">
+          <Link to="/admin" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-lg transition-all">
+            <span className="material-symbols-outlined">dashboard</span>
+            <span className="text-sm font-semibold">Dashboard</span>
+          </Link>
+          <Link to="/admin/usuarios" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-lg transition-all">
+            <span className="material-symbols-outlined">group</span>
+            <span className="text-sm font-semibold">Usuarios</span>
+          </Link>
+          <Link to="/admin/inventario" className="flex items-center gap-3 px-4 py-3 bg-primary text-white rounded-lg shadow-sm font-bold animate-in">
+            <span className="material-symbols-outlined">inventory_2</span>
+            <span className="text-sm font-semibold">Inventario</span>
+          </Link>
+          <Link to="/admin/pedidos" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-lg transition-all">
+            <span className="material-symbols-outlined">shopping_cart</span>
+            <span className="text-sm font-semibold">Pedidos</span>
+          </Link>
+          <Link to="/admin/contactos" className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:bg-white/5 hover:text-white rounded-lg transition-all">
+            <span className="material-symbols-outlined">mail</span>
+            <span className="text-sm font-semibold">Contactos</span>
+          </Link>
+        </nav>
+      </aside>
+
       {/* Main Content */}
-      <main className="w-full">
+      <main className="flex-1 lg:ml-64 p-4 md:p-8 min-w-0">
       
       {/* Toast Notification */}
       {toast.show && (
